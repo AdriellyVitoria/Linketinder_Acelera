@@ -1,0 +1,4 @@
+package listas
+
+class ListaEmpresa {
+}
