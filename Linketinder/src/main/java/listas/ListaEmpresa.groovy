@@ -1,64 +1,60 @@
 package listas
 
+import modelos.PessoaJuridica
+
 class ListaEmpresa {
     def empresas =[
-            [nome:'Companhia Galley-La',
-             emailCorp: 'galleyla@gmail.com',
-             cnpj: 12345678000190,
-             estado: 'Water 7',
-             pais: "Brasil",
-             cep: 50000,
-             descricao: 'Descrição da vaga',
-             Competencias: "construcao de código, trabalho em equipe"],
+            new PessoaJuridica('Companhia Galley-La',
+            'galleyla@gmail.com',
+            'Water 7',
+            '12356',
+            'descricao',
+            ['construcao de código', 'trabalho em equipe'],
+            '12345678000190',
+            'Brasil'),
 
-            [nome:'Empresa Revestimento De Rayleigh',
-             emailCorp: 'r@yleigh@gmail.com',
-             cnpj: 98765432000110,
-             estado: 'Sabaody',
-             pais: "Brasil",
-             cep: 11845,
-             descricao: 'Descrição da vaga',
-             Competencias: "revestir com uma boa segurança a aplicação"],
+            new PessoaJuridica('Empresa Revestimento De Rayleigh',
+            'r@yleigh@gmail.com',
+            'Sabaody',
+            '54586',
+            'descricao',
+            ['revestir com uma boa segurança'],
+            '98765432000110',
+            'Brasil'),
 
-            [nome:'Baratie',
-             emailCorp: 'restaurentebaratie@gmail.com',
-             cnpj: 11122333444455,
-             estado: 'regiao sambas no east blue',
-             pais: "Brasil",
-             cep: 55245,
-             descricao: 'Descrição da vaga',
-             Competencias: "saber brigar e cozinhar"],
+            new PessoaJuridica('Baratie',
+            'restaurentebaratie@gmail.com',
+            'Região sambas no east blue',
+            '55245',
+            'descricao',
+            ['saber brigar', 'cozinhar'],
+            '11122333444455',
+            'Brasil'
+            ),
 
-            [nome:'Marinha',
-             emailCorp: 'marinha.com',
-             cnpj: 17475368999855,
-             estado: 'Grand Line',
-             pais: "Brasil",
-             cep: 84366,
-             descricao: 'Descrição da vaga',
-             Competencias: "forte"
-            ],
+            new PessoaJuridica('Marinha',
+            'marinha.com',
+            'Grand Line',
+            '45455',
+            'descricao',
+            ['forte'],
+            '17475368999855',
+            'Brasil'),
 
-            [nome:'Donquixote Doflamingo',
-             emailCorp: 'doflamingo@gmail.com',
-             cnpj: 7452389688822,
-             pais: "Brasil",
-             estado: 'Dressrosa',
-             cep: 50630,
-             descricao: 'Descrição da vaga',
-             Competencias: "vender bem"]
+            new PessoaJuridica('Donquixote Doflamingo',
+            'doflamingo@gmail.com',
+            'Dressrosa',
+            '56823',
+            'Descricao',
+            ['Vender bem'],
+            '7452389688822',
+            'Brasil')
     ]
 
     String exibirEmpresas(){
         String res = ""
         empresas.each { empresa ->
-            res += "Nome: ${empresa.nome} " +
-                    " Email: ${empresa.emailCorp} " +
-                    " CNPJ: ${empresa.cnpj} " +
-                    " Estado: ${empresa.estado} " +
-                    " Pais: ${empresa.pais} " +
-                    " CEP: ${empresa.cep} " +
-                    " Descricao: ${empresa.descricao}\n"
+            res += empresa.toString()
         }
         return res
     }
