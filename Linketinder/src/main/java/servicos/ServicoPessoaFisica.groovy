@@ -17,4 +17,12 @@ class ServicoPessoaFisica {
         }
         return res
     }
+
+    void addCandidato(PessoaFisica candidato){
+        candidatos.add(candidato)
+    }
+
+    List<PessoaFisica> obterCandidatos(){
+        return candidatos
+    }
 }

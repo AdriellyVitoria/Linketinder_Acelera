@@ -1,6 +1,7 @@
 package servicos
 
 import database.Listas
+import modelos.PessoaFisica
 import modelos.PessoaJuridica
 
 class ServicoPessoaJuridica {
@@ -16,5 +17,13 @@ class ServicoPessoaJuridica {
             res += empresa.toString()
         }
         return res
+    }
+
+    void addEmpresa(PessoaJuridica empresa){
+        empresas.add(empresa)
+    }
+
+    List<PessoaJuridica> obterEmpresas(){
+        return empresas
     }
 }
