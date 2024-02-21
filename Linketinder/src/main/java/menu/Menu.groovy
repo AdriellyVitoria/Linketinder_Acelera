@@ -1,9 +1,11 @@
 package menu
 
-import listas.ListaCandidatos
-import listas.ListaEmpresa
+import servicos.ServicoPessoaFisica
+import servicos.ServicoPessoaJuridica
 
 class Menu {
+    static servicoPessoaFisica = new ServicoPessoaFisica()
+    static servicoPessoaJuridica = new ServicoPessoaJuridica()
 
     static menuInicial(){
         Scanner scanner = new Scanner(System.in)
@@ -18,12 +20,10 @@ class Menu {
             opcao = Integer.parseInt(scanner.nextLine())
             switch(opcao){
                 case 1:
-                    def listarCandidatos = new ListaCandidatos()
-                    println listarCandidatos.exibirCandidatos()
+                    println servicoPessoaFisica.listarCandidatos()
                     break
                 case 2:
-                    def listaEmpresas = new ListaEmpresa()
-                    println listaEmpresas.exibirEmpresas()
+                    println servicoPessoaJuridica.listarEmpresas()
                     break
                 case 3:
                     println "Saindo do programa, Até mais"

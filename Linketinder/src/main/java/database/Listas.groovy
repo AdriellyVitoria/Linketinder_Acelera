@@ -1,0 +1,97 @@
+package database
+
+import modelos.PessoaFisica
+import modelos.PessoaJuridica
+
+class Listas {
+    static candidatos = [
+        new PessoaFisica('Monkey D. Luffy',
+                'Luffy@gmail.com',
+                'Vila Foosha',
+                '58457',
+                'Sou um garoto relaxado, despreocupado e alegre',
+                ['Capitão', 'Yonkou'],
+                '12375398463',
+                19),
+        new PessoaFisica('Roronoa Zoro',
+                'zoro@gmail.com',
+                'Shimotsuki',
+                '55245',
+                'JAVA',
+                ['competencias'],
+                '45732198652',
+                21),
+        new PessoaFisica('Nami',
+                'nami@gmail.com',
+                'Vila Cocoyasi',
+                '11845',
+                'Angular',
+                ['competencias'],
+                '24578324899',
+                20),
+        new PessoaFisica('Tony Tony Chopper',
+                'chopper@gmail.com',
+                'Ilha Drum',
+                '84366',
+                'NODE.JS',
+                ['competencias'],
+                '45687025487',
+                17),
+        new PessoaFisica('Franky',
+                'franky@gmail.com',
+                'Water 7',
+                '50630',
+                'JAVASCRIPT',
+                ['competencias'],
+                '74027509833',
+                37),
+    ]
+
+    static empresas =[
+        new PessoaJuridica('Companhia Galley-La',
+                'galleyla@gmail.com',
+                'Water 7',
+                '12356',
+                'descricao',
+                ['construcao de código', 'trabalho em equipe'],
+                '12345678000190',
+                'Brasil'),
+
+        new PessoaJuridica('Empresa Revestimento De Rayleigh',
+                'r@yleigh@gmail.com',
+                'Sabaody',
+                '54586',
+                'descricao',
+                ['revestir com uma boa segurança'],
+                '98765432000110',
+                'Brasil'),
+
+        new PessoaJuridica('Baratie',
+                'restaurentebaratie@gmail.com',
+                'Região sambas no east blue',
+                '55245',
+                'descricao',
+                ['saber brigar', 'cozinhar'],
+                '11122333444455',
+                'Brasil'
+        ),
+
+        new PessoaJuridica('Marinha',
+                'marinha.com',
+                'Grand Line',
+                '45455',
+                'descricao',
+                ['forte'],
+                '17475368999855',
+                'Brasil'),
+
+        new PessoaJuridica('Donquixote Doflamingo',
+                'doflamingo@gmail.com',
+                'Dressrosa',
+                '56823',
+                'Descricao',
+                ['Vender bem'],
+                '7452389688822',
+                'Brasil')
+    ]
+}
