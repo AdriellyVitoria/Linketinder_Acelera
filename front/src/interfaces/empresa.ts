@@ -1,0 +1,13 @@
+export interface Empresa {
+    id: number
+    nome: string
+    email: string
+    senha: string
+    estado: string
+    cep: string
+    descricao: string
+    cnpj: string
+    pais: string
+    competencias: string[]
+    candidatos: number[]
+}

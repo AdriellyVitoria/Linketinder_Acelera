@@ -1,0 +1,49 @@
+export class CantidatoService {
+    candidatos;
+    constructor() {
+        this.candidatos = this.buscarListaNoLocalStorage();
+        if (!this.candidatos) {
+            this.criarListaNoLocalStorage();
+            this.candidatos = this.buscarListaNoLocalStorage();
+        }
+    }
+    buscarListaNoLocalStorage() {
+        return JSON.parse(localStorage.getItem('candidatos'))?.candidatos;
+    }
+    criarListaNoLocalStorage() {
+        localStorage.setItem('candidatos', JSON.stringify({ candidatos: [] }));
+    }
+    atualizaListaNoLocalStorage() {
+        localStorage.setItem('candidatos', JSON.stringify({ candidatos: this.candidatos }));
+    }
+    salvarMudancas() {
+        this.atualizaListaNoLocalStorage();
+        this.candidatos = this.buscarListaNoLocalStorage();
+    }
+    criarCandidato(candidato) {
+        this.candidatos.push(candidato);
+        this.salvarMudancas();
+    }
+    buscarPorId(id) {
+        return this.candidatos.find(c => c.id == id);
+    }
+    buscaCandidatos(ids = null) {
+        if (ids) {
+            return this.candidatos.filter(c => {
+                ids.includes(c.id);
+            });
+        }
+        return this.candidatos;
+    }
+    editarCandidato(candidato) {
+        this.excluirCandidato(candidato.id);
+        this.criarCandidato(candidato);
+        return candidato;
+    }
+    excluirCandidato(id) {
+        const candidato = this.buscarPorId(id);
+        const index = this.candidatos.indexOf(candidato);
+        this.candidatos.splice(index, 1);
+        this.salvarMudancas();
+    }
+}

@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "target": "ES2022",
+        "outDir": "./dist/js/",
+        "noEmitOnError": true,
+        "noImplicitAny": true
+    },
+    "include": [
+        "./src/**/*"
+    ]
+}

@@ -1,0 +1,6 @@
+@charset "UTF-8";
+
+.conteudo {
+    display: flex;
+    text-align: center;
+}
