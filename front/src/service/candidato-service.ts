@@ -1,7 +1,7 @@
-import { Cantidato } from "../interfaces/candidato.js";
+import { Candidato } from "../interfaces/candidato.js";
 
-export class CantidatoService{
-    private candidatos: Cantidato[]
+export class CandidatoService{
+    private candidatos: Candidato[]
 
     constructor() {
         this.candidatos = this.buscarListaNoLocalStorage()
@@ -11,7 +11,7 @@ export class CantidatoService{
         }
     }
 
-    private buscarListaNoLocalStorage(): Cantidato[] {
+    private buscarListaNoLocalStorage(): Candidato[] {
         return JSON.parse(localStorage.getItem('candidatos'))?.candidatos
     }
     
@@ -28,16 +28,21 @@ export class CantidatoService{
         this.candidatos = this.buscarListaNoLocalStorage()
     }
 
-    public criarCandidato(candidato: Cantidato): void {
+    public criarCandidato(candidato: Candidato): void {
         this.candidatos.push(candidato)
         this.salvarMudancas()
     }
 
-    public buscarPorId(id: number): Cantidato {
+    public buscarPorId(id: number): Candidato {
         return this.candidatos.find(c => c.id == id)
     }
 
-    public buscaCandidatos(ids: number[] | null = null): Cantidato[] {
+    public validarLogin(email: string, senha: string): Candidato | null {
+        const candidato = this.candidatos.find(c => c.email === email)
+        if (candidato?.senha === senha) return candidato
+    }
+
+    public buscaCandidatos(ids: number[] | null = null): Candidato[] {
         if (ids) {
             return this.candidatos.filter(c => {
                 ids.includes(c.id)
@@ -46,7 +51,7 @@ export class CantidatoService{
         return this.candidatos
     }
 
-    public editarCandidato(candidato: Cantidato): Cantidato {
+    public editarCandidato(candidato: Candidato): Candidato {
         this.excluirCandidato(candidato.id)
         this.criarCandidato(candidato)
         return candidato

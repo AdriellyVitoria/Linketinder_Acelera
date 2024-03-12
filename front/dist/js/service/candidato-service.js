@@ -1,4 +1,4 @@
-export class CantidatoService {
+export class CandidatoService {
     candidatos;
     constructor() {
         this.candidatos = this.buscarListaNoLocalStorage();
@@ -26,6 +26,11 @@ export class CantidatoService {
     }
     buscarPorId(id) {
         return this.candidatos.find(c => c.id == id);
+    }
+    validarLogin(email, senha) {
+        const candidato = this.candidatos.find(c => c.email === email);
+        if (candidato?.senha === senha)
+            return candidato;
     }
     buscaCandidatos(ids = null) {
         if (ids) {

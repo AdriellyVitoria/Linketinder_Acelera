@@ -34,7 +34,12 @@ export class EmpresaService {
     }
 
     public buscarPorId(id: number): Empresa {
-        return this.empresas.find(c => c.id == id)
+        return this.empresas.find(e => e.id == id)
+    }
+
+    public validarLogin(email: string, senha: string): Empresa | null {
+        const empresa = this.empresas.find(e => e.email === email)
+        if(empresa?.senha === senha) return empresa
     }
 
     public buscaEmpresas(ids: number[] | null = null): Empresa[] {

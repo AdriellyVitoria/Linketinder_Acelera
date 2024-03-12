@@ -25,7 +25,12 @@ export class EmpresaService {
         this.salvarMudancas();
     }
     buscarPorId(id) {
-        return this.empresas.find(c => c.id == id);
+        return this.empresas.find(e => e.id == id);
+    }
+    validarLogin(email, senha) {
+        const empresa = this.empresas.find(e => e.email === email);
+        if (empresa?.senha === senha)
+            return empresa;
     }
     buscaEmpresas(ids = null) {
         if (ids) {

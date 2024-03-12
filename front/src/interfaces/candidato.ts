@@ -1,4 +1,4 @@
-export interface Cantidato {
+export interface Candidato {
     id: number
     nome: string
     email: string
