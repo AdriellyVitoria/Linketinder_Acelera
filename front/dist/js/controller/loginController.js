@@ -14,7 +14,7 @@ export class LoginController {
         this.usuarioLogadoService = usuarioLogadoService;
         this.candidatoService = new CandidatoService();
         this.empresaService = new EmpresaService();
-        this.perfilCandidato = new PerfilCandidatoController(cabecalho, conteudo, usuarioLogadoService);
+        this.perfilCandidato = new PerfilCandidatoController(cabecalho, conteudo, usuarioLogadoService, this);
     }
     carregarTelaLogin() {
         this.preecherHtml();
@@ -22,7 +22,7 @@ export class LoginController {
     }
     fazerLoginCandidato() {
         const emailCandidato = document.querySelector(".login__candidato__email input");
-        const senhaCandidato = document.querySelector("login__candidato__senha input");
+        const senhaCandidato = document.querySelector(".login__candidato__senha input");
         const candidato = this.candidatoService.validarLogin(emailCandidato.value, senhaCandidato.value);
         if (candidato) {
             this.usuarioLogadoService.fazerLogin(candidato);

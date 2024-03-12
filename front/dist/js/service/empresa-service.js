@@ -1,3 +1,4 @@
+import { empresaBase } from "../listasBases/empresasBases.js";
 export class EmpresaService {
     empresas;
     constructor() {
@@ -8,10 +9,10 @@ export class EmpresaService {
         }
     }
     buscarListaNoLocalStorage() {
-        return JSON.parse(localStorage.getItem('empresa'))?.empresas;
+        return JSON.parse(localStorage.getItem('empresas'))?.empresas;
     }
     criarListaNoLocalStorage() {
-        localStorage.setItem('empresas', JSON.stringify({ empresas: [] }));
+        localStorage.setItem('empresas', JSON.stringify({ empresas: empresaBase }));
     }
     atualizaListaNoLocalStorage() {
         localStorage.setItem('empresas', JSON.stringify({ empresas: this.empresas }));
@@ -20,7 +21,7 @@ export class EmpresaService {
         this.atualizaListaNoLocalStorage();
         this.empresas = this.buscarListaNoLocalStorage();
     }
-    criarCandidato(empresa) {
+    criarEmpresa(empresa) {
         this.empresas.push(empresa);
         this.salvarMudancas();
     }
@@ -40,12 +41,12 @@ export class EmpresaService {
         }
         return this.empresas;
     }
-    editarCandidato(empresa) {
-        this.excluirCandidato(empresa.id);
-        this.criarCandidato(empresa);
+    editarEmpresa(empresa) {
+        this.excluirEmpresa(empresa.id);
+        this.criarEmpresa(empresa);
         return empresa;
     }
-    excluirCandidato(id) {
+    excluirEmpresa(id) {
         const empresa = this.buscarPorId(id);
         const index = this.empresas.indexOf(empresa);
         this.empresas.splice(index, 1);

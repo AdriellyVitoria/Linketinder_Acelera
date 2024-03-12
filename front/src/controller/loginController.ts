@@ -15,7 +15,7 @@ export class LoginController {
     ) {
         this.candidatoService = new CandidatoService()
         this.empresaService = new EmpresaService()
-        this.perfilCandidato = new PerfilCandidatoController(cabecalho, conteudo, usuarioLogadoService)
+        this.perfilCandidato = new PerfilCandidatoController(cabecalho, conteudo, usuarioLogadoService, this)
     }
 
     public carregarTelaLogin(): void {
@@ -25,7 +25,7 @@ export class LoginController {
 
     private fazerLoginCandidato(): void {
         const emailCandidato = document.querySelector(".login__candidato__email input") as HTMLInputElement
-        const senhaCandidato = document.querySelector("login__candidato__senha input") as HTMLInputElement
+        const senhaCandidato = document.querySelector(".login__candidato__senha input") as HTMLInputElement
 
         const candidato = this.candidatoService.validarLogin(emailCandidato.value, senhaCandidato.value)
         if (candidato) {

@@ -1,13 +1,13 @@
-import { Candidato } from "../interfaces/candidato.js"
+import { Empresa } from "../interfaces/empresa.js"
 import { CandidatoService } from "../service/candidato-service.js"
 import { EmpresaService } from "../service/empresa-service.js"
 import { UsuarioLogadoService } from "../service/usuario-logado-service.js"
 import { LoginController } from "./loginController.js"
 
-export class PerfilCandidatoController {
+export class PerfilEmpresaController {
     private readonly candidatoService: CandidatoService
     private readonly empresaService: EmpresaService
-    private usuario: Candidato | null
+    private empresa: Empresa | null
 
     constructor(
         private readonly cabecalho: HTMLElement,
@@ -20,7 +20,7 @@ export class PerfilCandidatoController {
     }
 
     public carregarTelaDePerfil(): void {
-        this.usuario = this.usuarioLogadoService.usuario as Candidato
+        this.empresa = this.usuarioLogadoService.usuario as Empresa
         this.montarEstruturaHtml()
         this.preencherPerfil()
         this.preencherFeed()
@@ -31,7 +31,7 @@ export class PerfilCandidatoController {
         this.cabecalho.innerHTML = `
             <div>
                 <h1>Linketinder</h1>
-                <p>Olá, ${this.usuario.nome}</p>
+                <p>Olá, ${this.empresa.nome}</p>
             </div>
             <button class="botao__sair">Sair</button>`
 
@@ -47,36 +47,29 @@ export class PerfilCandidatoController {
     private preencherPerfil(): void {
         const perfilUsuario = document.querySelector(".perfil__usuario") as HTMLDivElement
         perfilUsuario.innerHTML = `
-            <p>Nome: ${this.usuario.nome}</p>
-            <p>Idade: ${this.usuario.idade} anos</p>
-            <p>Email: ${this.usuario.email}</p>
-            <p>Estado: ${this.usuario.estado}</p>
-            <p>Cep: ${this.usuario.cep}</p>
-            <p>CPF: ${this.usuario.cpf}</p>
-            <p>Competencias: ${this.usuario.competencias.join(', ')}</p>
-            <p>Descrição: ${this.usuario.descricao}</p>`
+            <p>Nome: ${this.empresa.nome}</p>
+            <p>Idade: ${this.empresa.pais} anos</p>
+            <p>Email: ${this.empresa.email}</p>
+            <p>Estado: ${this.empresa.estado}</p>
+            <p>Cep: ${this.empresa.cep}</p>
+            <p>CPF: ${this.empresa.cnpj}</p>
+            <p>Competencias: ${this.empresa.competencias.join(', ')}</p>
+            <p>Descrição: ${this.empresa.descricao}</p>`
     }
 
     private preencherFeed(): void {
         const feedCandidato = document.querySelector(".feed__do__candidato") as HTMLDivElement
         feedCandidato.innerHTML = ''
-        this.empresaService.buscaEmpresas().forEach(e => {
+        this.candidatoService.buscaCandidatos(this.empresa.candidatos).forEach(c => {
             feedCandidato.innerHTML += `
-                <div class="empresa__no__feed" id="${e.id}">
+                <div class="empresa__no__feed" id="${c.id}">
                     <div>
-                        <p>Descrição: ${e.descricao}</p>
-                        <p>Competencia: ${e.competencias.join(', ')}
+                        <p>Competencia: ${c.competencias.join(', ')}
                     </div>
-                    ${this.criarBotaoAplicar(e.id)}
-                </div>`
-        })
-    }
 
-    private criarBotaoAplicar(empresaId: number): string {
-        if (this.usuario.aplicacoes_em_empresas.includes(empresaId)) {
-            return `<button class="botao__aplicar__empresa" disabled>Aplicada</button>`
-        }
-        return `<button class="botao__aplicar__empresa">Aplicar para empresa</button>`
+                </div>`
+                // grafico
+        })
     }
 
     private setupBotoes(): void {
@@ -84,30 +77,9 @@ export class PerfilCandidatoController {
 
         botaoSair.addEventListener("click", () => {
             this.usuarioLogadoService.logout()
-            this.usuario = null
+            this.empresa = null
             this.loginController.carregarTelaLogin()
         })
-
-        const botoesAplicar = document.querySelectorAll(".botao__aplicar__empresa")
-
-        botoesAplicar.forEach((botao: HTMLButtonElement) => {
-            botao.addEventListener("click", () => {
-                this.aplicarVaga(botao)
-            })
-        })
     }
-
-    private aplicarVaga(botao: HTMLButtonElement): void {
-        const empresaId: number = Number.parseInt(botao.parentElement.id)
-        const empresa = this.empresaService.buscarPorId(empresaId)
-
-        empresa.candidatos.push(this.usuario.id)
-        this.empresaService.editarEmpresa(empresa)
-
-        this.usuario.aplicacoes_em_empresas.push(empresa.id)
-        this.candidatoService.editarCandidato(this.usuario)
-
-        this.preencherFeed()
-        this.setupBotoes()
-    }
+        
 }

@@ -1,3 +1,4 @@
+import { candidatoBase } from "../listasBases/candidatosBases.js";
 export class CandidatoService {
     candidatos;
     constructor() {
@@ -11,7 +12,7 @@ export class CandidatoService {
         return JSON.parse(localStorage.getItem('candidatos'))?.candidatos;
     }
     criarListaNoLocalStorage() {
-        localStorage.setItem('candidatos', JSON.stringify({ candidatos: [] }));
+        localStorage.setItem('candidatos', JSON.stringify({ candidatos: candidatoBase }));
     }
     atualizaListaNoLocalStorage() {
         localStorage.setItem('candidatos', JSON.stringify({ candidatos: this.candidatos }));

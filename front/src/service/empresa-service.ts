@@ -1,4 +1,5 @@
 import { Empresa } from "../interfaces/empresa.js";
+import { empresaBase } from "../listasBases/empresasBases.js";
 
 export class EmpresaService {
     private empresas: Empresa[]
@@ -12,11 +13,11 @@ export class EmpresaService {
     }
 
     private buscarListaNoLocalStorage(): Empresa[] {
-        return JSON.parse(localStorage.getItem('empresa'))?.empresas
+        return JSON.parse(localStorage.getItem('empresas'))?.empresas
     }
     
     private criarListaNoLocalStorage(): void {
-        localStorage.setItem('empresas', JSON.stringify({empresas: []}))
+        localStorage.setItem('empresas', JSON.stringify({empresas: empresaBase}))
     }
 
     private atualizaListaNoLocalStorage(): void {
@@ -28,7 +29,7 @@ export class EmpresaService {
         this.empresas = this.buscarListaNoLocalStorage()
     }
 
-    public criarCandidato(empresa: Empresa): void {
+    public criarEmpresa(empresa: Empresa): void {
         this.empresas.push(empresa)
         this.salvarMudancas()
     }
@@ -51,13 +52,13 @@ export class EmpresaService {
         return this.empresas
     }
 
-    public editarCandidato(empresa: Empresa): Empresa {
-        this.excluirCandidato(empresa.id)
-        this.criarCandidato(empresa)
+    public editarEmpresa(empresa: Empresa): Empresa {
+        this.excluirEmpresa(empresa.id)
+        this.criarEmpresa(empresa)
         return empresa
     }
 
-    public excluirCandidato(id: number): void {
+    public excluirEmpresa(id: number): void {
         const empresa = this.buscarPorId(id)
         const index = this.empresas.indexOf(empresa)
         this.empresas.splice(index, 1)

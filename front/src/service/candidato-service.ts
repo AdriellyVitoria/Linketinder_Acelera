@@ -1,4 +1,5 @@
 import { Candidato } from "../interfaces/candidato.js";
+import { candidatoBase } from "../listasBases/candidatosBases.js";
 
 export class CandidatoService{
     private candidatos: Candidato[]
@@ -16,7 +17,7 @@ export class CandidatoService{
     }
     
     private criarListaNoLocalStorage(): void {
-        localStorage.setItem('candidatos', JSON.stringify({candidatos: []}))
+        localStorage.setItem('candidatos', JSON.stringify({candidatos: candidatoBase}))
     }
 
     private atualizaListaNoLocalStorage(): void {
