@@ -13,18 +13,18 @@
     font-weight: bold;
 }
 
-.login__input {
+.login__input, .cadastro__input {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
 }
 
-.login__input label {
+.login__input label, .cadastro__input label {
     font-size: 20px;
 }
 
-.login__input input {
+.login__input input, .cadastro__input input {
     width: 600px;
     padding: 16px 16px;
     font-size: 24px;
@@ -33,16 +33,16 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
 }
 
-.login__input input:hover {
+.login__input input:hover, .cadastro__input input:hover {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
 }
 
-.login__input input:focus {
+.login__input input:focus, .cadastro__input input:focus {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
     outline: none;
 }
 
-.login__botao {
+.login__botao, .botao__cadastrar__candidato, .botao__cadastrar__empresa {
     padding: 16px 16px;
     font-size: 24px;
     border-radius: 8px;
@@ -55,7 +55,7 @@
     color: #fff;
 }
 
-.login__botao:hover {
+.login__botao:hover, .botao__cadastrar__candidato:hover, .botao__cadastrar__empresa:hover {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
 }
 

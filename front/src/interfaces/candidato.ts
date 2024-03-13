@@ -1,6 +1,7 @@
 export interface Candidato {
     id: number
     nome: string
+    telefone: string
     email: string
     senha: string
     estado: string

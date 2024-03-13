@@ -2,9 +2,14 @@
 @import url("./components/cabecalho.css");
 @import url("./components/login.css");
 @import url("./components/perfil.css");
+@import url("./components/cadastro.css");
 
 .conteudo {
     display: flex;
     text-align: center;
     justify-content: space-evenly;
+}
+
+.input__cpf:invalid {
+    border: red;
 }

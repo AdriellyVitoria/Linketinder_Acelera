@@ -21,7 +21,8 @@ export const empresaBase: Empresa[] = [
             "Scala",
             "PHP"
         ],
-        candidatos: []
+        candidatos: [],
+        telefone: "1234-5678"
     },
 
     {
@@ -35,7 +36,7 @@ export const empresaBase: Empresa[] = [
         cnpj: "98765432000110",
         pais: "Brasil",
         competencias: [
-            "Angula",
+            "Angular",
             "Python",
             "C#",
             "Django",
@@ -44,7 +45,8 @@ export const empresaBase: Empresa[] = [
             "JavaScript",
             "PostgreSQL"
         ],
-        candidatos: []
+        candidatos: [],
+        telefone: "1234-5678"
     },
 
     {
@@ -57,7 +59,7 @@ export const empresaBase: Empresa[] = [
         descricao: "descricao",
         cnpj: "11122333444455",
         pais: "Brasil",
-        competencias: [ 
+        competencias: [
             "Ruby",
             "GO",
             "JavaScript",
@@ -66,7 +68,8 @@ export const empresaBase: Empresa[] = [
             "Rust",
             "Swift"
         ],
-        candidatos: []
+        candidatos: [],
+        telefone: "1234-5678"
     },
 
     {
@@ -79,9 +82,9 @@ export const empresaBase: Empresa[] = [
         descricao: "descricao",
         cnpj: "7452389688822",
         pais: "Brasil",
-        competencias: [ 
+        competencias: [
             "Java",
-            "Angula",
+            "Angular",
             "Python",
             "C#",
             "Django",
@@ -90,6 +93,7 @@ export const empresaBase: Empresa[] = [
             "JavaScript",
             "PostgreSQL"
         ],
-        candidatos: []
+        candidatos: [],
+        telefone: "1234-5678"
     }
 ]

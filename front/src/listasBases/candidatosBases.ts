@@ -13,12 +13,13 @@ export const candidatoBase: Candidato[] = [
         idade: 19,
         competencias: [
             "Java",
-            "Angula",
+            "Angular",
             "Python",
             "C#",
             "Django"
         ],
-        aplicacoes_em_empresas: []
+        aplicacoes_em_empresas: [],
+        telefone: "1234-5678"
     },
 
     {
@@ -33,12 +34,13 @@ export const candidatoBase: Candidato[] = [
         idade: 20,
         competencias: [
             "Java",
-            "Angula",
+            "Angular",
             "Python",
             "C#",
             "Django"
         ],
-        aplicacoes_em_empresas: []
+        aplicacoes_em_empresas: [],
+        telefone: "1234-5678"
     },
 
     {
@@ -58,7 +60,8 @@ export const candidatoBase: Candidato[] = [
             "PostgreSQL",
             "TypeScript"
         ],
-        aplicacoes_em_empresas: []
+        aplicacoes_em_empresas: [],
+        telefone: "1234-5678"
     },
 
     {
@@ -77,6 +80,7 @@ export const candidatoBase: Candidato[] = [
             "Ruby",
             "GO"
         ],
-        aplicacoes_em_empresas: []
+        aplicacoes_em_empresas: [],
+        telefone: "1234-5678"
     }
 ]

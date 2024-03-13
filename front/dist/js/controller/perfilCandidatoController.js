@@ -4,15 +4,13 @@ export class PerfilCandidatoController {
     cabecalho;
     conteudo;
     usuarioLogadoService;
-    loginController;
     candidatoService;
     empresaService;
     usuario;
-    constructor(cabecalho, conteudo, usuarioLogadoService, loginController) {
+    constructor(cabecalho, conteudo, usuarioLogadoService) {
         this.cabecalho = cabecalho;
         this.conteudo = conteudo;
         this.usuarioLogadoService = usuarioLogadoService;
-        this.loginController = loginController;
         this.candidatoService = new CandidatoService();
         this.empresaService = new EmpresaService();
     }
@@ -88,8 +86,6 @@ export class PerfilCandidatoController {
     setupBotoes() {
         const botaoSair = document.querySelector('.botao__sair');
         botaoSair.addEventListener("click", () => {
-            this.usuarioLogadoService.logout();
-            this.usuario = null;
             location.reload();
         });
         const botoesAplicar = document.querySelectorAll(".botao__aplicar__empresa");

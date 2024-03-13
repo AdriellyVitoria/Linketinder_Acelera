@@ -8,10 +8,6 @@ export class UsuarioLogadoService {
         this.usuarioLogado = usuario
     }
 
-    public logout(): void {
-        this.usuarioLogado = null
-    }
-
     get usuario(): Candidato | Empresa | null {
         return this.usuarioLogado
     }

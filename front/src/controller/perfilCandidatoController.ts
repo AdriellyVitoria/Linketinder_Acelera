@@ -3,7 +3,6 @@ import { Empresa } from "../interfaces/empresa.js"
 import { CandidatoService } from "../service/candidato-service.js"
 import { EmpresaService } from "../service/empresa-service.js"
 import { UsuarioLogadoService } from "../service/usuario-logado-service.js"
-import { LoginController } from "./loginController.js"
 
 export class PerfilCandidatoController {
     private readonly candidatoService: CandidatoService
@@ -13,8 +12,7 @@ export class PerfilCandidatoController {
     constructor(
         private readonly cabecalho: HTMLElement,
         private readonly conteudo: HTMLElement,
-        private readonly usuarioLogadoService: UsuarioLogadoService,
-        private readonly loginController: LoginController
+        private readonly usuarioLogadoService: UsuarioLogadoService
     ) {
         this.candidatoService = new CandidatoService()
         this.empresaService = new EmpresaService()
@@ -100,8 +98,6 @@ export class PerfilCandidatoController {
         const botaoSair = document.querySelector('.botao__sair') as HTMLButtonElement
 
         botaoSair.addEventListener("click", () => {
-            this.usuarioLogadoService.logout()
-            this.usuario = null
             location.reload()
         })
 

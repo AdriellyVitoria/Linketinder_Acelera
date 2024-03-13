@@ -1,6 +1,6 @@
 export const listaCompetencias: string[] = [
     "Java",
-    "Angula",
+    "Angular",
     "Python",
     "C#",
     "Django",

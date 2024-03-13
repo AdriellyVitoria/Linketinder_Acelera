@@ -3,9 +3,6 @@ export class UsuarioLogadoService {
     fazerLogin(usuario) {
         this.usuarioLogado = usuario;
     }
-    logout() {
-        this.usuarioLogado = null;
-    }
     get usuario() {
         return this.usuarioLogado;
     }

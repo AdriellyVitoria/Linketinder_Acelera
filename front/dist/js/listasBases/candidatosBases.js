@@ -11,12 +11,13 @@ export const candidatoBase = [
         idade: 19,
         competencias: [
             "Java",
-            "Angula",
+            "Angular",
             "Python",
             "C#",
             "Django"
         ],
-        aplicacoes_em_empresas: []
+        aplicacoes_em_empresas: [],
+        telefone: "1234-5678"
     },
     {
         id: 1,
@@ -30,12 +31,13 @@ export const candidatoBase = [
         idade: 20,
         competencias: [
             "Java",
-            "Angula",
+            "Angular",
             "Python",
             "C#",
             "Django"
         ],
-        aplicacoes_em_empresas: []
+        aplicacoes_em_empresas: [],
+        telefone: "1234-5678"
     },
     {
         id: 2,
@@ -54,7 +56,8 @@ export const candidatoBase = [
             "PostgreSQL",
             "TypeScript"
         ],
-        aplicacoes_em_empresas: []
+        aplicacoes_em_empresas: [],
+        telefone: "1234-5678"
     },
     {
         id: 3,
@@ -72,6 +75,7 @@ export const candidatoBase = [
             "Ruby",
             "GO"
         ],
-        aplicacoes_em_empresas: []
+        aplicacoes_em_empresas: [],
+        telefone: "1234-5678"
     }
 ];

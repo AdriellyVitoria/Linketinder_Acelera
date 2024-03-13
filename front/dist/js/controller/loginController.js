@@ -1,5 +1,7 @@
 import { CandidatoService } from "../service/candidato-service.js";
 import { EmpresaService } from "../service/empresa-service.js";
+import { CadastroCandidato } from "./cadastroCandidato.js";
+import { CadastroEmpresa } from "./cadastroEmpresa.js";
 import { PerfilCandidatoController } from "./perfilCandidatoController.js";
 import { PerfilEmpresaController } from "./perfilEmpresaController.js";
 export class LoginController {
@@ -10,14 +12,18 @@ export class LoginController {
     empresaService;
     perfilCandidato;
     perfilEmpresa;
+    cadastroCandidato;
+    cadastroEmpresa;
     constructor(cabecalho, conteudo, usuarioLogadoService) {
         this.cabecalho = cabecalho;
         this.conteudo = conteudo;
         this.usuarioLogadoService = usuarioLogadoService;
         this.candidatoService = new CandidatoService();
         this.empresaService = new EmpresaService();
-        this.perfilCandidato = new PerfilCandidatoController(cabecalho, conteudo, usuarioLogadoService, this);
-        this.perfilEmpresa = new PerfilEmpresaController(cabecalho, conteudo, usuarioLogadoService, this);
+        this.perfilCandidato = new PerfilCandidatoController(cabecalho, conteudo, usuarioLogadoService);
+        this.perfilEmpresa = new PerfilEmpresaController(cabecalho, conteudo, usuarioLogadoService);
+        this.cadastroCandidato = new CadastroCandidato(cabecalho, conteudo);
+        this.cadastroEmpresa = new CadastroEmpresa(cabecalho, conteudo);
     }
     carregarTelaLogin() {
         this.preecherHtml();
@@ -59,8 +65,10 @@ export class LoginController {
             this.fazerLoginEmpresa();
         });
         botaoCadastroCandidato.addEventListener("click", () => {
+            this.cadastroCandidato.carregarTelaCadastro();
         });
         botaoCadastroEmpresa.addEventListener("click", () => {
+            this.cadastroEmpresa.carregarTelaCadastro();
         });
     }
     preecherHtml() {

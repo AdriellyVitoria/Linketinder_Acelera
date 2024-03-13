@@ -4,15 +4,13 @@ export class PerfilEmpresaController {
     cabecalho;
     conteudo;
     usuarioLogadoService;
-    loginController;
     candidatoService;
     empresaService;
     empresa;
-    constructor(cabecalho, conteudo, usuarioLogadoService, loginController) {
+    constructor(cabecalho, conteudo, usuarioLogadoService) {
         this.cabecalho = cabecalho;
         this.conteudo = conteudo;
         this.usuarioLogadoService = usuarioLogadoService;
-        this.loginController = loginController;
         this.candidatoService = new CandidatoService();
         this.empresaService = new EmpresaService();
     }
@@ -22,6 +20,7 @@ export class PerfilEmpresaController {
         this.preencherPerfil();
         this.preencherFeed();
         this.setupBotoes();
+        this.criarGrafico();
     }
     montarEstruturaHtml() {
         this.cabecalho.innerHTML = `
@@ -34,6 +33,9 @@ export class PerfilEmpresaController {
             <div class="contudo__perfil">
                 <div class="perfil__usuario">
                     
+                </div>
+                <div class="chart__div">
+
                 </div>
                 <div class="feed__do__usuario">
                 
@@ -62,14 +64,40 @@ export class PerfilEmpresaController {
                         <p><span>Competencias:</span> ${c.competencias.join(', ')}
                     </div>
                 </div>`;
-            // grafico
         });
+    }
+    criarGrafico() {
+        // Load the Visualization API and the corechart package.
+        google.charts.load('current', { 'packages': ['corechart'] });
+        // Set a callback to run when the Google Visualization API is loaded.
+        google.charts.setOnLoadCallback(drawChart);
+        // Callback that creates and populates a data table,
+        // instantiates the pie chart, passes in the data and
+        // draws it.
+        function drawChart() {
+            // Create the data table.
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Topping');
+            data.addColumn('number', 'Slices');
+            data.addRows([
+                ['Mushrooms', 3],
+                ['Onions', 1],
+                ['Olives', 1],
+                ['Zucchini', 1],
+                ['Pepperoni', 2]
+            ]);
+            // Set chart options
+            var options = { 'title': 'How Much Pizza I Ate Last Night',
+                'width': 400,
+                'height': 300 };
+            // Instantiate and draw our chart, passing in some options.
+            var chart = new google.visualization.BarChart(document.querySelector('.chart__div'));
+            chart.draw(data, options);
+        }
     }
     setupBotoes() {
         const botaoSair = document.querySelector('.botao__sair');
         botaoSair.addEventListener("click", () => {
-            this.usuarioLogadoService.logout();
-            this.empresa = null;
             location.reload();
         });
     }

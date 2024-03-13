@@ -1,6 +1,8 @@
 import { CandidatoService } from "../service/candidato-service.js";
 import { EmpresaService } from "../service/empresa-service.js";
 import { UsuarioLogadoService } from "../service/usuario-logado-service.js";
+import { CadastroCandidato } from "./cadastroCandidato.js";
+import { CadastroEmpresa } from "./cadastroEmpresa.js";
 import { PerfilCandidatoController } from "./perfilCandidatoController.js";
 import { PerfilEmpresaController } from "./perfilEmpresaController.js";
 
@@ -9,6 +11,8 @@ export class LoginController {
     private readonly empresaService: EmpresaService
     private readonly perfilCandidato: PerfilCandidatoController
     private readonly perfilEmpresa: PerfilEmpresaController
+    private readonly cadastroCandidato: CadastroCandidato
+    private readonly cadastroEmpresa: CadastroEmpresa
 
     constructor(
         private readonly cabecalho: HTMLElement,
@@ -18,8 +22,10 @@ export class LoginController {
     ) {
         this.candidatoService = new CandidatoService()
         this.empresaService = new EmpresaService()
-        this.perfilCandidato = new PerfilCandidatoController(cabecalho, conteudo, usuarioLogadoService, this)
-        this.perfilEmpresa = new PerfilEmpresaController(cabecalho, conteudo, usuarioLogadoService, this)
+        this.perfilCandidato = new PerfilCandidatoController(cabecalho, conteudo, usuarioLogadoService)
+        this.perfilEmpresa = new PerfilEmpresaController(cabecalho, conteudo, usuarioLogadoService)
+        this.cadastroCandidato = new CadastroCandidato(cabecalho, conteudo)
+        this.cadastroEmpresa = new CadastroEmpresa(cabecalho, conteudo)
     }
 
     public carregarTelaLogin(): void {
@@ -58,7 +64,7 @@ export class LoginController {
         const botaoLoginEmpresa = document.querySelector(".botao__login__empresa") as HTMLButtonElement
 
         const botaoCadastroCandidato = document.querySelector(".botao__cadastro__candidato") as HTMLButtonElement
-        const botaoCadastroEmpresa = document.querySelector(".botao__empresa__cadastro") as HTMLButtonElement
+    const botaoCadastroEmpresa = document.querySelector(".botao__empresa__cadastro") as HTMLButtonElement
 
         botaoLoginCandidato.addEventListener("click", () => {
             this.fazerLoginCandidato()
@@ -69,11 +75,11 @@ export class LoginController {
         })
 
         botaoCadastroCandidato.addEventListener("click", () => {
-
+            this.cadastroCandidato.carregarTelaCadastro()
         })
 
         botaoCadastroEmpresa.addEventListener("click", () => {
-
+            this.cadastroEmpresa.carregarTelaCadastro()
         })
     }
 
