@@ -1,4 +1,5 @@
 import { Candidato } from "../interfaces/candidato.js"
+import { Empresa } from "../interfaces/empresa.js"
 import { CandidatoService } from "../service/candidato-service.js"
 import { EmpresaService } from "../service/empresa-service.js"
 import { UsuarioLogadoService } from "../service/usuario-logado-service.js"
@@ -36,38 +37,44 @@ export class PerfilCandidatoController {
             <button class="botao__sair">Sair</button>`
 
         this.conteudo.innerHTML = `
-            <div class="perfil__usuario">
+            <div class="contudo__perfil">
+                <div class="perfil__usuario">
+                    
+                </div>
+                <div class="feed__do__usuario">
                 
-            </div>
-            <div class="feed__do__candidato">
-            
+                </div>
             </div>`
     }
 
     private preencherPerfil(): void {
         const perfilUsuario = document.querySelector(".perfil__usuario") as HTMLDivElement
         perfilUsuario.innerHTML = `
-            <p>Nome: ${this.usuario.nome}</p>
-            <p>Idade: ${this.usuario.idade} anos</p>
-            <p>Email: ${this.usuario.email}</p>
-            <p>Estado: ${this.usuario.estado}</p>
-            <p>Cep: ${this.usuario.cep}</p>
-            <p>CPF: ${this.usuario.cpf}</p>
-            <p>Competencias: ${this.usuario.competencias.join(', ')}</p>
-            <p>Descrição: ${this.usuario.descricao}</p>`
+            <p><span>Nome:</span> ${this.usuario.nome}</p>
+            <p><span>Idade:</span> ${this.usuario.idade} anos</p>
+            <p><span>Email:</span> ${this.usuario.email}</p>
+            <p><span>Estado:</span> ${this.usuario.estado}</p>
+            <p><span>Cep:</span> ${this.usuario.cep}</p>
+            <p><span>CPF:</span> ${this.usuario.cpf}</p>
+            <p><span>Competencias:</span> ${this.usuario.competencias.join(', ')}</p>
+            <p><span>Descrição:</span> ${this.usuario.descricao}</p>`
     }
 
     private preencherFeed(): void {
-        const feedCandidato = document.querySelector(".feed__do__candidato") as HTMLDivElement
+        const feedCandidato = document.querySelector(".feed__do__usuario") as HTMLDivElement
         feedCandidato.innerHTML = ''
         this.empresaService.buscaEmpresas().forEach(e => {
+            const compatibilidade = this.calcularCompatibilidade(e)
             feedCandidato.innerHTML += `
                 <div class="empresa__no__feed" id="${e.id}">
                     <div>
-                        <p>Descrição: ${e.descricao}</p>
-                        <p>Competencia: ${e.competencias.join(', ')}
+                        <p><span>Descrição:</span> ${e.descricao}</p>
+                        <p><span>Competencia:</span> ${e.competencias.join(', ')}
                     </div>
-                    ${this.criarBotaoAplicar(e.id)}
+                    <div class="acoes__aplicacao">
+                        <p>${compatibilidade}%</p>
+                        ${this.criarBotaoAplicar(e.id)}
+                    </div>
                 </div>`
         })
     }
@@ -76,7 +83,17 @@ export class PerfilCandidatoController {
         if (this.usuario.aplicacoes_em_empresas.includes(empresaId)) {
             return `<button class="botao__aplicar__empresa" disabled>Aplicada</button>`
         }
-        return `<button class="botao__aplicar__empresa">Aplicar para empresa</button>`
+        return `<button class="botao__aplicar__empresa">Aplicar</button>`
+    }
+
+    private calcularCompatibilidade(empresa: Empresa): number {
+        let habilidadesPossuidas = 0
+        this.usuario.competencias.forEach(c => {
+            if (empresa.competencias.includes(c))
+                habilidadesPossuidas++
+        })
+        const compatibilidade = 100 / empresa.competencias.length * habilidadesPossuidas
+        return Math.trunc(compatibilidade)
     }
 
     private setupBotoes(): void {
@@ -85,7 +102,7 @@ export class PerfilCandidatoController {
         botaoSair.addEventListener("click", () => {
             this.usuarioLogadoService.logout()
             this.usuario = null
-            this.loginController.carregarTelaLogin()
+            location.reload()
         })
 
         const botoesAplicar = document.querySelectorAll(".botao__aplicar__empresa")

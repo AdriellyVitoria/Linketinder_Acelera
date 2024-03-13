@@ -1,0 +1,68 @@
+@charset "UTF-8";
+
+
+.form__login {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 160px;
+}
+
+.form__login h2 {
+    font-size: 48px;
+    font-weight: bold;
+}
+
+.login__input {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.login__input label {
+    font-size: 20px;
+}
+
+.login__input input {
+    width: 600px;
+    padding: 16px 16px;
+    font-size: 24px;
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+.login__input input:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+}
+
+.login__input input:focus {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    outline: none;
+}
+
+.login__botao {
+    padding: 16px 16px;
+    font-size: 24px;
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    margin-top: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    background: #6457A6;
+    color: #fff;
+}
+
+.login__botao:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+}
+
+.cadastro__botao {
+    border: none;
+    background: none;
+    font-size: 20px;
+    cursor: pointer;
+    text-decoration: underline;
+}

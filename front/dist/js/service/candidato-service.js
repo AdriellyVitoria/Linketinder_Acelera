@@ -36,7 +36,7 @@ export class CandidatoService {
     buscaCandidatos(ids = null) {
         if (ids) {
             return this.candidatos.filter(c => {
-                ids.includes(c.id);
+                return ids.includes(c.id);
             });
         }
         return this.candidatos;
@@ -44,7 +44,6 @@ export class CandidatoService {
     editarCandidato(candidato) {
         this.excluirCandidato(candidato.id);
         this.criarCandidato(candidato);
-        return candidato;
     }
     excluirCandidato(id) {
         const candidato = this.buscarPorId(id);

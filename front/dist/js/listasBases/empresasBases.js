@@ -19,7 +19,7 @@ export const empresaBase = [
             "Scala",
             "PHP"
         ],
-        candidatos: [1, 2]
+        candidatos: []
     },
     {
         id: 1,
@@ -41,7 +41,7 @@ export const empresaBase = [
             "JavaScript",
             "PostgreSQL"
         ],
-        candidatos: [0, 2]
+        candidatos: []
     },
     {
         id: 2,
@@ -62,7 +62,7 @@ export const empresaBase = [
             "Rust",
             "Swift"
         ],
-        candidatos: [1, 3]
+        candidatos: []
     },
     {
         id: 3,
@@ -85,6 +85,6 @@ export const empresaBase = [
             "JavaScript",
             "PostgreSQL"
         ],
-        candidatos: [0, 3]
+        candidatos: []
     }
 ];

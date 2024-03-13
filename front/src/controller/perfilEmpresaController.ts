@@ -36,37 +36,38 @@ export class PerfilEmpresaController {
             <button class="botao__sair">Sair</button>`
 
         this.conteudo.innerHTML = `
-            <div class="perfil__usuario">
+            <div class="contudo__perfil">
+                <div class="perfil__usuario">
+                    
+                </div>
+                <div class="feed__do__usuario">
                 
-            </div>
-            <div class="feed__do__candidato">
-            
+                </div>
             </div>`
     }
 
     private preencherPerfil(): void {
         const perfilUsuario = document.querySelector(".perfil__usuario") as HTMLDivElement
         perfilUsuario.innerHTML = `
-            <p>Nome: ${this.empresa.nome}</p>
-            <p>Idade: ${this.empresa.pais} anos</p>
-            <p>Email: ${this.empresa.email}</p>
-            <p>Estado: ${this.empresa.estado}</p>
-            <p>Cep: ${this.empresa.cep}</p>
-            <p>CPF: ${this.empresa.cnpj}</p>
-            <p>Competencias: ${this.empresa.competencias.join(', ')}</p>
-            <p>Descrição: ${this.empresa.descricao}</p>`
+            <p><span>Nome:</span> ${this.empresa.nome}</p>
+            <p><span>Idade:</span> ${this.empresa.pais} anos</p>
+            <p><span>Email:</span> ${this.empresa.email}</p>
+            <p><span>Estado:</span> ${this.empresa.estado}</p>
+            <p><span>Cep:</span> ${this.empresa.cep}</p>
+            <p><span>CPF:</span> ${this.empresa.cnpj}</p>
+            <p><span>Competencias:</span> ${this.empresa.competencias.join(', ')}</p>
+            <p><span>Descrição:</span> ${this.empresa.descricao}</p>`
     }
 
     private preencherFeed(): void {
-        const feedCandidato = document.querySelector(".feed__do__candidato") as HTMLDivElement
+        const feedCandidato = document.querySelector(".feed__do__usuario") as HTMLDivElement
         feedCandidato.innerHTML = ''
         this.candidatoService.buscaCandidatos(this.empresa.candidatos).forEach(c => {
             feedCandidato.innerHTML += `
                 <div class="empresa__no__feed" id="${c.id}">
                     <div>
-                        <p>Competencia: ${c.competencias.join(', ')}
+                        <p><span>Competencias:</span> ${c.competencias.join(', ')}
                     </div>
-
                 </div>`
                 // grafico
         })
@@ -78,8 +79,7 @@ export class PerfilEmpresaController {
         botaoSair.addEventListener("click", () => {
             this.usuarioLogadoService.logout()
             this.empresa = null
-            this.loginController.carregarTelaLogin()
+            location.reload()
         })
     }
-        
 }

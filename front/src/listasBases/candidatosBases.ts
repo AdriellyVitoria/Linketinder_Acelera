@@ -18,7 +18,7 @@ export const candidatoBase: Candidato[] = [
             "C#",
             "Django"
         ],
-        aplicacoes_em_empresas: [1, 3]
+        aplicacoes_em_empresas: []
     },
 
     {
@@ -38,7 +38,7 @@ export const candidatoBase: Candidato[] = [
             "C#",
             "Django"
         ],
-        aplicacoes_em_empresas: [0, 2]
+        aplicacoes_em_empresas: []
     },
 
     {
@@ -58,7 +58,7 @@ export const candidatoBase: Candidato[] = [
             "PostgreSQL",
             "TypeScript"
         ],
-        aplicacoes_em_empresas: [0, 1]
+        aplicacoes_em_empresas: []
     },
 
     {
@@ -77,6 +77,6 @@ export const candidatoBase: Candidato[] = [
             "Ruby",
             "GO"
         ],
-        aplicacoes_em_empresas: [2, 3]
+        aplicacoes_em_empresas: []
     }
 ]

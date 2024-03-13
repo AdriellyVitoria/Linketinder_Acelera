@@ -1,6 +1,10 @@
 @charset "UTF-8";
+@import url("./components/cabecalho.css");
+@import url("./components/login.css");
+@import url("./components/perfil.css");
 
 .conteudo {
     display: flex;
     text-align: center;
+    justify-content: space-evenly;
 }

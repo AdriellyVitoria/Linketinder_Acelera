@@ -36,7 +36,7 @@ export class EmpresaService {
     buscaEmpresas(ids = null) {
         if (ids) {
             return this.empresas.filter(c => {
-                ids.includes(c.id);
+                return ids.includes(c.id);
             });
         }
         return this.empresas;
@@ -44,7 +44,6 @@ export class EmpresaService {
     editarEmpresa(empresa) {
         this.excluirEmpresa(empresa.id);
         this.criarEmpresa(empresa);
-        return empresa;
     }
     excluirEmpresa(id) {
         const empresa = this.buscarPorId(id);

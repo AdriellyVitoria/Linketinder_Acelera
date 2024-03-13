@@ -46,16 +46,15 @@ export class CandidatoService{
     public buscaCandidatos(ids: number[] | null = null): Candidato[] {
         if (ids) {
             return this.candidatos.filter(c => {
-                ids.includes(c.id)
+                return ids.includes(c.id)
             })
         }
         return this.candidatos
     }
 
-    public editarCandidato(candidato: Candidato): Candidato {
+    public editarCandidato(candidato: Candidato): void {
         this.excluirCandidato(candidato.id)
         this.criarCandidato(candidato)
-        return candidato
     }
 
     public excluirCandidato(id: number): void {

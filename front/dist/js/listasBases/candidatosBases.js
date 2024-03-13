@@ -16,7 +16,7 @@ export const candidatoBase = [
             "C#",
             "Django"
         ],
-        aplicacoes_em_empresas: [1, 3]
+        aplicacoes_em_empresas: []
     },
     {
         id: 1,
@@ -35,7 +35,7 @@ export const candidatoBase = [
             "C#",
             "Django"
         ],
-        aplicacoes_em_empresas: [0, 2]
+        aplicacoes_em_empresas: []
     },
     {
         id: 2,
@@ -54,7 +54,7 @@ export const candidatoBase = [
             "PostgreSQL",
             "TypeScript"
         ],
-        aplicacoes_em_empresas: [0, 1]
+        aplicacoes_em_empresas: []
     },
     {
         id: 3,
@@ -72,6 +72,6 @@ export const candidatoBase = [
             "Ruby",
             "GO"
         ],
-        aplicacoes_em_empresas: [2, 3]
+        aplicacoes_em_empresas: []
     }
 ];

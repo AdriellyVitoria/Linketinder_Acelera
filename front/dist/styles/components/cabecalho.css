@@ -1,0 +1,18 @@
+@charset "UTF-8";
+
+.cabecalho {
+    padding: 16px 32px;
+    background-color: #2B2D42;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cabecalho h1 {
+    font-size: 60px;
+}
+
+.cabecalho p {
+    font-size: 24px;
+}

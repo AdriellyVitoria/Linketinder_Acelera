@@ -46,16 +46,15 @@ export class EmpresaService {
     public buscaEmpresas(ids: number[] | null = null): Empresa[] {
         if (ids) {
             return this.empresas.filter(c => {
-                ids.includes(c.id)
+                return ids.includes(c.id)
             })
         }
         return this.empresas
     }
 
-    public editarEmpresa(empresa: Empresa): Empresa {
+    public editarEmpresa(empresa: Empresa): void {
         this.excluirEmpresa(empresa.id)
         this.criarEmpresa(empresa)
-        return empresa
     }
 
     public excluirEmpresa(id: number): void {
