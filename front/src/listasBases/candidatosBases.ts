@@ -16,9 +16,15 @@ export const candidatoBase: Candidato[] = [
             "Angular",
             "Python",
             "C#",
-            "Django"
+            "Django",
+            "JavaScript",
+            "Rust",
+            "PHP"
         ],
-        aplicacoes_em_empresas: [],
+        aplicacoes_em_empresas: [{
+            id: 0,
+            match: true
+        }],
         telefone: "1234-5678"
     },
 
@@ -26,7 +32,7 @@ export const candidatoBase: Candidato[] = [
         id: 1,
         nome: "Nami",
         email: "nami@gmail.com",
-        senha: "",
+        senha: "123",
         estado: "Vila Cocoyasi",
         cep: "11845",
         descricao: "Angular",
@@ -37,9 +43,15 @@ export const candidatoBase: Candidato[] = [
             "Angular",
             "Python",
             "C#",
-            "Django"
+            "Django",
+            "Rust",
+            "Kotlin",
+            "Swift"
         ],
-        aplicacoes_em_empresas: [],
+        aplicacoes_em_empresas: [{
+            id: 0,
+            match: true
+        }],
         telefone: "1234-5678"
     },
 
@@ -58,9 +70,15 @@ export const candidatoBase: Candidato[] = [
             "Ruby",
             "JavaScript",
             "PostgreSQL",
-            "TypeScript"
+            "TypeScript",
+            "Swift",
+            "Kotlin",
+            "Scala"
         ],
-        aplicacoes_em_empresas: [],
+        aplicacoes_em_empresas: [{
+            id: 0,
+            match: true
+        }],
         telefone: "1234-5678"
     },
 
@@ -78,9 +96,15 @@ export const candidatoBase: Candidato[] = [
             "C#",
             "Django",
             "Ruby",
-            "GO"
+            "GO",
+            "Swift",
+            "Kotlin",
+            "Scala",
         ],
-        aplicacoes_em_empresas: [],
+        aplicacoes_em_empresas: [{
+            id: 0,
+            match: false
+        }],
         telefone: "1234-5678"
     }
 ]

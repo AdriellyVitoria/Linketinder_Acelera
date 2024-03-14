@@ -47,7 +47,7 @@ export class PerfilCandidatoController {
             <p><span>Estado:</span> ${this.usuario.estado}</p>
             <p><span>Cep:</span> ${this.usuario.cep}</p>
             <p><span>CPF:</span> ${this.usuario.cpf}</p>
-            <p><span>Competencias:</span> ${this.usuario.competencias.join(', ')}</p>
+            <p><span>Competências:</span> ${this.usuario.competencias.join(', ')}</p>
             <p><span>Descrição:</span> ${this.usuario.descricao}</p>`;
     }
     preencherFeed() {
@@ -58,6 +58,7 @@ export class PerfilCandidatoController {
             feedCandidato.innerHTML += `
                 <div class="empresa__no__feed" id="${e.id}">
                     <div>
+                        ${this.preencheEmpresaMatch(e)}
                         <p><span>Descrição:</span> ${e.descricao}</p>
                         <p><span>Competencia:</span> ${e.competencias.join(', ')}
                     </div>
@@ -68,9 +69,24 @@ export class PerfilCandidatoController {
                 </div>`;
         });
     }
+    preencheEmpresaMatch(empresa) {
+        if (this.usuario.aplicacoes_em_empresas.find(a => a.id == empresa.id)?.match == true) {
+            return `
+                <p><span>Nome:</span> ${empresa.nome}</p>
+                <p><span>Pais:</span> ${empresa.pais}</p>
+                <p><span>Email:</span> ${empresa.email}</p>
+                <p><span>Estado:</span> ${empresa.estado}</p>
+                <p><span>Cep:</span> ${empresa.cep}</p>
+                <p><span>CNPJ:</span> ${empresa.cnpj}</p>`;
+        }
+        return '';
+    }
     criarBotaoAplicar(empresaId) {
-        if (this.usuario.aplicacoes_em_empresas.includes(empresaId)) {
+        if (this.usuario.aplicacoes_em_empresas.find(a => a.id == empresaId)?.match == false) {
             return `<button class="botao__aplicar__empresa" disabled>Aplicada</button>`;
+        }
+        if (this.usuario.aplicacoes_em_empresas.find(a => a.id == empresaId)?.match == true) {
+            return `<button class="botao__aplicar__empresa" disabled>Match</button>`;
         }
         return `<button class="botao__aplicar__empresa">Aplicar</button>`;
     }
@@ -96,11 +112,11 @@ export class PerfilCandidatoController {
         });
     }
     aplicarVaga(botao) {
-        const empresaId = Number.parseInt(botao.parentElement.id);
+        const empresaId = Number.parseInt(botao.parentElement.parentElement.id);
         const empresa = this.empresaService.buscarPorId(empresaId);
-        empresa.candidatos.push(this.usuario.id);
+        empresa.candidatos.push({ id: this.usuario.id, match: false });
         this.empresaService.editarEmpresa(empresa);
-        this.usuario.aplicacoes_em_empresas.push(empresa.id);
+        this.usuario.aplicacoes_em_empresas.push({ id: empresa.id, match: false });
         this.candidatoService.editarCandidato(this.usuario);
         this.preencherFeed();
         this.setupBotoes();

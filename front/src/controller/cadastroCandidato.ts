@@ -101,7 +101,7 @@ export class CadastroCandidato {
         this.conteudo.innerHTML = `
             <div class="cadastro">
                 <h2>Cadastro de Candidato</h2>
-                <div class="form__cadastro">
+                <form class="form__cadastro">
                     <div class="form__colunm">
                         <div class="input__nome cadastro__input">
                             <label for="nome">Nome</label>
@@ -144,7 +144,7 @@ export class CadastroCandidato {
 
                         <div class="input__cpf cadastro__input">
                             <label for="cpf">CPF</label>
-                            <input type="text" placeholder="123.456.789-00">
+                            <input type="text" placeholder="123.456.789-00" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" required>
                         </div>
 
                         <div class="input__senha cadastro__input">
@@ -157,7 +157,7 @@ export class CadastroCandidato {
                             <textarea></textarea>
                         </div>
                     </div>
-                </div>
+                </form>
                 <button class="botao__cadastrar__candidato">Cadastrar</button>
             </div>`
     }

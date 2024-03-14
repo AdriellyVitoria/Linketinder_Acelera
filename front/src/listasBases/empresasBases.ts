@@ -19,9 +19,25 @@ export const empresaBase: Empresa[] = [
             "Swift",
             "Kotlin",
             "Scala",
-            "PHP"
+            "PHP",
+            "Java"
         ],
-        candidatos: [],
+        candidatos: [{
+            id: 0,
+            match: true
+        },
+        {
+            id: 1,
+            match: true
+        },
+        {
+            id: 2,
+            match: true
+        },
+        {
+            id: 3,
+            match: false
+        }],
         telefone: "1234-5678"
     },
 

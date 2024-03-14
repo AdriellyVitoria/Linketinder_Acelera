@@ -1,3 +1,5 @@
+import { Aplicado } from "./aplicado.js"
+
 export interface Candidato {
     id: number
     nome: string
@@ -10,5 +12,5 @@ export interface Candidato {
     cpf: string
     idade: number
     competencias: string[]
-    aplicacoes_em_empresas: number[]
+    aplicacoes_em_empresas: Aplicado[]
 }
