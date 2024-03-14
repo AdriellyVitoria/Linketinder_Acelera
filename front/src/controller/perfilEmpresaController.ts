@@ -3,7 +3,6 @@ import { Empresa } from "../interfaces/empresa.js"
 import { CandidatoService } from "../service/candidato-service.js"
 import { EmpresaService } from "../service/empresa-service.js"
 import { UsuarioLogadoService } from "../service/usuario-logado-service.js"
-import { PerfilCandidatoController } from "./perfilCandidatoController.js"
 
 declare var google: any
 

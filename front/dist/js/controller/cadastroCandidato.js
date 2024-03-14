@@ -50,9 +50,11 @@ export class CadastroCandidato {
             alert('Todos os campos devem ser preenchidos');
             return;
         }
-        this.candidatoService.criarCandidato(novaCandidato);
-        alert('Cadastro efetuado com sucesso');
-        location.reload();
+        if (this.regexFormulario()) {
+            this.candidatoService.criarCandidato(novaCandidato);
+            alert('Cadastro efetuado com sucesso');
+            location.reload();
+        }
     }
     setupBotoes() {
         const botaoCadastro = document.querySelector(".botao__cadastrar__candidato");
@@ -95,12 +97,12 @@ export class CadastroCandidato {
 
                         <div class="input__estado cadastro__input">
                             <label for="estado">Estado</label>
-                            <input type="text" placeholder="UF">
+                            <input type="text" placeholder="UF" maxlength="2">
                         </div>
         
                         <div class="input__telefone cadastro__input">
                             <label for="telefone">Telefone</label>
-                            <input type="text" name="telefone">
+                            <input type="text" name="telefone" maxlength="15" minlength="15" placeholder="(99) 99999-9999">
                         </div>
 
                         <div class="input__email cadastro__input">
@@ -119,22 +121,22 @@ export class CadastroCandidato {
                     <div class="form__colunm">
                         <div class="input__idade cadastro__input">
                             <label for="nome">Idade</label>
-                            <input type="number">
+                            <input type="number" maxlength="2">
                         </div>
 
                         <div class="input__cep cadastro__input">
                             <label for="cep">CEP</label>
-                            <input type="text" placeholder="123.456-89">
+                            <input type="text" placeholder="12345-678" maxlength="10"  minlength="10">
                         </div>
 
                         <div class="input__cpf cadastro__input">
                             <label for="cpf">CPF</label>
-                            <input type="text" placeholder="123.456.789-00" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" required>
+                            <input type="text" placeholder="123.456.789-00" maxlength="14"  minlength="10"required>
                         </div>
 
                         <div class="input__senha cadastro__input">
                             <label for="nome">Senha</label>
-                            <input type="password">
+                            <input type="password" maxlength="8">
                         </div>
 
                         <div class="input__descricao cadastro__input">
@@ -145,5 +147,32 @@ export class CadastroCandidato {
                 </form>
                 <button class="botao__cadastrar__candidato">Cadastrar</button>
             </div>`;
+    }
+    regexFormulario() {
+        const telefone = document.querySelector(".input__telefone input").value;
+        const cpf = document.querySelector(".input__cpf input").value;
+        const cep = document.querySelector(".input__cep input").value;
+        const email = document.querySelector(".input__email input").value;
+        const telefoneRegex = /^\(\d{2}\) \d{4,5}-\d{4}$/;
+        const cpfRegex = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/;
+        const cepRegex = /^\d{5}-\d{3}$/;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!telefoneRegex.test(telefone)) {
+            alert("Número de Telefone no formato errado (99) 99999-9999");
+            return false;
+        }
+        if (!cpfRegex.test(cpf)) {
+            alert("CPF no formato errado 123.456.789-01");
+            return false;
+        }
+        if (!cepRegex.test(cep)) {
+            alert("CEP no formato errado 12345-678");
+            return false;
+        }
+        if (!emailRegex.test(email)) {
+            alert("email no formato errado @gmail.com");
+            return false;
+        }
+        return true;
     }
 }

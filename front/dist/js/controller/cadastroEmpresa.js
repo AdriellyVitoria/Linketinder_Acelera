@@ -50,9 +50,11 @@ export class CadastroEmpresa {
             alert('Todos os campos devem ser preenchidos');
             return;
         }
-        this.empresaService.criarEmpresa(novaEmpresa);
-        alert('Cadastro efetuado com sucesso');
-        location.reload();
+        if (this.regexFormulario()) {
+            this.empresaService.criarEmpresa(novaEmpresa);
+            alert('Cadastro efetuado com sucesso');
+            location.reload();
+        }
     }
     setupBotoes() {
         const botaoEmpresa = document.querySelector(".botao__cadastrar__empresa");
@@ -94,12 +96,12 @@ export class CadastroEmpresa {
                         </div>
                         <div class="input__estado cadastro__input">
                             <label for="estado">Estado</label>
-                            <input type="text" placeholder="UF">
+                            <input type="text" placeholder="UF" maxlength="2">
                         </div>
 
                         <div class="input__telefone cadastro__input">
                             <label for="telefone">Telefone</label>
-                            <input type="text" name="telefone">
+                            <input type="text" name="telefone" placeholder="(99) 99999-9999"  maxlength="15" minlength="15">
                         </div>
 
                         <div class="input__email cadastro__input">
@@ -122,12 +124,12 @@ export class CadastroEmpresa {
 
                         <div class="input__cep cadastro__input">
                             <label for="cep">CEP</label>
-                            <input type="text" placeholder="123.456-89">
+                            <input type="text" placeholder="12345-789"  maxlength="9" minlength="9">
                         </div>
 
                         <div class="input__cpf cadastro__input">
                             <label for="cpf">CNPJ</label>
-                            <input type="text" placeholder="00.000.000/0001-00">
+                            <input type="text" placeholder="12.345.678/0001-90"  maxlength="18" minlength="18">
                         </div>
 
                         <div class="input__senha cadastro__input">
@@ -143,5 +145,32 @@ export class CadastroEmpresa {
                 </div>
                 <button class="botao__cadastrar__empresa">Cadastrar</button>
             </div>`;
+    }
+    regexFormulario() {
+        const telefone = document.querySelector(".input__telefone input").value;
+        const cnpj = document.querySelector(".input__cpf input").value;
+        const cep = document.querySelector(".input__cep input").value;
+        const email = document.querySelector(".input__email input").value;
+        const telefoneRegex = /^\(\d{2}\) \d{4,5}-\d{4}$/;
+        const cnpjRegex = /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/;
+        const cepRegex = /^\d{5}-\d{3}$/;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!telefoneRegex.test(telefone)) {
+            alert("Número de Telefone no formato errado (99) 99999-9999");
+            return false;
+        }
+        if (!cnpjRegex.test(cnpj)) {
+            alert("CNPJ no formato errado 123.456.789-01");
+            return false;
+        }
+        if (!cepRegex.test(cep)) {
+            alert("CEP no formato errado 12345-678");
+            return false;
+        }
+        if (!emailRegex.test(email)) {
+            alert("email no formato errado @gmail.com");
+            return false;
+        }
+        return true;
     }
 }
