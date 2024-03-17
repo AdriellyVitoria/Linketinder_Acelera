@@ -1,0 +1,102 @@
+INSERT INTO linlketinder.empresa (
+	cnpj_empresa, 
+	nome_empresa,
+	email_empresa,
+	senha_empresa,
+	telefone_empresa,
+	cep_empresa,
+	estado_empresa,
+	pais_empresa,
+	descricao_empresa
+) 
+VALUES 
+	('13.074.060/0001-09', 'Companhia Galley-La', 'galleyla@gmail.com', '123456', '(11) 1234-5678', '12345-678', 'CA', 'Estados Unidos', 'descricao'),
+	('38.723.850/0001-60', 'Empresa Revestimento De Rayleigh', 'r@yleigh@gmail.com', '654123', '(22) 2345-6789', '98765-432', 'VC', 'Austrália', 'descricao'),
+	('75.084.914/0001-05', 'Baratie', 'restaurentebaratie@gmail.com', '523641', '(33) 3456-7890', '54321-876', 'JP', 'Japão', 'descricao'),
+	('22.497.346/0001-47', 'Marinha', 'marinha.@gmail.com', '632145', '(44) 4567-8901', '87654-321', 'CA', 'Canadá', 'descricao'),
+	('64.381.952/0001-32', 'Donquixote Doflamingo', 'doflamingo@gmail.com', '157157', '(55) 5678-9012', '23456-789', 'SP', 'Brasil', 'descricao');
+
+INSERT INTO linlketinder.candidato (
+	cpf_candidato,
+	nome_candidato, 
+	email_candidato, 
+	senha_candidato,
+	telefone_candidato, 
+	cep_candidato, 
+	estado_candidato,
+	idade_candidato,
+	descricao_candidato
+) 
+VALUES 
+	('591.803.547-63', 'Monkey D. Luffy', 'Luffy@gmail.com', '985632', '(00)0123-4567', '13579-654', 'SP', 23, 'descricao'),
+	('591.803.547-45', 'Roronoa Zoro', 'zoro@gmail.com', '985622', '(12)0123-4567', '13579-622', 'SP', 23, 'descricao'),
+	('591.803.547-33', 'Nami', 'nami@gmail.com', '985633', '(00)0123-4533', '13579-633', 'SP', 23, 'descricao'),
+	('591.803.547-44', 'Tony Tony Chopper', 'chopper@gmail.com', '985644', '(00)0123-4544', '13579-644', 'SP', 23, 'descricao'),
+	('591.803.547-55', 'Franky', 'franky@gmail.com', '985655', '(00)0123-4555', '13579-655', 'SP', 23, 'descricao');
+
+INSERT INTO linlketinder.competencia (id_competencia, descricao_competencia)
+VALUES
+    (1, 'Python'),
+    (2, 'JavaScript'),
+    (3, 'Java'),
+    (4, 'C++'),
+    (5, 'C#'),
+    (6, 'Ruby'),
+    (7, 'PHP'),
+    (8, 'Swift'),
+    (9, 'Go'),
+    (10, 'TypeScript'),
+    (11, 'Kotlin'),
+    (12, 'Rust'),
+    (13, 'Scala'),
+    (14, 'Perl'),
+    (15, 'Haskell');
+
+INSERT INTO linlketinder.vaga (id_vaga, descricao_vaga, titulo_vaga, local_vaga, cnpj_empresa)
+VALUES
+    (1, 'Desenvolvedor Full Stack', 'Vaga Full Stack', 'São Paulo, SP', '13.074.060/0001-09'),
+    (2, 'Engenheiro de Software', 'Engenheiro', 'Rio de Janeiro, RJ', '38.723.850/0001-60'),
+    (3, 'Analista de Dados', 'Analista de Dados', 'Belo Horizonte, MG', '75.084.914/0001-05'),
+    (4, 'Arquiteto de Soluções', 'Arq de Soluções', 'Brasília, DF', '22.497.346/0001-47'),
+    (5, 'Desenvolvedor Frontend', 'Vaga Frontend', 'Curitiba, PR', '64.381.952/0001-32');
+
+INSERT INTO linlketinder.empresa_competencia(id_competencia, cnpj_empresa)
+VALUES 
+    (1, '13.074.060/0001-09'),
+    (2, '38.723.850/0001-60'),
+    (3, '75.084.914/0001-05'),
+    (4, '22.497.346/0001-47'),
+    (5, '64.381.952/0001-32');
+
+INSERT INTO linlketinder.vaga_competencia(id_competencia, id_vaga)
+VALUES 
+    (1, 1),
+    (2, 2),
+    (3, 3),
+    (4, 4),
+    (5, 5);
+
+INSERT INTO linlketinder.candidato_competencia(id_competencia, cpf_candidato)
+VALUES 
+    (1, '591.803.547-63'),
+    (2, '591.803.547-45'),
+    (3, '591.803.547-33'),
+    (4, '591.803.547-44'),
+    (5, '591.803.547-55');
+
+
+INSERT INTO linlketinder.candidato_vaga(id_vaga, cpf_candidato)
+VALUES 
+    (1, '591.803.547-63'),
+    (2, '591.803.547-45'),
+    (3, '591.803.547-33'),
+    (4, '591.803.547-44'),
+    (5, '591.803.547-55');
+
+INSERT INTO linlketinder.match(cpf_candidato, cnpj_empresa)
+VALUES 
+    ('591.803.547-63', '13.074.060/0001-09'),
+    ('591.803.547-45', '38.723.850/0001-60'),
+    ('591.803.547-33', '75.084.914/0001-05'),
+    ('591.803.547-44', '22.497.346/0001-47'),
+    ('591.803.547-55', '64.381.952/0001-32');

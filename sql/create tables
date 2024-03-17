@@ -1,0 +1,79 @@
+CREATE SCHEMA linlketinder;
+
+CREATE TABLE linlketinder.empresa (
+	cnpj_empresa VARCHAR(18) PRIMARY KEY NOT NULL, 
+	nome_empresa VARCHAR(50) NOT NULL,
+	email_empresa VARCHAR(50) NOT NULL,
+	telefone_empresa VARCHAR(14) NOT NULL,
+	cep_empresa VARCHAR(10) NOT NULL,
+	estado_empresa VARCHAR(2) NOT NULL,
+	pais_empresa VARCHAR(20) NOT NULL,
+	descricao_empresa VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE linlketinder.vaga (
+	id_vaga SERIAL PRIMARY KEY NOT NULL,
+	descricao_vaga VARCHAR(50) NOT NULL,
+	titulo_vaga VARCHAR(20) NOT NULL,
+	local_vaga VARCHAR(20) NOT NULL,
+	cnpj_empresa VARCHAR(18) NOT NULL,
+
+	FOREIGN KEY (cnpj_empresa) REFERENCES linlketinder.empresa(cnpj_empresa)	
+);
+	
+CREATE TABLE linlketinder.candidato (
+	cpf_candidato VARCHAR(14) PRIMARY KEY NOT NULL, 
+	nome_candidato VARCHAR(50) NOT NULL,
+	email_candidato VARCHAR(50) NOT NULL,
+	telefone_candidato VARCHAR(14) NOT NULL,
+	cep_candidato VARCHAR(10) NOT NULL,
+	estado_candidato VARCHAR(2) NOT NULL,
+	idade_candidato VARCHAR(2) NOT NULL,
+	descricao_candidato VARCHAR(50) NOT NULL
+);
+	
+CREATE TABLE linlketinder.competencia (
+	id_competencia SERIAL PRIMARY KEY NOT NULL,
+	descricao_competencia VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE linlketinder.empresa_competencia(
+	id_competencia SERIAL NOT NULL,
+	cnpj_empresa VARCHAR(18) NOT NULL,
+	
+	FOREIGN KEY (id_competencia) REFERENCES linlketinder.competencia(id_competencia),	
+	FOREIGN KEY (cnpj_empresa) REFERENCES linlketinder.empresa(cnpj_empresa)	
+);
+	
+CREATE TABLE linlketinder.vaga_competencia(
+	id_competencia SERIAL NOT NULL,
+	id_vaga SERIAL NOT NULL,
+	
+	FOREIGN KEY (id_competencia) REFERENCES linlketinder.competencia(id_competencia),	
+	FOREIGN KEY (id_vaga) REFERENCES linlketinder.vaga(id_vaga)	
+);
+	
+CREATE TABLE linlketinder.candidato_competencia(
+	id_competencia SERIAL NOT NULL,
+	cpf_candidato VARCHAR(14) NOT NULL,
+	
+	FOREIGN KEY (id_competencia) REFERENCES linlketinder.competencia(id_competencia),	
+	FOREIGN KEY (cpf_candidato) REFERENCES linlketinder.candidato(cpf_candidato)
+);
+	
+CREATE TABLE linlketinder.candidato_vaga(
+	cpf_candidato VARCHAR(14)NOT NULL,
+	id_vaga SERIAL NOT NULL,
+
+	FOREIGN KEY (cpf_candidato) REFERENCES linlketinder.candidato(cpf_candidato),
+	FOREIGN KEY (id_vaga) REFERENCES linlketinder.vaga(id_vaga)
+);
+	
+
+CREATE TABLE linlketinder.match(
+	cpf_candidato VARCHAR(14)NOT NULL,
+	cnpj_empresa VARCHAR(18) NOT NULL,
+	
+	FOREIGN KEY (cpf_candidato) REFERENCES linlketinder.candidato(cpf_candidato),
+	FOREIGN KEY (cnpj_empresa) REFERENCES linlketinder.empresa(cnpj_empresa)
+);
