@@ -83,32 +83,108 @@ public class ServicoBanco {
     }
 
     public static void inserir(){
-        System.out.println("Informe o nome do produtos: ");
-        String nome = scanner.nextLine();
+        System.out.println("Informe o cpf");
+        String cpf_candidato = scanner.nextLine();
 
-        System.out.println("Informe o preco do produtos: ");
-        int idade = scanner.nextInt();
+        System.out.println("Informe o nome ");
+        String nome_candidato = scanner.nextLine();
 
-        System.out.println("Informe o estoque do produtos: ");
-        String descricao = scanner.nextLine();
+        System.out.println("Informe o email ");
+        String email_candidato = scanner.nextLine();
 
-        String INSERIR = "INSERT INTO linlketinder.candidato(nome, idade, descricao) VALUES (?, ?, ?)";
+        System.out.println("Informe a senha ");
+        String senha_candidato = scanner.nextLine();
+
+        System.out.println("Informe o telefone ");
+        String telefone_candidato = scanner.nextLine();
+
+        System.out.println("Informe o cep ");
+        String cep_candidato = scanner.nextLine();
+
+        System.out.println("Informe o estado ");
+        String estado_candidato = scanner.nextLine();
+
+        System.out.println("Informe a descricao");
+        String descricao_candidato = scanner.nextLine();
+
+        System.out.println("Informe a idade ");
+        int idade_candidato = scanner.nextInt();
+
+        String INSERIR = "INSERT INTO linlketinder.candidato(cpf_candidato,\n" +
+                "\tnome_candidato, \n" +
+                "\temail_candidato, \n" +
+                "\tsenha_candidato,\n" +
+                "\ttelefone_candidato, \n" +
+                "\tcep_candidato, \n" +
+                "\testado_candidato,\n" +
+                "\tidade_candidato,\n" +
+                "\tdescricao_candidato) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
             Connection conn = conectar();
             PreparedStatement salvar = conn.prepareStatement(INSERIR);
 
-            salvar.setString(2, nome);
-            salvar.setInt(3, idade);
-            salvar.setString(9, descricao);
+            salvar.setString(1, cpf_candidato);
+            salvar.setString(2, nome_candidato);
+            salvar.setString(3, email_candidato);
+            salvar.setString(4, senha_candidato);
+            salvar.setString(5, telefone_candidato);
+            salvar.setString(6,cep_candidato);
+            salvar.setString(7, estado_candidato);
+            salvar.setInt(8, idade_candidato);
+            salvar.setString(9, descricao_candidato);
 
             salvar.executeUpdate();
             salvar.close();
             desconectar(conn);
-            System.out.println("O candidato " + nome + " foi inserido com sucesso");
+            System.out.println("O candidato " + nome_candidato + " foi inserido com sucesso");
         }catch (Exception e) {
             e.printStackTrace();
             System.err.println("Erro a salvar");
+        }
+    }
+
+    public static void atualizar() {
+        System.out.println("Imforme código do candidato: ");
+        int cpf_candidato = Integer.parseInt(scanner.nextLine());
+
+        String BUSCAR_POR_ID = "SELECT * FROM linlketinder.candidato WHERE cpf_candidato=?";
+
+        try {
+            Connection conn = conectar();
+            PreparedStatement candidato = conn.prepareStatement(
+                    BUSCAR_POR_ID,
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY
+            );
+            candidato.setInt(1,cpf_candidato);
+            ResultSet res = candidato.executeQuery();
+
+            res.last();
+            int qtd = res.getRow();
+            res.beforeFirst();
+
+            if(qtd > 0) {
+                System.out.println("Informe o nome do produto: ");
+                String nome = scanner.nextLine();
+
+                String ATUALIZAR = "UPDATE  SET nome=? linlketinder.candidato cpf_candidato=?";
+                PreparedStatement upd = conn.prepareStatement(ATUALIZAR);
+
+                upd.setInt(1, cpf_candidato);
+                upd.setString(2, nome);
+
+                upd.executeUpdate();
+                upd.close();
+                desconectar(conn);
+                System.out.println("O produto foi atualizando com sucesso");
+            } else {
+                System.out.println("Não existe produto com o id informando");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Não foi possivel atualizar produto.");
+            System.exit(-42);
         }
     }
     public static void menu(){
@@ -118,8 +194,8 @@ public class ServicoBanco {
             listar();
         } else if (opcao == 2) {
             inserir();
-//        } else if (opcao == 3) {
-//            atualizar();
+        } else if (opcao == 3) {
+            atualizar();
 //        } else if (opcao == 4) {
 //            deletar();
         } else {
