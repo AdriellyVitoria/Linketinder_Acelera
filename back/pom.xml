@@ -18,5 +18,11 @@
       <version>4.13.2</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>42.2.24</version> <!-- Versão atualizada do driver JDBC do PostgreSQL -->
+    </dependency>
+
   </dependencies>
 </project>

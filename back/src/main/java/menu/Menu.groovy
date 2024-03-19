@@ -7,6 +7,8 @@ class Menu {
     static servicoPessoaFisica = new ServicoPessoaFisica()
     static servicoPessoaJuridica = new ServicoPessoaJuridica()
 
+
+
     static menuInicial(){
         Scanner scanner = new Scanner(System.in)
         def opcao

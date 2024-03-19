@@ -1,7 +1,6 @@
 import menu.Menu
+import servicos.ServicoBanco
 
 class Main {
-    static void main(String[] args) {
-        Menu.menuInicial()
-    }
+
 }
