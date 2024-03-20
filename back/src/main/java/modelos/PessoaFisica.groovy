@@ -4,8 +4,12 @@ class PessoaFisica extends Pessoa {
     String cpf
     int idade
 
-    PessoaFisica(String nome, String email, String estado, String cep, String descricao, List<String> competencias, String cpf, int idade) {
-        super(nome, email, estado, cep, descricao, competencias)
+    PessoaFisica() {}
+
+    PessoaFisica(String nome, String email, String senha,
+                 String telefone,String estado, String cep,
+                 String descricao, String cpf, int idade) {
+        super(nome, email, senha, telefone, estado, cep, descricao)
         this.cpf = cpf
         this.idade = idade
     }
@@ -18,7 +22,7 @@ class PessoaFisica extends Pessoa {
                 " Idade: ${idade}," +
                 " Estado: ${estado}," +
                 " CEP: ${cep}," +
-                " Descrição: ${descricao}," +
-                " Competencias: ${competencias}\n"
+                " Descrição: ${descricao},"
+
     }
 }

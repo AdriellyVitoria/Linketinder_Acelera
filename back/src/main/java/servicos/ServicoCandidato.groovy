@@ -1,5 +1,7 @@
 package servicos
 
+import database.ServicoConectarBanco
+
 import java.sql.Connection
 import java.sql.PreparedStatement
 

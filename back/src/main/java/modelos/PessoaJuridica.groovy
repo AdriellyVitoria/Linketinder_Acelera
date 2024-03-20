@@ -4,8 +4,12 @@ class PessoaJuridica extends Pessoa {
     String cnpj
     String pais
 
-    PessoaJuridica(String nome, String email, String estado, String cep, String descricao, List<String> competencias, String cnpj, String pais) {
-        super(nome, email, estado, cep, descricao, competencias)
+    PessoaJuridica() {}
+
+    PessoaJuridica(String nome, String email, String senha,
+                   String telefone,String estado, String cep,
+                   String descricao, String cnpj, String pais) {
+        super(nome, email, senha, telefone, estado, cep, descricao)
         this.cnpj = cnpj
         this.pais = pais
     }

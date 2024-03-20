@@ -3,18 +3,22 @@ package modelos
 abstract class Pessoa {
     String nome
     String email
-    String estado
+    String senha
+    String telefone
     String cep
+    String estado
     String descricao
-    List<String> competencias
 
-    Pessoa(String nome, String email, String estado, String cep, String descricao, List<String> competencias) {
+    Pessoa() {}
+
+    Pessoa(String nome, String email, String senha, String telefone, String estado, String cep, String descricao) {
         this.nome = nome
         this.email = email
+        this.senha = senha
+        this.telefone = telefone
         this.estado = estado
         this.cep = cep
         this.descricao = descricao
-        this.competencias = competencias
     }
 
     abstract String toString()
