@@ -9,37 +9,7 @@ public class ServicoBanco {
         menu();
     }
     static Scanner scanner = new Scanner(System.in);
-
-    public static Connection conectar() {
-        Properties props = new Properties();
-        props.setProperty("user", "postgres");
-        props.setProperty("password", "123456");
-        props.setProperty("ssl", "false");
-
-        String URL_SERVIDOR = "jdbc:postgresql://localhost:5432/linketinder";
-        try {
-            return DriverManager.getConnection(URL_SERVIDOR, props);
-        } catch (Exception e) {
-            e.printStackTrace();
-            if (e instanceof ClassNotFoundException){
-                System.err.println("Verifique o driver de conexão");
-            }else {
-                System.err.println("Verifique se o servidor está ativo");
-            };
-            System.exit(-42);
-            return null;
-        }
-    }
-
-    public static void desconectar(Connection conn){
-        if(conn != null) {
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+    static ServicoConectarBanco conectar = new ServicoConectarBanco();
 
     public static String buscarTodos() {
         String BUSCAR_TODOS = "SELECT * FROM linlketinder.candidato";
@@ -61,6 +31,7 @@ public class ServicoBanco {
             res.beforeFirst();
 
             if (qtd > 0) {
+
                 System.out.println("Listando produtos");
                 System.out.println("--------------------------------");
                 while (res.next()) {
@@ -82,7 +53,7 @@ public class ServicoBanco {
         }
     }
 
-    public static void inserir(){
+     static void inserir(){
         System.out.println("Informe o cpf");
         String cpf_candidato = scanner.nextLine();
 
@@ -143,10 +114,9 @@ public class ServicoBanco {
             System.err.println("Erro a salvar");
         }
     }
-
     public static void atualizar() {
-        System.out.println("Imforme código do candidato: ");
-        int cpf_candidato = Integer.parseInt(scanner.nextLine());
+        System.out.println("Informe o cpf do candidato para atualização: ");
+        String cpf_candidato = scanner.nextLine();
 
         String BUSCAR_POR_ID = "SELECT * FROM linlketinder.candidato WHERE cpf_candidato=?";
 
@@ -157,33 +127,72 @@ public class ServicoBanco {
                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY
             );
-            candidato.setInt(1,cpf_candidato);
+            candidato.setString(1, cpf_candidato);
             ResultSet res = candidato.executeQuery();
 
             res.last();
             int qtd = res.getRow();
             res.beforeFirst();
 
-            if(qtd > 0) {
-                System.out.println("Informe o nome do produto: ");
-                String nome = scanner.nextLine();
+            if(qtd >0){
+                System.out.println("Informe o nome do produto para alteração");
+                String nome_candidado = scanner.nextLine();
 
-                String ATUALIZAR = "UPDATE  SET nome=? linlketinder.candidato cpf_candidato=?";
+                String ATUALIZAR = "UPDATE linlketinder.candidato SET nome_candidato=? WHERE cpf_candidato=?";
                 PreparedStatement upd = conn.prepareStatement(ATUALIZAR);
 
-                upd.setInt(1, cpf_candidato);
-                upd.setString(2, nome);
+                upd.setString(1, nome_candidado);
+                upd.setString(2, cpf_candidato);
 
                 upd.executeUpdate();
                 upd.close();
                 desconectar(conn);
-                System.out.println("O produto foi atualizando com sucesso");
+                System.out.println("O candidato foi atualizando com sucesso");
             } else {
-                System.out.println("Não existe produto com o id informando");
+                System.out.println("Não deu bom");
             }
         } catch (Exception e) {
+           e.printStackTrace();
+           System.err.println("Não foi possivel atualizar candidato");
+           System.exit(-42);
+        }
+    }
+
+    public static void deletar() {
+        String DELETAR = "DELETE FROM linlketinder.candidato WHERE cpf_candidato=? ";
+        String BUSCAR_POR_ID = "SELECT * FROM linlketinder.candidato WHERE cpf_candidato=?";
+
+        System.out.println("o cpf para deletar");
+        String cpf_candidato = scanner.nextLine();
+
+        try {
+            Connection conn = conectar();
+            PreparedStatement candidato = conn.prepareStatement(
+                    BUSCAR_POR_ID,
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY
+            );
+
+            candidato.setString(1, cpf_candidato);
+            ResultSet res = candidato.executeQuery();
+            res.last();
+            int qtd = res.getRow();
+            res.beforeFirst();
+
+            if (qtd > 0) {
+                PreparedStatement del = conn.prepareStatement(DELETAR);
+                del.setString(1, cpf_candidato);
+                del.executeUpdate();
+                del.close();
+                desconectar(conn);
+                System.out.println("Deletou");
+            } else {
+                System.out.println("não deletou");
+            }
+
+        } catch (Exception e) {
             e.printStackTrace();
-            System.err.println("Não foi possivel atualizar produto.");
+            System.out.println("Erro ao deletar");
             System.exit(-42);
         }
     }
@@ -196,8 +205,8 @@ public class ServicoBanco {
             inserir();
         } else if (opcao == 3) {
             atualizar();
-//        } else if (opcao == 4) {
-//            deletar();
+        } else if (opcao == 4) {
+            deletar();
         } else {
             System.out.println("Opção inválida");
         }
