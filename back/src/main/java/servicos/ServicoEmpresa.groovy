@@ -21,22 +21,20 @@ class ServicoEmpresa {
         return BUSCAR_POR_ID
     }
 
-    static salvarInformaçoes(String comado,cnpj_empresa, nome_empresa, email_empresa,
-                             senha_empresa, telefone_empresa, cep_empresa,
-                             estado_empresa, pais_empresa, descricao_empresa){
+    static salvarInformaçoes(String comado,empresa){
 
         Connection conn = servicoConectar.conectar()
         PreparedStatement salvar = conn.prepareStatement(comado);
 
-        salvar.setString(1, cnpj_empresa);
-        salvar.setString(2, nome_empresa);
-        salvar.setString(3, email_empresa);
-        salvar.setString(4, senha_empresa);
-        salvar.setString(5, telefone_empresa);
-        salvar.setString(6,cep_empresa);
-        salvar.setString(7, estado_empresa);
-        salvar.setString(8, pais_empresa);
-        salvar.setString(9, descricao_empresa);
+        salvar.setString(1, empresa.cnpj);
+        salvar.setString(2, empresa.nome);
+        salvar.setString(3, empresa.email);
+        salvar.setString(4, empresa.senha);
+        salvar.setString(5, empresa.telefone);
+        salvar.setString(6,empresa.cep);
+        salvar.setString(7, empresa.estado);
+        salvar.setString(8, empresa.pais);
+        salvar.setString(9, empresa.descricao);
 
         salvar.executeUpdate();
         salvar.close();
@@ -82,9 +80,7 @@ class ServicoEmpresa {
         }
     }
 
-    static inserir(cnpj_empresa, nome_empresa, email_empresa,
-                        senha_empresa, telefone_empresa, cep_empresa,
-                        estado_empresa, pais_empresa, descricao_empresa){
+    static inserir(empresa){
 
         String INSERIR = "INSERT INTO linlketinder.empresa(cnpj_empresa, nome_empresa, email_empresa,\n" +
                 "                    senha_empresa, telefone_empresa, cep_empresa,\n" +
@@ -92,26 +88,22 @@ class ServicoEmpresa {
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
-            salvarInformaçoes(INSERIR,cnpj_empresa, nome_empresa, email_empresa,
-                    senha_empresa, telefone_empresa, cep_empresa,
-                    estado_empresa, pais_empresa, descricao_empresa)
+            salvarInformaçoes(INSERIR,empresa)
         }catch (Exception e) {
             e.printStackTrace();
             System.err.println("Erro ao salvar");
         }
     }
 
-    static atualizar(cnpj_empresa,nome_empresa,email_empresa,
-                     senha_empresa,telefone_empresa,cep_empresa,
-                     estado_empresa,pais_empresa,descricao_empresa) {
+    static atualizar(imformacoesEmpresa) {
         try {
             Connection conn = servicoConectar.conectar();
             PreparedStatement empresa = conn.prepareStatement(
-                    buscarPorId(cnpj_empresa),
+                    buscarPorId(imformacoesEmpresa.cnpj),
                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY
             );
-            empresa.setString(1, cnpj_empresa);
+            empresa.setString(1, imformacoesEmpresa.cnpj);
             ResultSet res = empresa.executeQuery();
 
             res.last();
@@ -125,9 +117,7 @@ class ServicoEmpresa {
                         "estado_empresa=?, pais_empresa=?, descricao_empresa=?" +
                         "WHERE cnpj_empresa=?";
 
-                salvarInformaçoes(ATUALIZAR,cnpj_empresa, nome_empresa, email_empresa,
-                        senha_empresa, telefone_empresa, cep_empresa,
-                        estado_empresa, pais_empresa, descricao_empresa)
+                salvarInformaçoes(ATUALIZAR,imformacoesEmpresa)
             } else {
                 System.out.println("Não foi possivel atualizar empresa");
             }

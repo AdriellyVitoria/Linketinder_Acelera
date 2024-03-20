@@ -38,7 +38,7 @@ class empresa {
         empresa.setDescricao(scanner.nextLine())
     }
 
-    static entradaEmpresa() {
+    static entradaCadastroEmpresa() {
         println("1- Login | 2- Cadastra")
         opcao = Integer.parseInt(scanner.nextLine())
 
@@ -58,16 +58,33 @@ class empresa {
     }
 
     static menuPrincipalEmpresa() {
-        println("Informe o cnpj da empresa para atualização: ")
-        String cnpj = scanner.nextLine();
-        String verificacaoNull = servicoEmpresa.atualizar(cnpj);
-
-        if (verificacaoNull != null){
-            String imformaçoesAtualizar = input()
-            servicoEmpresa.atualizar(imformaçoesAtualizar)
-            println("A empresa foi atualizando com sucesso")
-        } else {
-            println("Cnpj da empresa não existe, tente novamente")
-        }
+       println("-----MENU-----" +
+               "\n1- Criar Vaga\n2- Excluir vaga\n3- Atualizar vaga\n4- Listar vagas\n" +
+               "5- Listar Candidatos\n6- Dá match em candidato\n7- Excluir Candidato\n" +
+               "8- Editar perfil\n9- Sair")
+        //colocar o excluir em menu editar
     }
+
+    static editarEmpresa(){
+        println("1- Editar perfil\n2- Excluir Perfil\n3- Sair")
+        String opcao = scanner.nextLine()
+        if (opcao != 3){
+
+        } else if(opcao == 1){
+            println("Informe o cnpj da empresa para atualização: ")
+            String cnpj = scanner.nextLine();
+            String verificacaoNull = servicoEmpresa.atualizar(cnpj);
+            if (verificacaoNull != null){
+                String imformaçoesAtualizar = input()
+                servicoEmpresa.atualizar(imformaçoesAtualizar)
+                println("A empresa foi atualizando com sucesso")
+            } else {
+                println("Cnpj da empresa não existe, tente novamente")
+            }
+        }
+
+
+
+    }
+
 }
