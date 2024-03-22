@@ -12,19 +12,19 @@
 //    static ServicoConectarBanco conectar = new ServicoConectarBanco();
 //
 //    public static String buscarTodos() {
-//        String BUSCAR_TODOS = "SELECT * FROM linlketinder.candidato";
+//        String BUSCAR_TODOS = "SELECT * FROM linlketinder.Candidato";
 //        return BUSCAR_TODOS;
 //    }
 //
 //    public static void listar() {
 //        try {
 //            Connection conexao = conectar();
-//            PreparedStatement candidato = conexao.prepareStatement(
+//            PreparedStatement Candidato = conexao.prepareStatement(
 //                    buscarTodos(),
 //                    ResultSet.TYPE_SCROLL_INSENSITIVE,
 //                    ResultSet.CONCUR_READ_ONLY
 //            );
-//            ResultSet res = candidato.executeQuery();
+//            ResultSet res = Candidato.executeQuery();
 //
 //            res.last();
 //            int qtd = res.getRow();
@@ -81,7 +81,7 @@
 //        System.out.println("Informe a idade ");
 //        int idade_candidato = scanner.nextInt();
 //
-//        String INSERIR = "INSERT INTO linlketinder.candidato(cpf_candidato,\n" +
+//        String INSERIR = "INSERT INTO linlketinder.Candidato(cpf_candidato,\n" +
 //                "\tnome_candidato, \n" +
 //                "\temail_candidato, \n" +
 //                "\tsenha_candidato,\n" +
@@ -108,27 +108,27 @@
 //            salvar.executeUpdate();
 //            salvar.close();
 //            desconectar(conn);
-//            System.out.println("O candidato " + nome_candidato + " foi inserido com sucesso");
+//            System.out.println("O Candidato " + nome_candidato + " foi inserido com sucesso");
 //        }catch (Exception e) {
 //            e.printStackTrace();
 //            System.err.println("Erro a salvar");
 //        }
 ////    }
 //    public static void atualizar() {
-//        System.out.println("Informe o cpf do candidato para atualização: ");
+//        System.out.println("Informe o cpf do Candidato para atualização: ");
 //        String cpf_candidato = scanner.nextLine();
 //
-//        String BUSCAR_POR_ID = "SELECT * FROM linlketinder.candidato WHERE cpf_candidato=?";
+//        String BUSCAR_POR_ID = "SELECT * FROM linlketinder.Candidato WHERE cpf_candidato=?";
 //
 //        try {
 //            Connection conn = conectar();
-//            PreparedStatement candidato = conn.prepareStatement(
+//            PreparedStatement Candidato = conn.prepareStatement(
 //                    BUSCAR_POR_ID,
 //                    ResultSet.TYPE_SCROLL_INSENSITIVE,
 //                    ResultSet.CONCUR_READ_ONLY
 //            );
-//            candidato.setString(1, cpf_candidato);
-//            ResultSet res = candidato.executeQuery();
+//            Candidato.setString(1, cpf_candidato);
+//            ResultSet res = Candidato.executeQuery();
 //
 //            res.last();
 //            int qtd = res.getRow();
@@ -138,7 +138,7 @@
 //                System.out.println("Informe o nome do produto para alteração");
 //                String nome_candidado = scanner.nextLine();
 //
-//                String ATUALIZAR = "UPDATE linlketinder.candidato SET nome_candidato=? WHERE cpf_candidato=?";
+//                String ATUALIZAR = "UPDATE linlketinder.Candidato SET nome_candidato=? WHERE cpf_candidato=?";
 //                PreparedStatement upd = conn.prepareStatement(ATUALIZAR);
 //
 //                upd.setString(1, nome_candidado);
@@ -147,34 +147,34 @@
 //                upd.executeUpdate();
 //                upd.close();
 //                desconectar(conn);
-//                System.out.println("O candidato foi atualizando com sucesso");
+//                System.out.println("O Candidato foi atualizando com sucesso");
 //            } else {
 //                System.out.println("Não deu bom");
 //            }
 //        } catch (Exception e) {
 //           e.printStackTrace();
-//           System.err.println("Não foi possivel atualizar candidato");
+//           System.err.println("Não foi possivel atualizar Candidato");
 //           System.exit(-42);
 //        }
 //    }
 //
 //    public static void deletar() {
-//        String DELETAR = "DELETE FROM linlketinder.candidato WHERE cpf_candidato=? ";
-//        String BUSCAR_POR_ID = "SELECT * FROM linlketinder.candidato WHERE cpf_candidato=?";
+//        String DELETAR = "DELETE FROM linlketinder.Candidato WHERE cpf_candidato=? ";
+//        String BUSCAR_POR_ID = "SELECT * FROM linlketinder.Candidato WHERE cpf_candidato=?";
 //
 //        System.out.println("o cpf para deletar");
 //        String cpf_candidato = scanner.nextLine();
 //
 //        try {
 //            Connection conn = conectar();
-//            PreparedStatement candidato = conn.prepareStatement(
+//            PreparedStatement Candidato = conn.prepareStatement(
 //                    BUSCAR_POR_ID,
 //                    ResultSet.TYPE_SCROLL_INSENSITIVE,
 //                    ResultSet.CONCUR_READ_ONLY
 //            );
 //
-//            candidato.setString(1, cpf_candidato);
-//            ResultSet res = candidato.executeQuery();
+//            Candidato.setString(1, cpf_candidato);
+//            ResultSet res = Candidato.executeQuery();
 //            res.last();
 //            int qtd = res.getRow();
 //            res.beforeFirst();

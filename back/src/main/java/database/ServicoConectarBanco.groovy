@@ -5,7 +5,7 @@ import java.sql.DriverManager
 import java.sql.SQLException
 
 class ServicoConectarBanco {
-    static Connection conectar() {
+     Connection conectar() {
         Properties props = new Properties();
         props.setProperty("user", "postgres");
         props.setProperty("password", "123456");
@@ -26,7 +26,7 @@ class ServicoConectarBanco {
         }
     }
 
-    static void desconectar(Connection conn){
+    desconectar(Connection conn){
         if(conn != null) {
             try {
                 conn.close();

@@ -3,7 +3,7 @@ package views
 import modelos.PessoaJuridica
 import servicos.ServicoEmpresa
 
-class empresa {
+class EmpresaViews {
     static Scanner scanner = new Scanner(System.in)
     static servicoEmpresa = new ServicoEmpresa()
     static empresa = new PessoaJuridica()
@@ -36,6 +36,8 @@ class empresa {
 
         System.out.println("Informe a descricao")
         empresa.setDescricao(scanner.nextLine())
+
+        return empresa
     }
 
     static entradaCadastroEmpresa() {
@@ -49,9 +51,11 @@ class empresa {
             String senha_empresa = scanner.nextLine();
 
             // verificar se está no banco
+            menuPrincipalEmpresa()
         } else {
-            String informcacoesEmpresa = input()
+            PessoaJuridica informcacoesEmpresa = input()
             servicoEmpresa.inserir(informcacoesEmpresa)
+            // add if para caso de erro não continuar
             println("Empresa " + empresa.getNome() + " foi inserido com sucesso")
             menuPrincipalEmpresa()
         }
@@ -60,8 +64,9 @@ class empresa {
     static menuPrincipalEmpresa() {
        println("-----MENU-----" +
                "\n1- Criar Vaga\n2- Excluir vaga\n3- Atualizar vaga\n4- Listar vagas\n" +
-               "5- Listar Candidatos\n6- Dá match em candidato\n7- Excluir Candidato\n" +
+               "5- Listar Candidatos\n6- Dá match em Candidato\n7- Excluir Candidato\n" +
                "8- Editar perfil\n9- Sair")
+        opcao = Integer.parseInt(scanner.nextLine())
         //colocar o excluir em menu editar
     }
 
@@ -82,9 +87,5 @@ class empresa {
                 println("Cnpj da empresa não existe, tente novamente")
             }
         }
-
-
-
     }
-
 }

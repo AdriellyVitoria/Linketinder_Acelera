@@ -1,18 +1,19 @@
 package servicos
 
+import com.sun.jdi.connect.spi.Connection
 import database.ServicoConectarBanco
+import modelos.PessoaFisica
 
-import java.sql.Connection
 import java.sql.PreparedStatement
 
 class ServicoCandidato {
+
+    static servicoCandidato = new ServicoCandidato()
     static servicoConectar = new ServicoConectarBanco()
 
-    static void inserir(cpf_candidato, nome_candidato, email_candidato,
-                        senha_candidato, telefone_candidato, cep_candidato,
-                        estado_candidato, descricao_candidato, idade_candidato){
+    static void inserir(PessoaFisica candidato){
 
-        String INSERIR = "INSERT INTO linlketinder.candidato(cpf_candidato,\n" +
+        String INSERIR = "INSERT INTO linlketinder.Candidato(cpf_candidato,\n" +
                 "\tnome_candidato, \n" +
                 "\temail_candidato, \n" +
                 "\tsenha_candidato,\n" +
@@ -26,23 +27,24 @@ class ServicoCandidato {
             Connection conn = servicoConectar.conectar();
             PreparedStatement salvar = conn.prepareStatement(INSERIR);
 
-            salvar.setString(1, cpf_candidato);
-            salvar.setString(2, nome_candidato);
-            salvar.setString(3, email_candidato);
-            salvar.setString(4, senha_candidato);
-            salvar.setString(5, telefone_candidato);
-            salvar.setString(6,cep_candidato);
-            salvar.setString(7, estado_candidato);
-            salvar.setString(8, idade_candidato);
-            salvar.setString(9, descricao_candidato);
+            salvar.setString(1, candidato.getCpf());
+            salvar.setString(2, candidato.getNome());
+            salvar.setString(3, candidato.getEmail());
+            salvar.setString(4, candidato.getSenha());
+            salvar.setString(5, candidato.getTelefone());
+            salvar.setString(6, candidato.getCep());
+            salvar.setString(7, candidato.getEstado());
+            salvar.setString(8, candidato.getIdade());
+            salvar.setString(9, candidato.getDescricao());
 
             salvar.executeUpdate();
             salvar.close();
             servicoConectar.desconectar(conn);
-            System.out.println("O candidato " + nome_candidato + " foi inserido com sucesso");
+            System.out.println("O Candidato " + candidato.nome + " foi inserido com sucesso");
         }catch (Exception e) {
             e.printStackTrace();
             System.err.println("Erro a salvar");
         }
+    }
     }
 }

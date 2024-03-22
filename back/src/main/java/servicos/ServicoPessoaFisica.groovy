@@ -1,6 +1,6 @@
 package servicos
 
-import database.Listas
+
 import modelos.PessoaFisica
 
 class ServicoPessoaFisica {

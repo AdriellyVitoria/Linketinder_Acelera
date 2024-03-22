@@ -1,15 +1,15 @@
 package menu
 
-import modelos.PessoaJuridica
-import servicos.ServicoCandidato
+
 import servicos.ServicoEmpresa
+import views.EmpresaViews
 
 class Menu {
     static void main(String[] args) {
-        servicoEmpresa.listar()
+        EmpresaViews.entradaCadastroEmpresa();
     }
     static servicoEmpresa = new ServicoEmpresa()
-    static servicoCandidato = new ServicoCandidato();
+    //static servicoCandidato = new ServicoCandidato();
     static Scanner scanner = new Scanner(System.in)
     static opcao
 
