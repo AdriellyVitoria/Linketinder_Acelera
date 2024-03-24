@@ -6,6 +6,6 @@ class Competencia {
 
     Competencia(Integer id, String descricao) {
         this.id = id
-        this.descricao = id
+        this.descricao = descricao
     }
 }

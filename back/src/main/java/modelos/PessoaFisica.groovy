@@ -8,8 +8,9 @@ class PessoaFisica extends Pessoa {
     PessoaFisica() {}
     
     // constr para imprimir
-    PessoaFisica(String cpf, String nome, String email,
+    PessoaFisica(Integer id,String cpf, String nome, String email,
                  String telefone, String cep, String descricao){
+        this.id = id
         this.cpf = cpf
         this.nome = nome
         this.email = email
@@ -19,16 +20,18 @@ class PessoaFisica extends Pessoa {
     }
     
     // constr para criação
-    PessoaFisica(String nome,
-                 String email,
-                 String senha,
-                 String telefone,
-                 String estado,
-                 String cep,
-                 String descricao,
-                 String cpf,
-                 int idade) {
-        super(nome, email, senha, telefone, estado, cep, descricao)
+    PessoaFisica(
+         Integer id,
+         String nome,
+         String email,
+         String senha,
+         String telefone,
+         String estado,
+         String cep,
+         String descricao,
+         String cpf,
+         int idade) {
+        super(id ,nome, email, senha, telefone, estado, cep, descricao)
         this.cpf = cpf
         this.idade = idade
     }

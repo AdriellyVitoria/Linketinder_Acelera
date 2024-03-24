@@ -66,7 +66,7 @@ class ServicoVaga {
             int qtd = res.getRow();
             res.beforeFirst();
 
-            def vagas = []
+            ArrayList<Vaga> vagas = []
             if(qtd > 0) {
                 while (res.next()) {
                     Vaga v = new Vaga (
@@ -75,9 +75,11 @@ class ServicoVaga {
                             res.getString(3),
                             res.getString(4)
                     )
+
                     vagas.add(v)
                 }
             }
+
             return vagas
         }catch(Exception exception){
             exception.printStackTrace();

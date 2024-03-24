@@ -13,7 +13,7 @@ class ServicoCandidato {
 
     ServicoCandidato(){
         servicoCompetencia = new ServicoCandidatoCompetencia()
-        ServicoConectar = new ServicoConectarBanco()
+        servicoConectar = new ServicoConectarBanco()
     }
 
     String verificacaoParalogin() {
@@ -46,12 +46,13 @@ class ServicoCandidato {
             if (qtd > 0) {
                 while (res.next()) {
                     PessoaFisica c = new PessoaFisica(
-                            res.getString(1),
+                            res.getInt(1),
                             res.getString(2),
                             res.getString(3),
                             res.getString(4),
                             res.getString(5),
-                            res.getString(6)
+                            res.getString(6),
+                            res.getString(7)
                     )
                     c.setCompetencias(
                             servicoCompetencia.buscarCompetencia(c.cpf)
@@ -67,7 +68,7 @@ class ServicoCandidato {
         return null
     }
 
-     void inserir(PessoaFisica candidato){
+     boolean inserir(PessoaFisica candidato){
 
         String INSERIR = "INSERT INTO linlketinder.Candidato(cpf_candidato,\n" +
                 "\tnome_candidato, \n" +
@@ -90,15 +91,17 @@ class ServicoCandidato {
             salvar.setString(5, candidato.getTelefone());
             salvar.setString(6, candidato.getCep());
             salvar.setString(7, candidato.getEstado());
-            //salvar.setString(8, candidato.getIdade());
+            salvar.setInt(8, candidato.getIdade());
             salvar.setString(9, candidato.getDescricao());
 
             salvar.executeUpdate();
             salvar.close();
             servicoConectar.desconectar(conn);
+            return true
         }catch (Exception e) {
             e.printStackTrace();
             System.err.println("Erro a salvar");
         }
+         return false
     }
 }

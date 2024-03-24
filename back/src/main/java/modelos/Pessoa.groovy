@@ -1,6 +1,7 @@
 package modelos
 
 abstract class Pessoa {
+    Integer id
     String nome
     String email
     String senha
@@ -11,7 +12,8 @@ abstract class Pessoa {
 
     Pessoa() {}
 
-    Pessoa(String nome, String email, String senha, String telefone, String estado, String cep, String descricao) {
+    Pessoa(Integer id,String nome, String email, String senha, String telefone, String estado, String cep, String descricao) {
+        this.id = id
         this.nome = nome
         this.email = email
         this.senha = senha

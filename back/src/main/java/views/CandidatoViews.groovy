@@ -39,8 +39,23 @@ class CandidatoViews {
         } else if (opcao == 2) {
             System.out.println("Informe o cpf");
             candidato.cpf = scanner.nextLine();
-            imformacoesCandidato()
+            def inserir = servicoCandidato.inserir(imformacoesCandidato())
+            if (inserir) {
+                println("Candidato" + candidato.getNome() + "foi inserido com sucesso")
+            } else {
+                println("Erro ao inserir candidato")
+            }
+        }
+    }
 
+    void menuPrincipalCandidato() {
+        while (true) {
+            opcao = input.validaEntradaDeInteiro("-----MENU-----" +
+                    "\n1- Listar Vagas\n2- Vagas com match \n3- Editar perfil\n4- Sair do programa",
+                    1, 4)
+            if (opcao == 1) {
+
+            }
         }
     }
 

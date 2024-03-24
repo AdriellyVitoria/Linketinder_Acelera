@@ -47,9 +47,12 @@ class EmpresaViews {
             println("Informe o cnpj")
             empresa.setCnpj(scanner.nextLine())
             def inserir = servicoEmpresa.inserir(imformacoesEmpresa())
-            // add if para caso de erro não continuar
-            println("Empresa " + empresa.getNome() + " foi inserido com sucesso")
-            menuPrincipalEmpresa()
+           if (inserir){
+               println("Empresa " + empresa.getNome() + " foi inserido com sucesso")
+               menuPrincipalEmpresa()
+           } else {
+               println("Error tente novamente")
+           }
         } else {
            menu.menuInicial()
         }
@@ -63,7 +66,7 @@ class EmpresaViews {
             if (opcao == 1){
                 vaga.menuVagas()
             } else if (opcao == 2){
-                println("falta implementar")
+               listarCandidatos()
                 //canditato.listar
                 // perguntar se deseja curtir alguem, se ele curti
                 // na hora de imprimir deve imforma que aquele candidato já foi curtido
@@ -74,6 +77,10 @@ class EmpresaViews {
                 break
             }
         }
+    }
+
+    void listarCandidatos() {
+        println("para listar candidato vai ser descricao e competencia vc vai precisar usar um join para lista todos os candidatos")
     }
 
     void editarEmpresa(){

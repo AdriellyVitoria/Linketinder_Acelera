@@ -144,18 +144,20 @@ class ServicoEmpresa {
         }
     }
 
-    void inserir(PessoaJuridica empresa){
+    boolean inserir(PessoaJuridica empresa){
         String INSERIR = "INSERT INTO linlketinder.empresa(cnpj_empresa, nome_empresa, email_empresa,\n" +
                 "                    senha_empresa, telefone_empresa, cep_empresa,\n" +
                 "                    estado_empresa, pais_empresa, descricao_empresa) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             salvarInformacoes(INSERIR,empresa)
+            return true
         } catch (Exception exception) {
             exception.printStackTrace();
             System.err.println("Erro em inserir");
             System.exit(-42);
         }
+        return false
     }
 
     boolean atualizar(PessoaJuridica empresa) {
@@ -202,6 +204,7 @@ class ServicoEmpresa {
             System.err.println("Erro em atualizar");
             System.exit(-42);
         }
+        return false
     }
 
     void deletar(String cnpj_empresa) {
