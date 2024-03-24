@@ -1,6 +1,6 @@
 package views
 
-import menu.Menu
+
 import modelos.Vaga
 import servicos.ServicoLogin
 import servicos.ServicoVaga
@@ -29,7 +29,7 @@ class VagaViews {
                     "\n1- Criar Vaga\n2- Listar vaga\n3- Atualizar vaga\n4- Deletar vagas\n5- Voltar",
                     1, 5)
             if (opcao == 1) {
-                def criar = servicoVaga.criar(imformacoesCriarVaga())
+                def criar = servicoVaga.criar(imformacoesParaVaga())
                 if (criar != null) {
                     println("Erro ao criar vaga")
                 } else {
@@ -39,16 +39,17 @@ class VagaViews {
             } else if(opcao == 2){
                 listar(ServicoLogin.getEmpresa().cnpj)
             } else if (opcao == 3) {
-                println("atualizar")
+                atualizar()
             } else if(opcao == 4) {
                 deletarVaga()
             } else {
                 empresa.menuPrincipalEmpresa()
+                break
             }
         }
     }
 
-    Vaga imformacoesCriarVaga() {
+    Vaga imformacoesParaVaga() {
         println("Descricao da vaga:")
         vaga.setDescricao(scanner.nextLine())
 
@@ -81,8 +82,28 @@ class VagaViews {
         }
     }
 
+    void atualizar(){
+        boolean listarVaga = listar(ServicoLogin.getEmpresa().cnpj)
+        if (listarVaga) {
+            opcao = inputValidation.validaEntradaDeInteiro("1- Digita o id para editar | 2- Voltar",
+                    1, 2)
+            if (opcao == 1) {
+                println("Digite o id da vaga que deseja editar: ")
+                Integer id_vaga = Integer.parseInt(scanner.nextLine())
+                Vaga vaga = imformacoesParaVaga()
+                def confirmacaoAtualizar = servicoVaga.atualizar(id_vaga, vaga)
+                if (confirmacaoAtualizar =! null ){
+                    println("Vaga atualizada com sucesso")
+                } else {
+                    println("Tente novamente")
+                }
+            } else {
+                menuVagas()
+            }
+        }
+    }
      void deletarVaga() {
-         def listarVaga = listar(ServicoLogin.getEmpresa().cnpj)
+         boolean listarVaga = listar(ServicoLogin.getEmpresa().cnpj)
          if (listarVaga) {
              println("Digite o id da vaga para excluir: ")
              Integer id_vaga = Integer.parseInt(scanner.nextLine())
@@ -91,6 +112,7 @@ class VagaViews {
              if (opcao == 1){
                  String cnpj = ServicoLogin.getEmpresa().cnpj
                  servicoVaga.deletar(id_vaga, cnpj)
+
                  println("Vaga apagada com sucesso")
              } else {
                  menuVagas()

@@ -14,14 +14,14 @@ class ServicoVaga {
         servicoConectar = new ServicoConectarBanco()
     }
 
+    String montarQueryBuscarPorCnpjEId() {
+        return "SELECT id_vaga, descricao_vaga, titulo_vaga, local_vaga\n " +
+                "FROM linlketinder.vaga WHERE cnpj_empresa=? AND id_vaga =?"
+    }
+
     String montarQueryBuscarPorCnpj() {
         return "SELECT id_vaga, descricao_vaga, titulo_vaga, local_vaga " +
                 "FROM linlketinder.vaga WHERE cnpj_empresa=?"
-    }
-
-    String montarQueryBuscarTodos() {
-        return "SELECT id_vaga descricao_vaga, titulo_vaga, local_vaga " +
-                "FROM linlketinder.vaga "
     }
 
     void salvarImformacao(String comado, Vaga vaga){
@@ -82,6 +82,46 @@ class ServicoVaga {
         }catch(Exception exception){
             exception.printStackTrace();
             System.err.println("Erro em listar" )
+            System.exit(-42);
+        }
+    }
+
+    boolean atualizar(Integer id_vaga, Vaga vaga) {
+        try {
+            Connection conn = servicoConectar.conectar()
+            PreparedStatement atualizarVaga = conn.prepareStatement(
+                    montarQueryBuscarPorCnpjEId(),
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY
+            )
+            atualizarVaga.setString(1, vaga.getCnpj_empresa())
+            atualizarVaga.setInt(2, id_vaga)
+            ResultSet res = atualizarVaga.executeQuery();
+
+            res.last();
+            int qtd = res.getRow();
+            res.beforeFirst();
+
+            if(qtd >0){
+                String ATUALIZAR = "UPDATE linlketinder.vaga " +
+                        "SET descricao_vaga=?, titulo_vaga =?, local_vaga =?\n " +
+                        "\tWHERE cnpj_empresa =? AND id_vaga = ?"
+                PreparedStatement salvar = conn.prepareStatement(ATUALIZAR);
+
+                salvar.setString(1, vaga.getDescricao())
+                salvar.setString(2, vaga.getTitulo())
+                salvar.setString(3, vaga.getLocal())
+                salvar.setString(4, vaga.getCnpj_empresa())
+                salvar.setInt(5, id_vaga)
+
+                salvar.executeUpdate();
+                salvar.close();
+                servicoConectar.desconectar(conn);
+                return vaga
+            }
+        } catch (Exception exeption) {
+            exeption.printStackTrace();
+            System.err.println("Erro em atualizar");
             System.exit(-42);
         }
     }

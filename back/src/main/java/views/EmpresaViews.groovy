@@ -46,7 +46,7 @@ class EmpresaViews {
         } else if(opcao == 2) {
             println("Informe o cnpj")
             empresa.setCnpj(scanner.nextLine())
-            def inserir = servicoEmpresa.inserir(imformacoesParaCadastra())
+            def inserir = servicoEmpresa.inserir(imformacoesEmpresa())
             // add if para caso de erro não continuar
             println("Empresa " + empresa.getNome() + " foi inserido com sucesso")
             menuPrincipalEmpresa()
@@ -85,7 +85,7 @@ class EmpresaViews {
                 empresa.setCnpj(
                         ServicoLogin.getEmpresa().cnpj
                 )
-                PessoaJuridica empresa = imformacoesParaCadastra()
+                PessoaJuridica empresa = imformacoesEmpresa()
                 String verificacaoNull = servicoEmpresa.atualizar(empresa);
                 if (verificacaoNull){
                     println("A empresa foi atualizando com sucesso")
@@ -106,29 +106,29 @@ class EmpresaViews {
         }
     }
 
-    PessoaJuridica imformacoesParaCadastra() {
-        System.out.println("Informe o nome")
+    PessoaJuridica imformacoesEmpresa() {
+        println("Informe o nome")
         empresa.setNome(scanner.nextLine())
 
-        System.out.println("Informe o email")
+        println("Informe o email")
         empresa.setEmail(scanner.nextLine())
 
-        System.out.println("Informe a senha")
+        println("Informe a senha")
         empresa.setSenha(scanner.nextLine())
 
-        System.out.println("Informe o telefone")
+        println("Informe o telefone")
         empresa.setTelefone(scanner.nextLine())
 
-        System.out.println("Informe o cep")
+        println("Informe o cep")
         empresa.setCep(scanner.nextLine())
 
-        System.out.println("Informe o estado")
+        println("Informe o estado")
         empresa.setEstado(scanner.nextLine())
 
-        System.out.println("Informe o Pais")
+        println("Informe o Pais")
         empresa.setPais(scanner.nextLine())
 
-        System.out.println("Informe a descricao")
+        println("Informe a descricao")
         empresa.setDescricao(scanner.nextLine())
 
         return empresa

@@ -5,9 +5,67 @@ import modelos.PessoaFisica
 
 import java.sql.Connection
 import java.sql.PreparedStatement
+import java.sql.ResultSet
 
 class ServicoCandidato {
-    def servicoConectar = new ServicoConectarBanco()
+    private ServicoConectarBanco servicoConectar
+    private ServicoCandidatoCompetencia servicoCompetencia
+
+    ServicoCandidato(){
+        servicoCompetencia = new ServicoCandidatoCompetencia()
+        ServicoConectar = new ServicoConectarBanco()
+    }
+
+    String verificacaoParalogin() {
+        return "SELECT c.cpf_candidato, " +
+                "c.nome_candidato, " +
+                "c.email_candidato, \n" +
+                "c.telefone_candidato, " +
+                "c.cep_candidato, " +
+                "c.descricao_candidato\n " +
+                "FROM linlketinder.candidato As c\n " +
+                "WHERE email_candidato=? AND senha_candidato=?"
+    }
+
+    PessoaFisica entradaCandidato(String email_candidato, String senha_candidato) {
+        try {
+            Connection conexao = servicoConectar.conectar();
+            PreparedStatement candidato = conexao.prepareStatement(
+                    verificacaoParalogin(),
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY
+            );
+            candidato.setString(1, email_candidato)
+            candidato.setString(2, senha_candidato)
+            ResultSet res = candidato.executeQuery()
+
+            res.last();
+            int qtd = res.getRow();
+            res.beforeFirst();
+
+            if (qtd > 0) {
+                while (res.next()) {
+                    PessoaFisica c = new PessoaFisica(
+                            res.getString(1),
+                            res.getString(2),
+                            res.getString(3),
+                            res.getString(4),
+                            res.getString(5),
+                            res.getString(6)
+                    )
+                    c.setCompetencias(
+                            servicoCompetencia.buscarCompetencia(c.cpf)
+                    )
+                    return c
+                }
+            }
+        } catch (Exception exception){
+            exception.printStackTrace();
+            System.err.println("Erro em entrar");
+            System.exit(-42);
+        }
+        return null
+    }
 
      void inserir(PessoaFisica candidato){
 
@@ -44,4 +102,3 @@ class ServicoCandidato {
         }
     }
 }
-
