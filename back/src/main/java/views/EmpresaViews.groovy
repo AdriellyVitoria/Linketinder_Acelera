@@ -22,7 +22,7 @@ class EmpresaViews {
         input = new InputValidation()
         servicoEmpresa = new ServicoEmpresa()
         empresa = new PessoaJuridica()
-        vaga = new VagaViews()
+        vaga = new VagaViews(this)
         this.menu = menu
         candidato = new ServicoCandidato()
         opcao

@@ -16,7 +16,7 @@ class ServicoVaga {
 
     String montarQueryBuscarPorCnpj() {
         return "SELECT id_vaga, descricao_vaga, titulo_vaga, local_vaga " +
-                "FROM linlketinder.vaga WHERE cnpj_empresa = ?"
+                "FROM linlketinder.vaga WHERE cnpj_empresa=?"
     }
 
     String montarQueryBuscarTodos() {
@@ -38,12 +38,6 @@ class ServicoVaga {
         servicoConectar.desconectar(conn);
     }
 
-    void alertaErro(Exception tipoDeErro) {
-        tipoDeErro.printStackTrace();
-        System.err.println("Erro em " + {tipoDeErro});
-        System.exit(-42);
-    }
-
     void criar(Vaga vaga) {
         String INSERIR = "INSERT INTO linlketinder.vaga" +
                 "(descricao_vaga, titulo_vaga, local_vaga, cnpj_empresa)\n" +
@@ -51,14 +45,16 @@ class ServicoVaga {
         try {
             salvarImformacao(INSERIR, vaga)
         } catch (Exception exception) {
-            alertaErro("criar vaga")
+            exception.printStackTrace();
+            System.err.println("Erro em criar" )
+            System.exit(-42);
         }
     }
 
-    Vaga listar(String cnpj_vaga) {
+     def listar(String cnpj_vaga) {
         try {
             Connection conn = servicoConectar.conectar();
-            PreparedStatement vaga = conexao.prepareStatement(
+            PreparedStatement vaga = conn.prepareStatement(
                     montarQueryBuscarPorCnpj(),
                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY
@@ -72,8 +68,6 @@ class ServicoVaga {
 
             def vagas = []
             if(qtd > 0) {
-                PreparedStatement del = conn.prepareStatement(montarQueryBuscarPorCnpj())
-                del.setString(1, cnpj_vaga)
                 while (res.next()) {
                     Vaga v = new Vaga (
                             res.getInt(1),
@@ -85,9 +79,42 @@ class ServicoVaga {
                 }
             }
             return vagas
+        }catch(Exception exception){
+            exception.printStackTrace();
+            System.err.println("Erro em listar" )
+            System.exit(-42);
+        }
+    }
 
-        }catch(Exception exep){
-            alertaErro("listar empresas")
+    void deletar(Integer id_vaga, String cnpj_empresa) {
+        String DELETAR = "DELETE FROM linlketinder.vaga WHERE cnpj_empresa =? AND id_vaga =?"
+
+        try {
+            Connection conn = servicoConectar.conectar();
+            PreparedStatement vaga = conn.prepareStatement(
+                    montarQueryBuscarPorCnpj(),
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY
+            )
+            vaga.setString(1, cnpj_empresa)
+
+            ResultSet res = vaga.executeQuery();
+            res.last();
+            int qtd = res.getRow();
+            res.beforeFirst();
+
+            if (qtd > 0) {
+                PreparedStatement del = conn.prepareStatement(DELETAR)
+                del.setString(1, cnpj_empresa)
+                del.setInt(2, id_vaga)
+                del.executeUpdate()
+                del.close()
+                servicoConectar.desconectar(conn)
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            System.err.println("Erro em deletar");
+            System.exit(-42);
         }
     }
 
