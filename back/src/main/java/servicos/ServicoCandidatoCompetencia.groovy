@@ -2,36 +2,35 @@ package servicos
 
 import database.ServicoConectarBanco
 import modelos.Competencia
-import modelos.Empresa
 
 import java.sql.Connection
 import java.sql.PreparedStatement
 import java.sql.ResultSet
 
-class ServiceEmpresaCompetencia {
+class ServicoCandidatoCompetencia {
     def servicoConectar = new ServicoConectarBanco()
 
-    String montarQueryBuscarPorCnpj(){
+    String montarQueryBuscarPorCpf() {
         return "select \n" +
                 "\tc.id_competencia,\n" +
                 "\tc.descricao_competencia\n" +
                 "from \n" +
-                "\tlinlketinder.empresa_competencia AS ec\n" +
-                "\tjoin linlketinder.competencia AS c on c.id_competencia = ec.id_competencia\n" +
+                "\tlinlketinder.candidato_competencia AS cc\n" +
+                "\tjoin linlketinder.competencia AS c on c.id_competencia = cc.id_competencia\n" +
                 "where\n" +
-                "\tec.cnpj_empresa = ?"
+                "\tcc.cpf_candidato = ?"
     }
 
-     ArrayList<Competencia> buscarCompetencia(String cnpj_empresa){
+    ArrayList<Competencia> buscarCompetencia(String cpf_candidato){
         try {
             Connection conexao = servicoConectar.conectar();
             PreparedStatement compentenciasQuery = conexao.prepareStatement(
-                    montarQueryBuscarPorCnpj(),
+                    montarQueryBuscarPorCpf(),
                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY
             );
 
-            compentenciasQuery.setString(1, cnpj_empresa);
+            compentenciasQuery.setString(1, cpf_candidato);
             ResultSet res = compentenciasQuery.executeQuery();
 
             res.last();

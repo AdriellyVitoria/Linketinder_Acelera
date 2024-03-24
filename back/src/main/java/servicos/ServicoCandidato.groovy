@@ -1,17 +1,15 @@
 package servicos
 
-import com.sun.jdi.connect.spi.Connection
 import database.ServicoConectarBanco
 import modelos.PessoaFisica
 
+import java.sql.Connection
 import java.sql.PreparedStatement
 
 class ServicoCandidato {
+    def servicoConectar = new ServicoConectarBanco()
 
-    static servicoCandidato = new ServicoCandidato()
-    static servicoConectar = new ServicoConectarBanco()
-
-    static void inserir(PessoaFisica candidato){
+     void inserir(PessoaFisica candidato){
 
         String INSERIR = "INSERT INTO linlketinder.Candidato(cpf_candidato,\n" +
                 "\tnome_candidato, \n" +
@@ -34,17 +32,16 @@ class ServicoCandidato {
             salvar.setString(5, candidato.getTelefone());
             salvar.setString(6, candidato.getCep());
             salvar.setString(7, candidato.getEstado());
-            salvar.setString(8, candidato.getIdade());
+            //salvar.setString(8, candidato.getIdade());
             salvar.setString(9, candidato.getDescricao());
 
             salvar.executeUpdate();
             salvar.close();
             servicoConectar.desconectar(conn);
-            System.out.println("O Candidato " + candidato.nome + " foi inserido com sucesso");
         }catch (Exception e) {
             e.printStackTrace();
             System.err.println("Erro a salvar");
         }
     }
-    }
 }
+

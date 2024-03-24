@@ -1,33 +1,32 @@
 package menu
 
-
-import servicos.ServicoEmpresa
+import sun.awt.X11.XInputMethod
+import utils.InputValidation
+import views.CandidatoViews
 import views.EmpresaViews
 
 class Menu {
-    static void main(String[] args) {
-        EmpresaViews.entradaCadastroEmpresa();
-    }
-    static servicoEmpresa = new ServicoEmpresa()
-    //static servicoCandidato = new ServicoCandidato();
-    static Scanner scanner = new Scanner(System.in)
-    static opcao
+    private InputValidation input
+    private CandidatoViews candidato
+    private EmpresaViews empresa
+    private opcao
 
-    static menuInicial(){
-        while (true) {
-            println("Olá, Bem vindo ao LINKETINDER\nEntrar como:\n1 - Candidato\n2 - Empresa\n3 - Sair ")
-            opcao = Integer.parseInt(scanner.nextLine())
-            if (opcao == 1) {
-                entradaEmpresa()
-            } else if (opcao == 2) {
-                entradaCandidato();
-            } else {
-                println("Saindo do programa... Volter sempre")
-                break
-            }
+    Menu() {
+        input = new InputValidation()
+        candidato = new CandidatoViews()
+        empresa = new EmpresaViews(this)
+        opcao
+    }
+
+    void menuInicial(){
+       opcao = input.validaEntradaDeInteiro("Olá, Bem vindo ao LINKETINDER\n" +
+               "Entrar como:\n1 - Candidato\n2 - Empresa\n3 - Sair", 1, 3)
+        if (opcao == 1) {
+           candidato.entradaCandidato()
+        } else if (opcao == 2) {
+            empresa.opcaoLoginCadastroEmpresa()
+        } else {
+            println("Saindo do programa... Volter sempre")
         }
     }
-
-
 }
-

@@ -1,7 +1,6 @@
 package servicos
 
 import database.ServicoConectarBanco
-import modelos.Empresa
 import modelos.PessoaJuridica
 
 import java.sql.Connection
@@ -9,9 +8,26 @@ import java.sql.PreparedStatement
 import java.sql.ResultSet
 
 class ServicoEmpresa {
+    private ServicoConectarBanco servicoConectar
+    private ServicoEmpresaCompetencia servicoCompetencia
 
-    def servicoConectar = new ServicoConectarBanco()
-    def servicoCompetencia = new ServiceEmpresaCompetencia()
+    ServicoEmpresa() {
+        servicoConectar = new ServicoConectarBanco()
+        servicoCompetencia = new ServicoEmpresaCompetencia()
+    }
+
+    String verificacaoParaLogin(){
+        return "SELECT \n" +
+                "e.cnpj_empresa," +
+                "e.nome_empresa," +
+                "e.email_empresa," +
+                "e.telefone_empresa," +
+                "e.cep_empresa,\n" +
+                "e.descricao_empresa" +
+                " FROM " +
+                "linlketinder.empresa AS e " +
+                "WHERE e.email_empresa = ? AND e.senha_empresa = ?"
+    }
 
     String montarQueryBuscarTodos() {
         return "SELECT \n" +
@@ -26,10 +42,10 @@ class ServicoEmpresa {
     }
 
     String montarQueryBuscarPorCnpj(){
-        return "SELECT * FROM linlketinder.empresa WHERE cnpj_empresa=?";
+        return "SELECT cnpj_empresa FROM linlketinder.empresa WHERE cnpj_empresa=?";
     }
 
-     salvarInformaçoes(String comado,PessoaJuridica empresa){
+    void salvarInformacoes(String comado, PessoaJuridica empresa){
 
         Connection conn = servicoConectar.conectar()
         PreparedStatement salvar = conn.prepareStatement(comado);
@@ -49,13 +65,47 @@ class ServicoEmpresa {
         servicoConectar.desconectar(conn);
     }
 
-    alertaErro(String tipoDeErro) {
-        tipoDeErro.printStackTrace();
-        System.err.println("Erro em " + {tipoDeErro});
-        System.exit(-42);
+    PessoaJuridica entradaEmpresa(String email_empresa, String senha_empresa){
+        try {
+            Connection conexao = servicoConectar.conectar();
+            PreparedStatement empresa = conexao.prepareStatement(
+                    verificacaoParaLogin(),
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY
+            );
+            empresa.setString(1, email_empresa)
+            empresa.setString(2, senha_empresa)
+            ResultSet res = empresa.executeQuery()
+
+            res.last();
+            int qtd = res.getRow();
+            res.beforeFirst();
+
+            if (qtd > 0) {
+                while (res.next()) {
+                    PessoaJuridica e = new PessoaJuridica(
+                            res.getString(1),
+                            res.getString(2),
+                            res.getString(3),
+                            res.getString(4),
+                            res.getString(5),
+                            res.getString(6)
+                    )
+                    e.setCompetencias(
+                            servicoCompetencia.buscarCompetencia(e.cnpj)
+                    )
+                    return e
+                }
+            }
+        } catch (Exception exception){
+            exception.printStackTrace();
+            System.err.println("Erro em entrar");
+            System.exit(-42);
+        }
+        return null
     }
 
-    buscarLista() {
+    PessoaJuridica buscarLista() {
         try {
             Connection conexao = servicoConectar.conectar();
             PreparedStatement empresa = conexao.prepareStatement(
@@ -71,10 +121,8 @@ class ServicoEmpresa {
 
             def empresas = []
             if (qtd > 0) {
-                System.out.println("Listando empresas");
-                System.out.println("--------------------------------");
                 while (res.next()) {
-                    Empresa e = new Empresa(
+                    PessoaJuridica e = new PessoaJuridica(
                             res.getString(1),
                             res.getString(2),
                             res.getString(3),
@@ -89,35 +137,37 @@ class ServicoEmpresa {
                 }
             }
             return empresas
-        }catch(Exception exep){
-           alertaErro("Busca empresa")
+        }catch(Exception exception){
+            exception.printStackTrace();
+            System.err.println("Erro em listar");
+            System.exit(-42);
         }
     }
 
-    inserir(PessoaJuridica empresa){
-
+    void inserir(PessoaJuridica empresa){
         String INSERIR = "INSERT INTO linlketinder.empresa(cnpj_empresa, nome_empresa, email_empresa,\n" +
                 "                    senha_empresa, telefone_empresa, cep_empresa,\n" +
                 "                    estado_empresa, pais_empresa, descricao_empresa) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
         try {
-            salvarInformaçoes(INSERIR,empresa)
-        }catch (Exception e) {
-            alertaErro("inserir")
+            salvarInformacoes(INSERIR,empresa)
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            System.err.println("Erro em inserir");
+            System.exit(-42);
         }
     }
 
-    atualizar(imformacoesEmpresa) {
+    boolean atualizar(PessoaJuridica empresa) {
         try {
-            Connection conn = servicoConectar.conectar();
-            PreparedStatement empresa = conn.prepareStatement(
-                    montarQueryBuscarPorCnpj(imformacoesEmpresa.cnpj),
+            Connection conn = servicoConectar.conectar()
+            PreparedStatement empresas = conn.prepareStatement(
+                    montarQueryBuscarPorCnpj(),
                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY
-            );
-            empresa.setString(1, imformacoesEmpresa.cnpj);
-            ResultSet res = empresa.executeQuery();
+            )
+            empresas.setString(1, empresa.cnpj);
+            ResultSet res = empresas.executeQuery();
 
             res.last();
             int qtd = res.getRow();
@@ -127,17 +177,34 @@ class ServicoEmpresa {
                 String ATUALIZAR = "UPDATE linlketinder.empresa " +
                         "SET cnpj_empresa=?, nome_empresa=?, email_empresa=?,\n" +
                         "senha_empresa=?, telefone_empresa=?, cep_empresa=?,\n" +
-                        "estado_empresa=?, pais_empresa=?, descricao_empresa=?" +
-                        "WHERE cnpj_empresa=?";
+                        "estado_empresa=?, pais_empresa=?, descricao_empresa=? " +
+                        "WHERE cnpj_empresa=?"
+                PreparedStatement salvar = conn.prepareStatement(ATUALIZAR);
 
-                salvarInformaçoes(ATUALIZAR,imformacoesEmpresa)
+                salvar.setString(1, empresa.getCnpj());
+                salvar.setString(2, empresa.getNome());
+                salvar.setString(3, empresa.getEmail());
+                salvar.setString(4, empresa.getSenha());
+                salvar.setString(5, empresa.getTelefone());
+                salvar.setString(6, empresa.getCep());
+                salvar.setString(7, empresa.getEstado());
+                salvar.setString(8, empresa.getPais());
+                salvar.setString(9, empresa.getDescricao())
+                salvar.setString(10, empresa.getCnpj());
+
+                salvar.executeUpdate();
+                salvar.close();
+                servicoConectar.desconectar(conn);
+                return true
             }
-        } catch (Exception e) {
-           alertaErro("atualizar")
+        } catch (Exception exeption) {
+            exeption.printStackTrace();
+            System.err.println("Erro em atualizar");
+            System.exit(-42);
         }
     }
 
-    deletar(String cnpj_empresa) {
+    void deletar(String cnpj_empresa) {
         String DELETAR = "DELETE FROM linlketinder.empresa WHERE cnpj_empresa=?"
         try {
             Connection conn = servicoConectar.conectar();
@@ -145,7 +212,7 @@ class ServicoEmpresa {
                     montarQueryBuscarPorCnpj(),
                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY
-            );
+            )
 
             empresa.setString(1, cnpj_empresa);
             ResultSet res = empresa.executeQuery();
@@ -154,18 +221,16 @@ class ServicoEmpresa {
             res.beforeFirst();
 
             if (qtd > 0) {
-                PreparedStatement del = conn.prepareStatement(DELETAR);
-                del.setString(1, cnpj_empresa);
-                del.executeUpdate();
-                del.close();
-                servicoConectar.(conn);
-                System.out.println("Deletou");
-            } else {
-                System.out.println("não deletou");
+                PreparedStatement del = conn.prepareStatement(DELETAR)
+                del.setString(1, cnpj_empresa)
+                del.executeUpdate()
+                del.close()
+                servicoConectar.desconectar(conn)
             }
-
-        } catch (Exception exeption) {
-           alertaErro("deletar")
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            System.err.println("Erro em deletar");
+            System.exit(-42);
         }
     }
 }

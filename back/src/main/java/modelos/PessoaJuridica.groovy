@@ -3,6 +3,7 @@ package modelos
 class PessoaJuridica extends Pessoa {
     String cnpj
     String pais
+    ArrayList<Competencia> competencias
 
     PessoaJuridica() {}
 
@@ -20,6 +21,15 @@ class PessoaJuridica extends Pessoa {
         super(nome, email, senha, telefone, estado, cep, descricao)
         this.cnpj = cnpj
         this.pais = pais
+    }
+
+    PessoaJuridica(String cnpj, String nome, String email, String telefone, String cep, String descricao) {
+        this.cnpj = cnpj
+        this.nome = nome
+        this.email = email
+        this.telefone = telefone
+        this.cep = cep
+        this.descricao = descricao
     }
 
     @Override

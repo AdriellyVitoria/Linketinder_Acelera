@@ -26,7 +26,7 @@ class ServicoConectarBanco {
         }
     }
 
-    desconectar(Connection conn){
+    static desconectar(Connection conn){
         if(conn != null) {
             try {
                 conn.close();
