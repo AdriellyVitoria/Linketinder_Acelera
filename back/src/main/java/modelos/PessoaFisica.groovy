@@ -8,6 +8,17 @@ class PessoaFisica extends Pessoa {
     PessoaFisica() {}
     
     // constr para imprimir
+    PessoaFisica(String cpf, String nome, String email,
+                 String telefone, String cep, Integer idade, String descricao){
+        this.cpf = cpf
+        this.nome = nome
+        this.email = email
+        this.telefone = telefone
+        this.cep = cep
+        this.idade = idade
+        this.descricao = descricao
+    }
+
     PessoaFisica(Integer id,String cpf, String nome, String email,
                  String telefone, String cep, String descricao){
         this.id = id
@@ -16,6 +27,12 @@ class PessoaFisica extends Pessoa {
         this.email = email
         this.telefone = telefone
         this.cep = cep
+        this.descricao = descricao
+    }
+
+    // para mostra a empresa
+    PessoaFisica(Integer id, String descricao){
+        this.id = id
         this.descricao = descricao
     }
     

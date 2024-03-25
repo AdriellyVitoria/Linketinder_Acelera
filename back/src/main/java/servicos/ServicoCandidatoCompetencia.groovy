@@ -20,7 +20,7 @@ class ServicoCandidatoCompetencia {
                 "where\n" +
                 "\tcc.cpf_candidato = ?"
     }
-    
+
     ArrayList<Competencia> listarCompetencia(String cpf_candidato){
         try {
             Connection conexao = servicoConectar.conectar();

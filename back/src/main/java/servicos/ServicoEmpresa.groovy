@@ -29,7 +29,7 @@ class ServicoEmpresa {
                 "WHERE e.email_empresa = ? AND e.senha_empresa = ?"
     }
 
-    String montarQueryBuscarTodos() {
+    String montarQueryBuscarTodosMatch() {
         return "SELECT \n" +
                 "\te.cnpj_empresa, \n" +
                 "\te.nome_empresa,\n" +
@@ -109,7 +109,7 @@ class ServicoEmpresa {
         try {
             Connection conexao = servicoConectar.conectar();
             PreparedStatement empresa = conexao.prepareStatement(
-                    montarQueryBuscarTodos(),
+                    montarQueryBuscarTodosMatch(),
                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY
             );
@@ -175,24 +175,23 @@ class ServicoEmpresa {
             int qtd = res.getRow();
             res.beforeFirst();
 
-            if(qtd >0){
+            if(qtd > 0){
                 String ATUALIZAR = "UPDATE linlketinder.empresa " +
-                        "SET cnpj_empresa=?, nome_empresa=?, email_empresa=?,\n" +
+                        "SET nome_empresa=?, email_empresa=?,\n" +
                         "senha_empresa=?, telefone_empresa=?, cep_empresa=?,\n" +
                         "estado_empresa=?, pais_empresa=?, descricao_empresa=? " +
                         "WHERE cnpj_empresa=?"
                 PreparedStatement salvar = conn.prepareStatement(ATUALIZAR);
 
-                salvar.setString(1, empresa.getCnpj())
-                salvar.setString(2, empresa.getNome())
-                salvar.setString(3, empresa.getEmail())
-                salvar.setString(4, empresa.getSenha())
-                salvar.setString(5, empresa.getTelefone())
-                salvar.setString(6, empresa.getCep())
-                salvar.setString(7, empresa.getEstado())
-                salvar.setString(8, empresa.getPais())
-                salvar.setString(9, empresa.getDescricao())
-                salvar.setString(10, empresa.getCnpj())
+                salvar.setString(1, empresa.getNome())
+                salvar.setString(2, empresa.getEmail())
+                salvar.setString(3, empresa.getSenha())
+                salvar.setString(4, empresa.getTelefone())
+                salvar.setString(5, empresa.getCep())
+                salvar.setString(6, empresa.getEstado())
+                salvar.setString(7, empresa.getPais())
+                salvar.setString(8, empresa.getDescricao())
+                salvar.setString(9, empresa.getCnpj())
 
                 salvar.executeUpdate();
                 salvar.close();
