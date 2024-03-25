@@ -20,8 +20,8 @@ class ServicoCandidatoCompetencia {
                 "where\n" +
                 "\tcc.cpf_candidato = ?"
     }
-
-    ArrayList<Competencia> buscarCompetencia(String cpf_candidato){
+    
+    ArrayList<Competencia> listarCompetencia(String cpf_candidato){
         try {
             Connection conexao = servicoConectar.conectar();
             PreparedStatement compentenciasQuery = conexao.prepareStatement(
@@ -55,4 +55,56 @@ class ServicoCandidatoCompetencia {
         }
     }
 
+    void deletar(Integer id_competencia, String cpf_candidato){
+        String DELETAR = "DELETE FROM linlketinder.candidato_competencia\n " +
+                "WHERE cpf_candidato =? AND id_competencia =?"
+        try {
+            Connection conn = servicoConectar.conectar();
+            PreparedStatement empresa = conn.prepareStatement(
+                    montarQueryBuscarPorCpf(),
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY
+            )
+
+            empresa.setString(1, cpf_candidato);
+            ResultSet res = empresa.executeQuery();
+            res.last();
+            int qtd = res.getRow();
+            res.beforeFirst();
+
+            if (qtd > 0) {
+                PreparedStatement del = conn.prepareStatement(DELETAR)
+                del.setString(1, cpf_candidato)
+                del.setInt(2, id_competencia)
+                del.executeUpdate()
+                del.close()
+                servicoConectar.desconectar(conn)
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            System.err.println("Erro em deletar");
+            System.exit(-42);
+        }
+    }
+
+    boolean inserir(Integer id_competencia, String cpf_candidato){
+        String INSERIR = "INSERT INTO linlketinder.candidato_competencia(id_competencia, cpf_candidato)" +
+                " VALUES (?, ?)"
+        try {
+            Connection conn = servicoConectar.conectar()
+            PreparedStatement salvar = conn.prepareStatement(INSERIR);
+
+            salvar.setString(1, cpf_candidato)
+            salvar.setInt(2, id_competencia)
+            salvar.executeUpdate();
+            salvar.close();
+            servicoConectar.desconectar(conn);
+            return true
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            System.err.println("Erro em inserir");
+            System.exit(-42);
+        }
+        return false
+    }
 }

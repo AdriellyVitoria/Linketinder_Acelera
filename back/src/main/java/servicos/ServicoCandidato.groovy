@@ -55,7 +55,7 @@ class ServicoCandidato {
                             res.getString(7)
                     )
                     c.setCompetencias(
-                            servicoCompetencia.buscarCompetencia(c.cpf)
+                            servicoCompetencia.listarCompetencia(c.cpf)
                     )
                     return c
                 }

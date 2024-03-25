@@ -20,6 +20,7 @@ class ServicoCompetencia {
     }
 
     void inserir(String competencia) {
+        // tem que passar o nome
         String INSERIR = "INSERT INTO linlketinder.competencia(descricao_competencia) VALUES (?)"
         try {
             Connection conn = servicoConectar.conectar()
@@ -35,7 +36,7 @@ class ServicoCompetencia {
         }
     }
 
-    def listar() {
+    def listarTodas() {
         try {
             Connection conexao = servicoConectar.conectar();
             PreparedStatement empresa = conexao.prepareStatement(

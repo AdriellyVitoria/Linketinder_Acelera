@@ -183,16 +183,16 @@ class ServicoEmpresa {
                         "WHERE cnpj_empresa=?"
                 PreparedStatement salvar = conn.prepareStatement(ATUALIZAR);
 
-                salvar.setString(1, empresa.getCnpj());
-                salvar.setString(2, empresa.getNome());
-                salvar.setString(3, empresa.getEmail());
-                salvar.setString(4, empresa.getSenha());
-                salvar.setString(5, empresa.getTelefone());
-                salvar.setString(6, empresa.getCep());
-                salvar.setString(7, empresa.getEstado());
-                salvar.setString(8, empresa.getPais());
+                salvar.setString(1, empresa.getCnpj())
+                salvar.setString(2, empresa.getNome())
+                salvar.setString(3, empresa.getEmail())
+                salvar.setString(4, empresa.getSenha())
+                salvar.setString(5, empresa.getTelefone())
+                salvar.setString(6, empresa.getCep())
+                salvar.setString(7, empresa.getEstado())
+                salvar.setString(8, empresa.getPais())
                 salvar.setString(9, empresa.getDescricao())
-                salvar.setString(10, empresa.getCnpj());
+                salvar.setString(10, empresa.getCnpj())
 
                 salvar.executeUpdate();
                 salvar.close();
@@ -200,8 +200,8 @@ class ServicoEmpresa {
                 return true
             }
         } catch (Exception exeption) {
-            exeption.printStackTrace();
-            System.err.println("Erro em atualizar");
+            exeption.printStackTrace()
+            System.err.println("Erro em atualizar")
             System.exit(-42);
         }
         return false
