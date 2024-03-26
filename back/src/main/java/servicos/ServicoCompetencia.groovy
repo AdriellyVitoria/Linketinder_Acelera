@@ -38,7 +38,7 @@ class ServicoCompetencia {
 
     def listarTodas() {
         try {
-            Connection conexao = servicoConectar.conectar();
+            Connection conexao = servicoConectar.conectar()
             PreparedStatement empresa = conexao.prepareStatement(
                     montarQueryBuscarTodos(),
                     ResultSet.TYPE_SCROLL_INSENSITIVE,

@@ -11,20 +11,29 @@ class ServicoVagaCompetencia {
 
     private ServicoConectarBanco servicoConectar
 
-    ServicoVagaCompetencia(){
+    ServicoVagaCompetencia() {
         servicoConectar = new ServicoConectarBanco()
     }
 
-    ArrayList<Competencia> buscarCompetencia(String id_Vaga){
+    String buscarCompetencia() {
+        return "SELECT " +
+                "c.id_competencia, " +
+                "c.descricao_competencia " +
+                "FROM linlketinder.vaga_competencia vc " +
+                "JOIN linlketinder.competencia c ON c.id_competencia = vc.id_competencia " +
+                "WHERE vc.id_vaga = ?"
+    }
+
+    ArrayList<Competencia> buscarCompetencia(Integer id_Vaga) {
         try {
             Connection conexao = servicoConectar.conectar();
             PreparedStatement compentenciasQuery = conexao.prepareStatement(
-
+                    buscarCompetencia(),
                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY
             );
 
-            compentenciasQuery.setString(1, id_Vaga);
+            compentenciasQuery.setInt(1, id_Vaga);
             ResultSet res = compentenciasQuery.executeQuery();
 
             res.last();
@@ -32,9 +41,9 @@ class ServicoVagaCompetencia {
             res.beforeFirst();
 
             def competencias = []
-            if (qtd > 0){
+            if (qtd > 0) {
                 while (res.next()) {
-                    Competencia c = Competencia (
+                    Competencia c = new Competencia(
                             res.getInt(1),
                             res.getString(2)
                     )
@@ -55,7 +64,7 @@ class ServicoVagaCompetencia {
         try {
             Connection conn = servicoConectar.conectar();
             PreparedStatement vaga = conn.prepareStatement(
-                    montarQueryBuscarPorCpf(),
+                    buscarCompetencia(),
                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY
             )
@@ -81,7 +90,7 @@ class ServicoVagaCompetencia {
         }
     }
 
-    boolean inserir(Integer id_competencia, String cnpj_empresa){
+    boolean inserir(Integer id_competencia, String cnpj_empresa) {
         String INSERIR = "INSERT INTO linlketinder.empresa_competencia(id_competencia, cpf_empresa)" +
                 " VALUES (?, ?)"
         try {
@@ -101,4 +110,5 @@ class ServicoVagaCompetencia {
         }
         return false
 
+    }
 }

@@ -17,6 +17,7 @@ class CandidatoViews {
     private Integer opcao
     private Menu menu
     private ServicoVaga servicoVaga
+    private CompetenciaViews competencia
 
     CandidatoViews(Menu menu){
         scanner = new Scanner(System.in)
@@ -25,6 +26,7 @@ class CandidatoViews {
         servicoCandidato = new ServicoCandidato()
         this.menu = menu
         servicoVaga =  new ServicoVaga()
+        competencia = new CompetenciaViews()
     }
 
     void entradaCandidato() {
@@ -44,12 +46,15 @@ class CandidatoViews {
                     println("Email ou senha incorretos")
                 }
             } else if (opcao == 2) {
-                System.out.println("Informe o cpf");
-                candidato.cpf = scanner.nextLine();
+                System.out.println("Informe o cpf")
+                candidato.cpf = scanner.nextLine()
                 def inserir = servicoCandidato.inserir(imformacoesCandidato())
-                if (inserir) {
-                    println("Candidato " + candidato.getNome() + " foi inserido com sucesso")
-                    menuPrincipalCandidato()
+                if (inserir ) {
+                    def addCompetencias = competencia.listarCompetencia(candidato.cpf)
+                    if (addCompetencias){
+                        println("Candidato " + candidato.getNome() + " foi inserido com sucesso")
+                        menuPrincipalCandidato()
+                    }
                 } else {
                     println("Erro ao inserir candidato")
                 }
@@ -68,12 +73,7 @@ class CandidatoViews {
             } else if (opcao == 2){
                 println("fazer")
             } else if(opcao == 3) {
-                boolean candidato = servicoCandidato.atualizar(imformacoesCandidato())
-                if (candidato){
-                    println("Atualização com sucesso")
-                } else {
-                    println("falta na atualização")
-                }
+                editarPerfil()
             } else {
                 println("Saindo do programa...")
                 break
@@ -82,12 +82,24 @@ class CandidatoViews {
     }
 
     void listaVagas(){
-        ArrayList listar = servicoVaga.listarTodas()
-        for (Vaga verVagas : listar){
-            println("Id " + verVagas.getId() + ":" + verVagas.getTitulo())
-            println("Descricao: " + verVagas.getDescricao())
-            println("Local: " + verVagas.getLocal())
-            //println("Compentecias: " + )
+        while (true){
+            ArrayList listar = servicoVaga.listarTodas()
+            for (Vaga verVagas : listar){
+                println("Id " + verVagas.getId() + ":" + verVagas.getTitulo())
+                println("Descricao: " + verVagas.getDescricao())
+                println("Local: " + verVagas.getLocal())
+                println("Compentecias: " + verVagas.getCompetencias())
+                println("---------------------------------------")
+            }
+            opcao = input.validaEntradaDeInteiro("1- Aplicar em vaga| 2- Sair", 1, 2)
+            if (opcao == 1){
+                println("Digite o id da vaga para aplicar: ")
+                Integer vagaAplicar =  Integer.parseInt( scanner.nextLine())
+                servicoVaga.aplicar(vagaAplicar)
+            } else {
+                menuPrincipalCandidato()
+                break
+            }
         }
     }
 
@@ -98,7 +110,7 @@ class CandidatoViews {
     void editarPerfil() {
         while (true) {
             opcao = input.validaEntradaDeInteiro(
-                    "1- Ver perfil\n2- Editar perfil\n2- Excluir Perfil\n3- Voltar para o menu principal",
+                    "1- Ver perfil\n2- Editar perfil\n3- Excluir Perfil\n4- Voltar para o menu principal",
                     1, 4)
             if (opcao == 1){
                 ArrayList candidados = servicoCandidato.buscarLista()
@@ -107,10 +119,11 @@ class CandidatoViews {
                     println("Email: " + candidato.getEmail() + "\nTelefone: " + candidato.getTelefone())
                     println("Cep: " + candidato.getCep() + "\nIdade: " + candidato.getIdade())
                     println("Descricao: " + candidato.getDescricao())
-                    //buscar o jeito de imprimir as compentecias um abaixo da outra
-                    //println("Competecias: "+ )
+                    println("Competecias: " + candidato.getCompetencias())
+                    println("--------------------------------------------")
                 }
             } else if(opcao == 2) {
+                candidato.cpf = ServicoLogin.candidato.cpf
                 boolean vericacaoAtualizacao = servicoCandidato.atualizar(imformacoesCandidato())
                 if (vericacaoAtualizacao) {
                     println("O candidato foi atualizando com sucesso")
@@ -119,10 +132,12 @@ class CandidatoViews {
                 }
             } else if (opcao == 3) {
                 opcao = input.validaEntradaDeInteiro(
-                        "Certeza que deseja exluir empresa:\n 1- Sim | 2- Não", 1, 2)
+                        "Certeza que deseja exluir perfil:\n 1- Sim | 2- Não", 1, 2)
                 if (opcao == 1){
                     servicoCandidato.deletar(ServicoLogin.getCandidato().cpf)
                     println("Apagando com sucesso")
+                    menu.menuInicial()
+                    break
                 }
             } else {
                 menuPrincipalCandidato()

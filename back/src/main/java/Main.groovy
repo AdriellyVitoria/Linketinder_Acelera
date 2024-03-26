@@ -7,12 +7,5 @@ class Main {
         def menu =  new Menu()
         menu.menuInicial()
 
-//        def servico = new ServicoCompetencia()
-//        servico.inserir("lua")
-//       def listar = servico.listarTodas()
-//        for (Competencia com : listar){
-//            println("Id " + com.getId() + ":" + com.getDescricao())
-//
-//        }
     }
 }

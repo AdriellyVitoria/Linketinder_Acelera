@@ -61,6 +61,5 @@ class PessoaFisica extends Pessoa {
                 " Estado: ${estado}," +
                 " CEP: ${cep}," +
                 " Descrição: ${descricao},"
-
     }
 }

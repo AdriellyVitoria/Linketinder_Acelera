@@ -40,7 +40,7 @@ class ServicoCandidatoCompetencia {
             def competencias = []
             if (qtd > 0){
                 while (res.next()) {
-                    Competencia c = Competencia (
+                    Competencia c = new Competencia (
                             res.getInt(1),
                             res.getString(2)
                     )

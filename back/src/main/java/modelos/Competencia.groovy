@@ -8,4 +8,13 @@ class Competencia {
         this.id = id
         this.descricao = descricao
     }
+
+    Competencia() {
+
+    }
+
+    @Override
+    String toString(){
+        return "\nId ${id} ${descricao}"
+    }
 }

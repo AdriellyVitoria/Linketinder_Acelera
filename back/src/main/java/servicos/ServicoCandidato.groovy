@@ -29,8 +29,8 @@ class ServicoCandidato {
     }
 
     String montarQueryBuscarTodosMatch(){
-        return "SELECT c.cpf_candidato, c.nome_candidato, c.email_candidato,\n " +
-                "\tc.telefone_candidato, c.cep_candidato, c.idade_candidato, c.descricao_candidato \n " +
+        return "SELECT c.cpf_candidato, c.nome_candidato, c.email_candidato, " +
+                "c.telefone_candidato, c.cep_candidato, c.idade_candidato, c.descricao_candidato " +
                 "FROM linlketinder.candidato AS c WHERE cpf_candidato = ?"
     }
 
@@ -74,21 +74,22 @@ class ServicoCandidato {
         return null
     }
 
-    PessoaFisica buscarLista(){
+    def buscarLista(){
         try {
             Connection conexao = servicoConectar.conectar();
             PreparedStatement candidato = conexao.prepareStatement(
                     montarQueryBuscarTodosMatch(),
                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY
-            );
+            )
+            candidato.setString(1, ServicoLogin.candidato.getCpf())
             ResultSet res = candidato.executeQuery();
 
             res.last();
             int qtd = res.getRow();
             res.beforeFirst();
 
-            def candidatos = []
+            ArrayList<PessoaFisica> candidatos = []
             if (qtd > 0) {
                 while (res.next()) {
                     PessoaFisica e = new PessoaFisica(
@@ -114,18 +115,18 @@ class ServicoCandidato {
         }
     }
 
-     boolean inserir(PessoaFisica candidato){
+    boolean inserir(PessoaFisica candidato){
 
         String INSERIR = "INSERT INTO linlketinder.Candidato(" +
-                "cpf_candidato,\n" +
-                "\tnome_candidato, \n" +
-                "\temail_candidato, \n" +
-                "\tsenha_candidato,\n" +
-                "\ttelefone_candidato, \n" +
-                "\tcep_candidato, \n" +
-                "\testado_candidato,\n" +
-                "\tidade_candidato,\n" +
-                "\tdescricao_candidato) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            "cpf_candidato,\n" +
+            "\tnome_candidato, \n" +
+            "\temail_candidato, \n" +
+            "\tsenha_candidato,\n" +
+            "\ttelefone_candidato, \n" +
+            "\tcep_candidato, \n" +
+            "\testado_candidato,\n" +
+            "\tidade_candidato,\n" +
+            "\tdescricao_candidato) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
             Connection conn = servicoConectar.conectar();
@@ -146,10 +147,15 @@ class ServicoCandidato {
             servicoConectar.desconectar(conn);
             return true
         }catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("Erro a salvar");
+            println ("ERRO AO CADASTRAR")
+            if (e.message.contains("key")) {
+                System.err.println("CPF já cadastrado!");
+            }
+            if (e.message.contains("email")) {
+                System.err.println("Email já cadastrado!");
+            }
+            return false
         }
-         return false
     }
 
     boolean atualizar(PessoaFisica candidato){
@@ -160,7 +166,7 @@ class ServicoCandidato {
                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY
             )
-            candidatos.setString(1, ServicoLogin.getEmpresa().cnpj);
+            candidatos.setString(1, ServicoLogin.candidato.getCpf());
             ResultSet res = candidatos.executeQuery()
 
             res.last()

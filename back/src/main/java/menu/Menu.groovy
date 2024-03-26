@@ -19,14 +19,18 @@ class Menu {
     }
 
     void menuInicial(){
-        opcao = input.validaEntradaDeInteiro("Olá, Bem vindo ao LINKETINDER\n" +
-               "Entrar como:\n1 - Candidato\n2 - Empresa\n3 - Sair", 1, 3)
-        if (opcao == 1) {
-           candidato.entradaCandidato()
-        } else if (opcao == 2) {
-            empresa.opcaoLoginCadastroEmpresa()
-        } else {
-            println("Saindo do programa... Volter sempre")
+        while (true) {
+            opcao = input.validaEntradaDeInteiro("Olá, Bem vindo ao LINKETINDER\n" +
+                    "Entrar como:\n1 - Candidato\n2 - Empresa\n3 - Sair", 1, 3)
+            if (opcao == 1) {
+                candidato.entradaCandidato()
+            } else if (opcao == 2) {
+                empresa.opcaoLoginCadastroEmpresa()
+            } else {
+                println("Saindo do programa... Volter sempre")
+                break
+            }
         }
+
     }
 }

@@ -1,0 +1,4 @@
+package servicos
+
+class ServicoCandidatoVaga {
+}
