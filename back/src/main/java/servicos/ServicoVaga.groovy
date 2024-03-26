@@ -21,19 +21,14 @@ class ServicoVaga {
                 "FROM linlketinder.vaga WHERE cnpj_empresa=? AND id_vaga =?"
     }
 
-    String montarQueryBuscarPorCnpj() {
-        return "SELECT id_vaga, descricao_vaga, titulo_vaga, local_vaga " +
-                "FROM linlketinder.vaga WHERE cnpj_empresa=?"
-    }
-
     String montarQueryBuscarTodas() {
         return "SELECT id_vaga, descricao_vaga, titulo_vaga, local_vaga " +
                 "FROM linlketinder.vaga"
     }
 
-    String montarQueryBuscarPorCpf(){
+    String montarQueryBuscarPorCnpj() {
         return "SELECT id_vaga, descricao_vaga, titulo_vaga, local_vaga " +
-                "FROM linlketinder.vaga WHERE cpf_candidato=?"
+                "FROM linlketinder.vaga WHERE cnpj_empresa=?"
     }
 
     void salvarImformacao(String comado, Vaga vaga){
@@ -59,39 +54,6 @@ class ServicoVaga {
         } catch (Exception exception) {
             exception.printStackTrace();
             System.err.println("Erro em criar" )
-            System.exit(-42);
-        }
-    }
-
-    void aplicar(Integer id_vaga){
-        String APLICAR = "insert into linlketinder.candidato_vaga(cpf_candidato, id_vaga) " +
-                " Values (?, ?)"
-        try {
-            Connection conn = servicoConectar.conectar();
-            PreparedStatement vaga = conn.prepareStatement(
-                    montarQueryBuscarPorCnpj(),
-                    ResultSet.TYPE_SCROLL_INSENSITIVE,
-                    ResultSet.CONCUR_READ_ONLY
-            )
-            def cpf = ServicoLogin.candidato.getCpf()
-            vaga.setString(1, cpf )
-
-            ResultSet res = vaga.executeQuery();
-            res.last();
-            int qtd = res.getRow();
-            res.beforeFirst();
-
-            if (qtd > 0) {
-                PreparedStatement del = conn.prepareStatement(APLICAR)
-                del.setString(1, cpf)
-                del.setInt(2, id_vaga)
-                del.executeUpdate()
-                del.close()
-                servicoConectar.desconectar(conn)
-            }
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            System.err.println("Erro ao aplicar");
             System.exit(-42);
         }
     }
@@ -154,43 +116,6 @@ class ServicoVaga {
                             res.getString(2),
                             res.getString(3),
                             res.getString(4)
-                    )
-                    vagas.add(v)
-                }
-            }
-            return vagas
-        }catch(Exception exception){
-            exception.printStackTrace();
-            System.err.println("Erro em listar" )
-            System.exit(-42);
-        }
-    }
-
-    def listarPorCpf(String cpf_vaga) {
-        try {
-            Connection conn = servicoConectar.conectar();
-            PreparedStatement vaga = conn.prepareStatement(
-                    montarQueryBuscarPorCnpj(),
-                    ResultSet.TYPE_SCROLL_INSENSITIVE,
-                    ResultSet.CONCUR_READ_ONLY
-            )
-            vaga.setString(1, cpf_vaga)
-            ResultSet res = vaga.executeQuery();
-            res.last();
-            int qtd = res.getRow();
-            res.beforeFirst();
-
-            ArrayList<Vaga> vagas = []
-            if(qtd > 0) {
-                while (res.next()) {
-                    Vaga v = new Vaga (
-                            res.getInt(1),
-                            res.getString(2),
-                            res.getString(3),
-                            res.getString(4)
-                    )
-                    v.setCompetencias(
-                            servicoVaga.buscarCompetencia(v.id)
                     )
                     vagas.add(v)
                 }

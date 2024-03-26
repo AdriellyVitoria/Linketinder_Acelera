@@ -24,8 +24,10 @@ class Menu {
                     "Entrar como:\n1 - Candidato\n2 - Empresa\n3 - Sair", 1, 3)
             if (opcao == 1) {
                 candidato.entradaCandidato()
+                break
             } else if (opcao == 2) {
                 empresa.opcaoLoginCadastroEmpresa()
+                break
             } else {
                 println("Saindo do programa... Volter sempre")
                 break

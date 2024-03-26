@@ -4,6 +4,7 @@ import menu.Menu
 import modelos.PessoaFisica
 import modelos.Vaga
 import servicos.ServicoCandidato
+import servicos.ServicoCandidatoVaga
 import servicos.ServicoLogin
 import servicos.ServicoVaga
 import utils.InputValidation
@@ -18,6 +19,7 @@ class CandidatoViews {
     private Menu menu
     private ServicoVaga servicoVaga
     private CompetenciaViews competencia
+    private ServicoCandidatoVaga servicoCandidatoVaga
 
     CandidatoViews(Menu menu){
         scanner = new Scanner(System.in)
@@ -27,6 +29,7 @@ class CandidatoViews {
         this.menu = menu
         servicoVaga =  new ServicoVaga()
         competencia = new CompetenciaViews()
+        servicoCandidatoVaga = new ServicoCandidatoVaga()
     }
 
     void entradaCandidato() {
@@ -60,6 +63,7 @@ class CandidatoViews {
                 }
             } else {
                 menu.menuInicial()
+                break
             }
         }
     }
@@ -95,7 +99,7 @@ class CandidatoViews {
             if (opcao == 1){
                 println("Digite o id da vaga para aplicar: ")
                 Integer vagaAplicar =  Integer.parseInt( scanner.nextLine())
-                servicoVaga.aplicar(vagaAplicar)
+                servicoCandidatoVaga.aplicar(vagaAplicar)
             } else {
                 menuPrincipalCandidato()
                 break

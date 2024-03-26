@@ -10,10 +10,12 @@ import java.sql.ResultSet
 class ServicoEmpresa {
     private ServicoConectarBanco servicoConectar
     private ServicoEmpresaCompetencia servicoCompetencia
+    private ServicoEmpresaCompetencia servicoEmpresaCompetencia
 
     ServicoEmpresa() {
         servicoConectar = new ServicoConectarBanco()
         servicoCompetencia = new ServicoEmpresaCompetencia()
+        servicoEmpresaCompetencia = new ServicoEmpresaCompetencia()
     }
 
     String verificacaoParaLogin(){
@@ -92,7 +94,7 @@ class ServicoEmpresa {
                             res.getString(6)
                     )
                     e.setCompetencias(
-                            servicoCompetencia.buscarCompetencia(e.cnpj)
+                            servicoCompetencia.listarCompetencia(e.cnpj)
                     )
                     return e
                 }
