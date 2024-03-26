@@ -19,9 +19,8 @@ class PessoaFisica extends Pessoa {
         this.descricao = descricao
     }
 
-    PessoaFisica(Integer id,String cpf, String nome, String email,
+    PessoaFisica(String cpf, String nome, String email,
                  String telefone, String cep, String descricao){
-        this.id = id
         this.cpf = cpf
         this.nome = nome
         this.email = email
@@ -30,7 +29,7 @@ class PessoaFisica extends Pessoa {
         this.descricao = descricao
     }
 
-    // para mostra a empresa
+    // para mostra a empresa não vai preciaa
     PessoaFisica(Integer id, String descricao){
         this.id = id
         this.descricao = descricao

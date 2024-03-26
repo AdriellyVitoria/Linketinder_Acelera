@@ -18,9 +18,9 @@ class ServicoCandidato {
     }
 
     String verificacaoParalogin() {
-        return "SELECT c.cpf_candidato, " +
+        return "SELECT c.cpf_candidato," +
                 "c.nome_candidato, " +
-                "c.email_candidato, \n" +
+                "c.email_candidato,\n " +
                 "c.telefone_candidato, " +
                 "c.cep_candidato, " +
                 "c.descricao_candidato\n " +
@@ -53,13 +53,12 @@ class ServicoCandidato {
             if (qtd > 0) {
                 while (res.next()) {
                     PessoaFisica c = new PessoaFisica(
-                            res.getInt(1),
+                            res.getString(1),
                             res.getString(2),
                             res.getString(3),
                             res.getString(4),
                             res.getString(5),
-                            res.getString(6),
-                            res.getString(7)
+                            res.getString(6)
                     )
                     c.setCompetencias(
                             servicoCompetencia.listarCompetencia(c.cpf)
@@ -102,7 +101,7 @@ class ServicoCandidato {
                             res.getString(7)
                     )
                     e.setCompetencias(
-                            servicoCompetencia.listarCompetencia(ServicoLogin.getCandidato().cpf)
+                            servicoCompetencia.listarCompetencia(e.cpf)
                     )
                     candidatos.add(e)
                 }

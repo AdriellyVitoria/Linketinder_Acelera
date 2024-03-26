@@ -29,58 +29,53 @@ class EmpresaViews {
     }
 
     void opcaoLoginCadastroEmpresa() {
-        opcao = input.validaEntradaDeInteiro("1- Login | 2- Cadastra | 3- Voltar",
-                1, 3)
-        if (opcao == 1) {
-            println("Email: ")
-            String email_empresa = scanner.nextLine();
-            println("Senha: ")
-            String senha_empresa = scanner.nextLine();
-            PessoaJuridica empresa = servicoEmpresa.entradaEmpresa(email_empresa, senha_empresa)
-            if (empresa != null) {
-                ServicoLogin.setEmpresa(empresa)
-                menuPrincipalEmpresa()
+        while (true){
+            opcao = input.validaEntradaDeInteiro("1- Login | 2- Cadastra | 3- Voltar",
+                    1, 3)
+            if (opcao == 1) {
+                println("Email: ")
+                String email_empresa = scanner.nextLine();
+                println("Senha: ")
+                String senha_empresa = scanner.nextLine();
+                PessoaJuridica empresa = servicoEmpresa.entradaEmpresa(email_empresa, senha_empresa)
+                if (empresa != null) {
+                    ServicoLogin.setEmpresa(empresa)
+                    menuPrincipalEmpresa()
+                } else {
+                    println("Email ou senha incorretos")
+                }
+            } else if(opcao == 2) {
+                println("Informe o cnpj")
+                empresa.setCnpj(scanner.nextLine())
+                def inserir = servicoEmpresa.inserir(imformacoesEmpresa())
+                if (inserir){
+                    println("Empresa " + empresa.getNome() + " foi inserido com sucesso")
+                    menuPrincipalEmpresa()
+                } else {
+                    println("Error tente novamente")
+                }
             } else {
-                println("Email ou senha incorretos")
+                menu.menuInicial()
+                break
             }
-        } else if(opcao == 2) {
-            println("Informe o cnpj")
-            empresa.setCnpj(scanner.nextLine())
-            def inserir = servicoEmpresa.inserir(imformacoesEmpresa())
-           if (inserir){
-               println("Empresa " + empresa.getNome() + " foi inserido com sucesso")
-               menuPrincipalEmpresa()
-           } else {
-               println("Error tente novamente")
-           }
-        } else {
-           menu.menuInicial()
         }
+
     }
 
     void menuPrincipalEmpresa() {
         while (true) {
             opcao = input.validaEntradaDeInteiro("-----MENU-----" +
-                    "\n1- Menu vaga\n2- Listar Candidatos\n3- Editar perfil\n4- Sair do programa",
-                    1, 4)
+                    "\n1- Menu vaga\n2- Editar perfil\n3- Sair do programa",
+                    1, 3)
             if (opcao == 1){
                 vaga.menuVagas()
-            } else if (opcao == 2){
-               listarCandidatos()
-                //canditato.listar
-                // perguntar se deseja curtir alguem, se ele curti
-                // na hora de imprimir deve imforma que aquele candidato já foi curtido
-            } else if (opcao == 3) {
+            } else if (opcao == 3){
                 editarEmpresa()
             } else {
                 println("Volte Sempre...")
                 break
             }
         }
-    }
-
-    void listarCandidatos() {
-        println("para listar candidato vai ser descricao e competencia vc vai precisar usar um join para lista todos os candidatos")
     }
 
     void editarEmpresa(){
@@ -97,7 +92,7 @@ class EmpresaViews {
                 if (verificacaoNull){
                     println("A empresa foi atualizando com sucesso")
                 } else {
-                    println("Cnpj da empresa não existe, tente novamente")
+                    println("tente novamente")
                 }
             } else if(opcao == 2){
                 opcao = input.validaEntradaDeInteiro(
@@ -109,6 +104,7 @@ class EmpresaViews {
                 }
             } else {
                 menuPrincipalEmpresa()
+                break
             }
         }
     }

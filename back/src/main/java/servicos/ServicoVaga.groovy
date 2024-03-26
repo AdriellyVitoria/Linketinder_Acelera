@@ -24,6 +24,11 @@ class ServicoVaga {
                 "FROM linlketinder.vaga WHERE cnpj_empresa=?"
     }
 
+    String montarQueryBuscarTodas() {
+        return "SELECT id_vaga, descricao_vaga, titulo_vaga, local_vaga " +
+                "FROM linlketinder.vaga"
+    }
+
     void salvarImformacao(String comado, Vaga vaga){
         Connection conn = servicoConectar.conectar()
         PreparedStatement salvar = conn.prepareStatement(comado);
@@ -51,16 +56,14 @@ class ServicoVaga {
         }
     }
 
-     def listar(String cnpj_vaga) {
+    def listarTodas() {
         try {
             Connection conn = servicoConectar.conectar();
             PreparedStatement vaga = conn.prepareStatement(
-                    montarQueryBuscarPorCnpj(),
+                    montarQueryBuscarTodas(),
                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY
             )
-
-            vaga.setString(1, cnpj_vaga)
             ResultSet res = vaga.executeQuery();
             res.last();
             int qtd = res.getRow();
@@ -75,11 +78,43 @@ class ServicoVaga {
                             res.getString(3),
                             res.getString(4)
                     )
-
                     vagas.add(v)
                 }
             }
+            return vagas
+        }catch(Exception exception){
+            exception.printStackTrace();
+            System.err.println("Erro em listar" )
+            System.exit(-42);
+        }
+    }
 
+     def listar(String cnpj_vaga) {
+        try {
+            Connection conn = servicoConectar.conectar();
+            PreparedStatement vaga = conn.prepareStatement(
+                    montarQueryBuscarPorCnpj(),
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY
+            )
+            //        vaga.setString(1, cnpj_vaga)
+            ResultSet res = vaga.executeQuery();
+            res.last();
+            int qtd = res.getRow();
+            res.beforeFirst();
+
+            ArrayList<Vaga> vagas = []
+            if(qtd > 0) {
+                while (res.next()) {
+                    Vaga v = new Vaga (
+                            res.getInt(1),
+                            res.getString(2),
+                            res.getString(3),
+                            res.getString(4)
+                    )
+                    vagas.add(v)
+                }
+            }
             return vagas
         }catch(Exception exception){
             exception.printStackTrace();

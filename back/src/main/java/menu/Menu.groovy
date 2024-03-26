@@ -13,13 +13,13 @@ class Menu {
 
     Menu() {
         input = new InputValidation()
-        candidato = new CandidatoViews()
+        candidato = new CandidatoViews(this)
         empresa = new EmpresaViews(this)
         opcao
     }
 
     void menuInicial(){
-       opcao = input.validaEntradaDeInteiro("Olá, Bem vindo ao LINKETINDER\n" +
+        opcao = input.validaEntradaDeInteiro("Olá, Bem vindo ao LINKETINDER\n" +
                "Entrar como:\n1 - Candidato\n2 - Empresa\n3 - Sair", 1, 3)
         if (opcao == 1) {
            candidato.entradaCandidato()

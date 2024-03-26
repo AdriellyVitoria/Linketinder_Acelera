@@ -7,30 +7,24 @@ import java.sql.Connection
 import java.sql.PreparedStatement
 import java.sql.ResultSet
 
-class ServicoCandidatoCompetencia {
-    def servicoConectar = new ServicoConectarBanco()
+class ServicoVagaCompetencia {
 
-    String montarQueryBuscarPorCpf() {
-        return "select " +
-                "\tc.id_competencia, " +
-                "\tc.descricao_competencia " +
-                "from " +
-                "\tlinlketinder.candidato_competencia AS cc " +
-                "\tjoin linlketinder.competencia AS c on c.id_competencia = cc.id_competencia " +
-                "where " +
-                "\tcc.cpf_candidato = ?"
+    private ServicoConectarBanco servicoConectar
+
+    ServicoVagaCompetencia(){
+        servicoConectar = new ServicoConectarBanco()
     }
 
-    ArrayList<Competencia> listarCompetencia(String cpf_candidato){
+    ArrayList<Competencia> buscarCompetencia(String id_Vaga){
         try {
             Connection conexao = servicoConectar.conectar();
             PreparedStatement compentenciasQuery = conexao.prepareStatement(
-                    montarQueryBuscarPorCpf(),
+
                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY
             );
 
-            compentenciasQuery.setString(1, cpf_candidato);
+            compentenciasQuery.setString(1, id_Vaga);
             ResultSet res = compentenciasQuery.executeQuery();
 
             res.last();
@@ -55,26 +49,26 @@ class ServicoCandidatoCompetencia {
         }
     }
 
-    void deletar(Integer id_competencia, String cpf_candidato){
-        String DELETAR = "DELETE FROM linlketinder.candidato_competencia\n " +
-                "WHERE cpf_candidato =? AND id_competencia =?"
+    void deletar(Integer id_competencia, String cnpj_empresa) {
+        String DELETAR = "DELETE FROM linlketinder.empresa_competencia\n " +
+                "WHERE cnpj_empresa =? AND id_competencia =?"
         try {
             Connection conn = servicoConectar.conectar();
-            PreparedStatement candidato = conn.prepareStatement(
+            PreparedStatement vaga = conn.prepareStatement(
                     montarQueryBuscarPorCpf(),
                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY
             )
 
-            candidato.setString(1, cpf_candidato);
-            ResultSet res = candidato.executeQuery();
+            vaga.setString(1, cnpj_empresa);
+            ResultSet res = vaga.executeQuery();
             res.last();
             int qtd = res.getRow();
             res.beforeFirst();
 
             if (qtd > 0) {
                 PreparedStatement del = conn.prepareStatement(DELETAR)
-                del.setString(1, cpf_candidato)
+                del.setString(1, cnpj_empresa)
                 del.setInt(2, id_competencia)
                 del.executeUpdate()
                 del.close()
@@ -87,14 +81,14 @@ class ServicoCandidatoCompetencia {
         }
     }
 
-    boolean inserir(Integer id_competencia, String cpf_candidato){
-        String INSERIR = "INSERT INTO linlketinder.candidato_competencia(id_competencia, cpf_candidato)" +
+    boolean inserir(Integer id_competencia, String cnpj_empresa){
+        String INSERIR = "INSERT INTO linlketinder.empresa_competencia(id_competencia, cpf_empresa)" +
                 " VALUES (?, ?)"
         try {
             Connection conn = servicoConectar.conectar()
             PreparedStatement salvar = conn.prepareStatement(INSERIR);
 
-            salvar.setString(1, cpf_candidato)
+            salvar.setString(1, cnpj_empresa)
             salvar.setInt(2, id_competencia)
             salvar.executeUpdate();
             salvar.close();
@@ -106,5 +100,5 @@ class ServicoCandidatoCompetencia {
             System.exit(-42);
         }
         return false
-    }
+
 }
