@@ -18,7 +18,7 @@ class CandidatoViews {
     private Integer opcao
     private Menu menu
     private ServicoVaga servicoVaga
-    private CompetenciaViews competencia
+    private CompetenciaViews competenciaViews
     private ServicoCandidatoVaga servicoCandidatoVaga
 
     CandidatoViews(Menu menu){
@@ -28,7 +28,7 @@ class CandidatoViews {
         servicoCandidato = new ServicoCandidato()
         this.menu = menu
         servicoVaga =  new ServicoVaga()
-        competencia = new CompetenciaViews()
+        competenciaViews = new CompetenciaViews()
         servicoCandidatoVaga = new ServicoCandidatoVaga()
     }
 
@@ -53,7 +53,7 @@ class CandidatoViews {
                 candidato.cpf = scanner.nextLine()
                 def inserir = servicoCandidato.inserir(imformacoesCandidato())
                 if (inserir ) {
-                    def addCompetencias = competencia.listarCompetencia(candidato.cpf)
+                    def addCompetencias = competenciaViews.inserirCompetenciaCandidato(candidato.cpf)
                     if (addCompetencias){
                         println("Candidato " + candidato.getNome() + " foi inserido com sucesso")
                         menuPrincipalCandidato()

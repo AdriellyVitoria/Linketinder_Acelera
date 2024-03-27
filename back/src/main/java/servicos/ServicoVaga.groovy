@@ -31,6 +31,7 @@ class ServicoVaga {
                 "FROM linlketinder.vaga WHERE cnpj_empresa=?"
     }
 
+
     void salvarImformacao(String comado, Vaga vaga){
         Connection conn = servicoConectar.conectar()
         PreparedStatement salvar = conn.prepareStatement(comado);
@@ -94,7 +95,7 @@ class ServicoVaga {
         }
     }
 
-     def listar(String cnpj_vaga) {
+     def listar(String cnpj_empresa) {
         try {
             Connection conn = servicoConectar.conectar();
             PreparedStatement vaga = conn.prepareStatement(
@@ -102,7 +103,7 @@ class ServicoVaga {
                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY
             )
-            //        vaga.setString(1, cnpj_vaga)
+            vaga.setString(1, cnpj_empresa)
             ResultSet res = vaga.executeQuery();
             res.last();
             int qtd = res.getRow();
@@ -163,7 +164,7 @@ class ServicoVaga {
             }
         } catch (Exception exeption) {
             exeption.printStackTrace();
-            System.err.println("Erro em atualizar");
+            System.err.println("Erro em atualizarDescricao");
             System.exit(-42);
         }
     }

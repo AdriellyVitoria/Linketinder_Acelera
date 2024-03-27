@@ -25,7 +25,6 @@ class EmpresaViews {
         vaga = new VagaViews(this)
         this.menu = menu
         candidato = new ServicoCandidato()
-        opcao
     }
 
     void opcaoLoginCadastroEmpresa() {
@@ -59,7 +58,6 @@ class EmpresaViews {
                 break
             }
         }
-
     }
 
     void menuPrincipalEmpresa() {

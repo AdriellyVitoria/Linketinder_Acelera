@@ -202,7 +202,7 @@ class ServicoEmpresa {
             }
         } catch (Exception exeption) {
             exeption.printStackTrace()
-            System.err.println("Erro em atualizar")
+            System.err.println("Erro em atualizarDescricao")
             System.exit(-42);
         }
         return false

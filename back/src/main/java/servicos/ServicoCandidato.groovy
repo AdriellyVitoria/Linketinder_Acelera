@@ -118,14 +118,14 @@ class ServicoCandidato {
     boolean inserir(PessoaFisica candidato){
 
         String INSERIR = "INSERT INTO linlketinder.Candidato(" +
-            "cpf_candidato,\n" +
-            "\tnome_candidato, \n" +
-            "\temail_candidato, \n" +
-            "\tsenha_candidato,\n" +
-            "\ttelefone_candidato, \n" +
-            "\tcep_candidato, \n" +
-            "\testado_candidato,\n" +
-            "\tidade_candidato,\n" +
+            "cpf_candidato," +
+            "\tnome_candidato, " +
+            "\temail_candidato, " +
+            "\tsenha_candidato," +
+            "\ttelefone_candidato, " +
+            "\tcep_candidato, " +
+            "\testado_candidato," +
+            "\tidade_candidato," +
             "\tdescricao_candidato) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
@@ -198,7 +198,7 @@ class ServicoCandidato {
             }
         } catch (Exception exeption) {
             exeption.printStackTrace()
-            System.err.println("Erro em atualizar")
+            System.err.println("Erro em atualizarDescricao")
             System.exit(-42);
         }
         return false

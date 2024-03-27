@@ -13,14 +13,15 @@ class VagaViews {
     private Scanner scanner
     private Integer opcao
     private EmpresaViews empresa
+    private CompetenciaViews competenciaViews
 
     VagaViews(EmpresaViews empresa) {
         inputValidation = new InputValidation()
         servicoVaga = new ServicoVaga()
         vaga = new Vaga()
         scanner = new Scanner(System.in)
-        this.opcao = opcao
         this.empresa = empresa
+        competenciaViews = new CompetenciaViews()
     }
 
     void menuVagas() {
@@ -33,8 +34,11 @@ class VagaViews {
                 if (criar != null) {
                     println("Erro ao criar vaga")
                 } else {
-                    println("Vaga criada com sucesso")
-                    menuVagas()
+                    boolean addCompetencia = competenciaViews.inserirCompetenciaEmpresa(ServicoLogin.empresa.getCnpj())
+                    if (addCompetencia) {
+                        println("Vaga criada com sucesso")
+                        menuVagas()
+                    }
                 }
             } else if(opcao == 2){
                 listar(ServicoLogin.getEmpresa().cnpj)
@@ -73,6 +77,7 @@ class VagaViews {
                 println("Descrição: " + vaga.getDescricao());
                 println("Título: " + vaga.getTitulo());
                 println("Local: " + vaga.getLocal());
+                println("Compentecias: " + vaga.getCompetencias())
                 println("----------------------------------");
             }
             return true
@@ -83,6 +88,31 @@ class VagaViews {
     }
 
     void atualizar(){
+        opcao = inputValidation.validaEntradaDeInteiro("1- Atualizar descrição |2- Atualizar Competencia",
+        1, 2)
+        if (opcao == 1){
+            atualizarDescricao()
+        } else if (opcao == 2) {
+            atualizarCompetencia()
+        }
+    }
+
+    void atualizarCompetencia() {
+        opcao = inputValidation.validaEntradaDeInteiro("1- Add mais competencia |2- Deletar competencia",
+        1, 2)
+        if (opcao == 1) {
+            boolean addCompetencia = competenciaViews.inserirCompetenciaEmpresa(
+                    ServicoLogin.empresa.getCnpj())
+            if (addCompetencia){
+                println("Compentecias atualizadas")
+            }
+        } else {
+            boolean removerCompetencia = competenciaViews.deletar()
+            println("pega as compe de vaga")
+        }
+
+    }
+    void atualizarDescricao(){
         boolean listarVaga = listar(ServicoLogin.getEmpresa().cnpj)
         if (listarVaga) {
             opcao = inputValidation.validaEntradaDeInteiro("1- Digita o id para editar | 2- Voltar",

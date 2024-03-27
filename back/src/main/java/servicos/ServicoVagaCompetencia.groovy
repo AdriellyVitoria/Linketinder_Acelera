@@ -91,14 +91,14 @@ class ServicoVagaCompetencia {
     }
 
     boolean inserir(Integer id_competencia, String cnpj_empresa) {
-        String INSERIR = "INSERT INTO linlketinder.empresa_competencia(id_competencia, cpf_empresa)" +
+        String INSERIR = "INSERT INTO linlketinder.empresa_competencia(id_competencia, cnpj_empresa)" +
                 " VALUES (?, ?)"
         try {
             Connection conn = servicoConectar.conectar()
             PreparedStatement salvar = conn.prepareStatement(INSERIR);
+            salvar.setInt(1, id_competencia)
+            salvar.setString(2, cnpj_empresa)
 
-            salvar.setString(1, cnpj_empresa)
-            salvar.setInt(2, id_competencia)
             salvar.executeUpdate();
             salvar.close();
             servicoConectar.desconectar(conn);
@@ -109,6 +109,5 @@ class ServicoVagaCompetencia {
             System.exit(-42);
         }
         return false
-
     }
 }

@@ -114,7 +114,7 @@
 //            System.err.println("Erro a salvar");
 //        }
 ////    }
-//    public static void atualizar() {
+//    public static void atualizarDescricao() {
 //        System.out.println("Informe o cpf do Candidato para atualização: ");
 //        String cpf_candidato = scanner.nextLine();
 //
@@ -153,7 +153,7 @@
 //            }
 //        } catch (Exception e) {
 //           e.printStackTrace();
-//           System.err.println("Não foi possivel atualizar Candidato");
+//           System.err.println("Não foi possivel atualizarDescricao Candidato");
 //           System.exit(-42);
 //        }
 //    }
@@ -197,14 +197,14 @@
 //        }
 //    }
 //    public static void menu(){
-//        System.out.println(" 1-listas 2-inserir 3-atualizar 4- deletar");
+//        System.out.println(" 1-listas 2-inserir 3-atualizarDescricao 4- deletar");
 //        int opcao = Integer.parseInt((scanner.nextLine()));
 //        if(opcao == 1) {
 //            listar();
 //        } else if (opcao == 2) {
 //            inserir();
 //        } else if (opcao == 3) {
-//            atualizar();
+//            atualizarDescricao();
 //        } else if (opcao == 4) {
 //            deletar();
 //        } else {
