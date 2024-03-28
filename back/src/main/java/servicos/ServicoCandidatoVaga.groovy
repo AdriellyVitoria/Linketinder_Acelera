@@ -16,9 +16,9 @@ class ServicoCandidatoVaga {
         servicoVaga = new ServicoVagaCompetencia()
     }
 
-    String montarQueryBuscarPorCnpj() {
+    String montarQueryBuscar() {
         return "SELECT id_vaga, descricao_vaga, titulo_vaga, local_vaga " +
-                "FROM linlketinder.vaga WHERE cnpj_empresa=?"
+                "FROM linlketinder.vaga"
     }
 
     String montarQueryBuscarPorCpf(){
@@ -28,11 +28,11 @@ class ServicoCandidatoVaga {
 
     String listarVagasAplicadas(){
         return  "SELECT " +
-                "v.id_vaga," +
+                "v.id_vaga, " +
                 "v.descricao_vaga," +
                 "v.titulo_vaga," +
                 "v.local_vaga " +
-                "FROM" +
+                "FROM " +
                 "linlketinder.vaga v " +
                 "JOIN linlketinder.candidato_vaga cv ON cv.id_vaga = v.id_vaga " +
                 "WHERE cv.cpf_candidato = ?"
@@ -44,16 +44,15 @@ class ServicoCandidatoVaga {
         try {
             Connection conn = servicoConectar.conectar();
             PreparedStatement vaga = conn.prepareStatement(
-                    montarQueryBuscarPorCnpj(),
+                    montarQueryBuscar(),
                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY
             )
             def cpf = ServicoLogin.candidato.getCpf()
-            vaga.setString(1, cpf )
 
-            ResultSet res = vaga.executeQuery();
-            res.last();
-            int qtd = res.getRow();
+            ResultSet res = vaga.executeQuery()
+            res.last()
+            int qtd = res.getRow()
             res.beforeFirst();
 
             if (qtd > 0) {
@@ -65,13 +64,17 @@ class ServicoCandidatoVaga {
                 servicoConectar.desconectar(conn)
             }
         } catch (Exception exception) {
-            exception.printStackTrace();
-            System.err.println("Erro ao aplicar");
-            System.exit(-42);
+            System.err.println("Erro ao aplicar para vaga")
+            if (exception.message.contains("candidato_vaga_id_vaga_fkey")){
+                System.err.println("Essa vaga não existe")
+            }
+            if (exception.message.contains("candidato_vaga_pkey")){
+                System.err.println("Voce já aplicou nessa vaga")
+            }
         }
     }
 
-    def listarPorCpf(String cpf_vaga) {
+    def listarPorCpf(String cpf_candidato) {
         try {
             Connection conn = servicoConectar.conectar();
             PreparedStatement vaga = conn.prepareStatement(
@@ -79,11 +82,12 @@ class ServicoCandidatoVaga {
                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY
             )
-            vaga.setString(1, cpf_vaga)
-            ResultSet res = vaga.executeQuery();
-            res.last();
-            int qtd = res.getRow();
-            res.beforeFirst();
+            vaga.setString(1, cpf_candidato)
+
+            ResultSet res = vaga.executeQuery()
+            res.last()
+            int qtd = res.getRow()
+            res.beforeFirst()
 
             ArrayList<Vaga> vagas = []
             if(qtd > 0) {
@@ -102,9 +106,7 @@ class ServicoCandidatoVaga {
             }
             return vagas
         }catch(Exception exception){
-            exception.printStackTrace();
             System.err.println("Erro em listar" )
-            System.exit(-42);
         }
     }
 

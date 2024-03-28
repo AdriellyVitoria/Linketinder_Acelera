@@ -25,6 +25,7 @@ class CompetenciaViews {
         scanner = new Scanner(System.in)
         servicoCompetencia = new ServicoCompetencia()
         vagaCompetencia = new  ServicoVagaCompetencia()
+
     }
 
     void listarCompetenciaEmAtualizar() {
@@ -47,7 +48,7 @@ class CompetenciaViews {
             candidatoCompetencia.inserir(id_competencia, cpf)
             opcao = input.validaEntradaDeInteiro("1- Adicionar mais Competencia| " +
                     "2- Outra Competencia | 3- Concluido",
-                    1, 2)
+                    1, 3)
             if (opcao == 2) {
                 inserirNovaCompetencia()
             } else if (opcao == 3){
@@ -65,7 +66,7 @@ class CompetenciaViews {
             vagaCompetencia.inserir(id_competencia, cnpj)
             opcao = input.validaEntradaDeInteiro("1- Adicionar mais Competencia| " +
                     "2- Outra Competencia | 3- Concluido",
-                    1, 2)
+                    1, 3)
             if (opcao == 2) {
                 inserirNovaCompetencia()
             } else if (opcao == 3){
@@ -78,16 +79,23 @@ class CompetenciaViews {
     void inserirNovaCompetencia() {
         println("Digite sua nova Compencia:")
         String competenciaNova = scanner.nextLine()
-        boolean verificacaoDeSalvamento = servicoCompetencia.inserir(competenciaNova)
-        if (verificacaoDeSalvamento) {
-            println("Competencia nova add")
-        }
+        servicoCompetencia.inserir(competenciaNova)
     }
 
     void deletar(){
-        def listar = servicoCompetencia.listarTodasComCnpj()
+        def listar = candidatoCompetencia.listarCompetencia(
+                ServicoLogin.candidato.getCpf()
+        )
         for (Competencia com : listar) {
             println("Id " + com.getId() + ":" + com.getDescricao())
+        }
+        println("Digite o id competencia que deseja apagar:")
+        Integer idApagar = Integer.parseInt(scanner.nextLine())
+        boolean apagarCompetencia = candidatoCompetencia.deletar(idApagar, ServicoLogin.candidato.getCpf())
+        if (apagarCompetencia){
+            println("Apagando com sucesso")
+        } else {
+
         }
     }
 }

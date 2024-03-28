@@ -32,8 +32,7 @@ class ServicoCompetencia {
                 "c.descricao_competencia"
     }
 
-    void inserir(String competencia) {
-        // tem que passar o nome
+    boolean inserir(String competencia) {
         String INSERIR = "INSERT INTO linlketinder.competencia(descricao_competencia) VALUES (?)"
         try {
             Connection conn = servicoConectar.conectar()
@@ -41,12 +40,14 @@ class ServicoCompetencia {
             salvar.setString(1, competencia)
             salvar.executeUpdate();
             salvar.close();
-            servicoConectar.desconectar(conn);
+            servicoConectar.desconectar(conn)
+            return true
         } catch (Exception exception) {
             exception.printStackTrace();
             System.err.println("Erro em inserir");
             System.exit(-42);
         }
+        return false
     }
 
     def listarTodas() {

@@ -55,7 +55,7 @@ class ServicoCandidatoCompetencia {
         }
     }
 
-    void deletar(Integer id_competencia, String cpf_candidato){
+    boolean deletar(Integer id_competencia, String cpf_candidato){
         String DELETAR = "DELETE FROM linlketinder.candidato_competencia\n " +
                 "WHERE cpf_candidato =? AND id_competencia =?"
         try {
@@ -80,10 +80,9 @@ class ServicoCandidatoCompetencia {
                 del.close()
                 servicoConectar.desconectar(conn)
             }
+            return true
         } catch (Exception exception) {
-            exception.printStackTrace();
-            System.err.println("Erro em deletar");
-            System.exit(-42);
+            System.err.println("voce não possue essa competencia")
         }
     }
 
@@ -92,18 +91,22 @@ class ServicoCandidatoCompetencia {
                 " VALUES (?, ?)"
         try {
             Connection conn = servicoConectar.conectar()
-            PreparedStatement salvar = conn.prepareStatement(INSERIR);
+            PreparedStatement salvar = conn.prepareStatement(INSERIR)
 
-            salvar.setString(1, cpf_candidato)
-            salvar.setInt(2, id_competencia)
+            salvar.setInt(1, id_competencia)
+            salvar.setString(2, cpf_candidato)
             salvar.executeUpdate();
             salvar.close();
             servicoConectar.desconectar(conn);
             return true
         } catch (Exception exception) {
-            exception.printStackTrace();
-            System.err.println("Erro em inserir");
-            System.exit(-42);
+            System.err.println("Erro ao aplicar para vaga")
+            if (exception.message.contains("candidato_vaga_id_vaga_fkey")){
+                System.err.println("Essa vaga não existe")
+            }
+            if (exception.message.contains("candidato_competencia_pkey")){
+                System.err.println("Voce já inserir essa competencia")
+            }
         }
         return false
     }

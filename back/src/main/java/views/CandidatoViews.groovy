@@ -4,6 +4,7 @@ import menu.Menu
 import modelos.PessoaFisica
 import modelos.Vaga
 import servicos.ServicoCandidato
+import servicos.ServicoCandidatoCompetencia
 import servicos.ServicoCandidatoVaga
 import servicos.ServicoLogin
 import servicos.ServicoVaga
@@ -20,6 +21,7 @@ class CandidatoViews {
     private ServicoVaga servicoVaga
     private CompetenciaViews competenciaViews
     private ServicoCandidatoVaga servicoCandidatoVaga
+    private ServicoCandidatoCompetencia servicoCandidatoCompetencia
 
     CandidatoViews(Menu menu){
         scanner = new Scanner(System.in)
@@ -30,6 +32,7 @@ class CandidatoViews {
         servicoVaga =  new ServicoVaga()
         competenciaViews = new CompetenciaViews()
         servicoCandidatoVaga = new ServicoCandidatoVaga()
+        servicoCandidatoCompetencia = new ServicoCandidatoCompetencia()
     }
 
     void entradaCandidato() {
@@ -75,7 +78,7 @@ class CandidatoViews {
             if (opcao == 1) {
                 listaVagas()
             } else if (opcao == 2){
-                println("fazer")
+               listarVagasAplicadas()
             } else if(opcao == 3) {
                 editarPerfil()
             } else {
@@ -98,17 +101,23 @@ class CandidatoViews {
             opcao = input.validaEntradaDeInteiro("1- Aplicar em vaga| 2- Sair", 1, 2)
             if (opcao == 1){
                 println("Digite o id da vaga para aplicar: ")
-                Integer vagaAplicar =  Integer.parseInt( scanner.nextLine())
+                Integer vagaAplicar = Integer.parseInt( scanner.nextLine())
                 servicoCandidatoVaga.aplicar(vagaAplicar)
             } else {
-                menuPrincipalCandidato()
                 break
             }
         }
     }
 
     void listarVagasAplicadas() {
-
+       def listaAplicada = servicoCandidatoVaga.listarPorCpf(ServicoLogin.candidato.getCpf())
+        for (Vaga verVagas : listaAplicada) {
+            println("Id " + verVagas.getId() + ":" + verVagas.getTitulo())
+            println("Descricao: " + verVagas.getDescricao())
+            println("Local: " + verVagas.getLocal())
+            println("Compentecias: " + verVagas.getCompetencias())
+            println("---------------------------------------")
+        }
     }
 
     void editarPerfil() {
@@ -128,11 +137,12 @@ class CandidatoViews {
                 }
             } else if(opcao == 2) {
                 candidato.cpf = ServicoLogin.candidato.cpf
-                boolean vericacaoAtualizacao = servicoCandidato.atualizar(imformacoesCandidato())
-                if (vericacaoAtualizacao) {
-                    println("O candidato foi atualizando com sucesso")
-                } else {
-                    println("tente novamente")
+                opcao = input.validaEntradaDeInteiro("1- Editar descricao | 2- Editar Competencia | 3- Voltar",
+                1, 3)
+                if (opcao == 1) {
+                    editarDescricao()
+                } else if (opcao == 2){
+                    editarCompetencia()
                 }
             } else if (opcao == 3) {
                 opcao = input.validaEntradaDeInteiro(
@@ -144,35 +154,63 @@ class CandidatoViews {
                     break
                 }
             } else {
-                menuPrincipalCandidato()
                 break
             }
         }
     }
 
+    void editarDescricao(){
+        boolean vericacaoAtualizacao = servicoCandidato.atualizar(imformacoesCandidato())
+        if (vericacaoAtualizacao) {
+            println("O candidato foi atualizando com sucesso")
+        } else {
+            println("tente novamente")
+        }
+    }
+
+    void editarCompetencia(){
+        while (true){
+            opcao = input.validaEntradaDeInteiro("1- Add nova Competencia| 2- Apagar Competencia| 3- Voltar",
+                    1, 3)
+            if (opcao == 1){
+                def addCompetencias = competenciaViews.inserirCompetenciaCandidato(candidato.cpf)
+                if (addCompetencias) {
+                    println("Atualizando com sucesso")
+                } else {
+                    println("Erro")
+                }
+            } else if (opcao == 2){
+                competenciaViews.deletar()
+            } else if (opcao == 3) {
+                break
+            }
+        }
+
+    }
+
     PessoaFisica imformacoesCandidato(){
-        System.out.println("Informe o nome ");
+        println("Informe o nome ");
         candidato.nome = scanner.nextLine();
 
-        System.out.println("Informe o email ");
+        println("Informe o email ");
         candidato.email = scanner.nextLine()
 
-        System.out.println("Informe a senha ");
+        println("Informe a senha ");
         candidato.senha = scanner.nextLine()
 
-        System.out.println("Informe o telefone ");
+        println("Informe o telefone ");
         candidato.telefone = scanner.nextLine()
 
-        System.out.println("Informe o cep ");
+        println("Informe o cep ");
         candidato.cep = scanner.nextLine()
 
-        System.out.println("Informe o estado ");
+        println("Informe o estado ");
         candidato.estado = scanner.nextLine()
 
-        System.out.println("Informe a descricao");
+        println("Informe a descricao");
         candidato.descricao = scanner.nextLine();
 
-        System.out.println("Informe a idade ");
+        println("Informe a idade ");
         candidato.idade = Integer.parseInt(scanner.nextLine())
 
         return candidato
