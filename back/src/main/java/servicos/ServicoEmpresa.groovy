@@ -9,38 +9,24 @@ import java.sql.ResultSet
 
 class ServicoEmpresa {
     private ServicoConectarBanco servicoConectar
-    private ServicoEmpresaCompetencia servicoCompetencia
-    private ServicoEmpresaCompetencia servicoEmpresaCompetencia
 
     ServicoEmpresa() {
         servicoConectar = new ServicoConectarBanco()
-        servicoCompetencia = new ServicoEmpresaCompetencia()
-        servicoEmpresaCompetencia = new ServicoEmpresaCompetencia()
     }
 
     String verificacaoParaLogin(){
-        return "SELECT \n" +
+        return "SELECT " +
                 "e.cnpj_empresa," +
                 "e.nome_empresa," +
                 "e.email_empresa," +
                 "e.telefone_empresa," +
-                "e.cep_empresa,\n" +
-                "e.descricao_empresa" +
+                "e.cep_empresa," +
+                "e.descricao_empresa," +
+                "e.estado_empresa," +
+                "e.pais_empresa" +
                 " FROM " +
                 "linlketinder.empresa AS e " +
                 "WHERE e.email_empresa = ? AND e.senha_empresa = ?"
-    }
-
-    String montarQueryBuscarTodosMatch() {
-        return "SELECT \n" +
-                "\te.cnpj_empresa, \n" +
-                "\te.nome_empresa,\n" +
-                "\te.email_empresa,\n" +
-                "\te.telefone_empresa,\n" +
-                "\te.cep_empresa,\n" +
-                "\te.descricao_empresa\t\n" +
-                "FROM \n" +
-                "\tlinlketinder.empresa AS e"
     }
 
     String montarQueryBuscarPorCnpj(){
@@ -91,10 +77,9 @@ class ServicoEmpresa {
                             res.getString(3),
                             res.getString(4),
                             res.getString(5),
-                            res.getString(6)
-                    )
-                    e.setCompetencias(
-                            servicoCompetencia.listarCompetencia(e.cnpj)
+                            res.getString(6),
+                            res.getString(7),
+                            res.getString(8)
                     )
                     return e
                 }
@@ -107,45 +92,6 @@ class ServicoEmpresa {
         return null
     }
 
-    PessoaJuridica buscarLista() {
-        try {
-            Connection conexao = servicoConectar.conectar();
-            PreparedStatement empresa = conexao.prepareStatement(
-                    montarQueryBuscarTodosMatch(),
-                    ResultSet.TYPE_SCROLL_INSENSITIVE,
-                    ResultSet.CONCUR_READ_ONLY
-            );
-            ResultSet res = empresa.executeQuery();
-
-            res.last();
-            int qtd = res.getRow();
-            res.beforeFirst();
-
-            def empresas = []
-            if (qtd > 0) {
-                while (res.next()) {
-                    PessoaJuridica e = new PessoaJuridica(
-                            res.getString(1),
-                            res.getString(2),
-                            res.getString(3),
-                            res.getString(4),
-                            res.getString(5),
-                            res.getString(6),
-                    )
-                    e.setCompetencias(
-                            servicoCompetencia.buscarCompetencia(e.cnpj)
-                    )
-                    empresas.add(e)
-                }
-            }
-            return empresas
-        }catch(Exception exception){
-            exception.printStackTrace();
-            System.err.println("Erro em listar");
-            System.exit(-42);
-        }
-    }
-
     boolean inserir(PessoaJuridica empresa){
         String INSERIR = "INSERT INTO linlketinder.empresa(cnpj_empresa, nome_empresa, email_empresa,\n" +
                 "                    senha_empresa, telefone_empresa, cep_empresa,\n" +
@@ -155,9 +101,13 @@ class ServicoEmpresa {
             salvarInformacoes(INSERIR,empresa)
             return true
         } catch (Exception exception) {
-            exception.printStackTrace();
-            System.err.println("Erro em inserir");
-            System.exit(-42);
+            System.err.println ("ERRO AO CADASTRAR")
+            if (exception.message.contains("key")) {
+                System.err.println("CPF já cadastrado!");
+            }
+            if (exception.message.contains("email")) {
+                System.err.println("Email já cadastrado!");
+            }
         }
         return false
     }
@@ -165,11 +115,13 @@ class ServicoEmpresa {
     boolean atualizar(PessoaJuridica empresa) {
         try {
             Connection conn = servicoConectar.conectar()
+
             PreparedStatement empresas = conn.prepareStatement(
                     montarQueryBuscarPorCnpj(),
                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY
             )
+
             empresas.setString(1, empresa.cnpj);
             ResultSet res = empresas.executeQuery();
 
@@ -183,6 +135,7 @@ class ServicoEmpresa {
                         "senha_empresa=?, telefone_empresa=?, cep_empresa=?,\n" +
                         "estado_empresa=?, pais_empresa=?, descricao_empresa=? " +
                         "WHERE cnpj_empresa=?"
+
                 PreparedStatement salvar = conn.prepareStatement(ATUALIZAR);
 
                 salvar.setString(1, empresa.getNome())
@@ -233,7 +186,7 @@ class ServicoEmpresa {
             }
         } catch (Exception exception) {
             exception.printStackTrace();
-            System.err.println("Erro em deletar");
+            System.err.println("Erro em deletarCompetenciaCandidato");
             System.exit(-42);
         }
     }

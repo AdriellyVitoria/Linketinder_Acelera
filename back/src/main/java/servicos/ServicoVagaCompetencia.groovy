@@ -24,6 +24,40 @@ class ServicoVagaCompetencia {
                 "WHERE vc.id_vaga = ?"
     }
 
+    ArrayList<Competencia> listarCompetencia(Integer id_vaga) {
+        try {
+            Connection conexao = servicoConectar.conectar()
+            PreparedStatement compentenciasQuery = conexao.prepareStatement(
+                    buscarCompetencia(),
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY
+            );
+
+            compentenciasQuery.setInt(1, id_vaga)
+            ResultSet res = compentenciasQuery.executeQuery()
+
+            res.last()
+            int qtd = res.getRow()
+            res.beforeFirst()
+
+            def competencias = []
+            if (qtd > 0) {
+                while (res.next()) {
+                    Competencia c = new Competencia(
+                            res.getInt(1),
+                            res.getString(2)
+                    )
+                    competencias.add(c)
+                }
+            }
+            return competencias
+        } catch (Exception exception) {
+            System.err.println("Erro ao buscar competencia")
+            System.exit(-42)
+        }
+    }
+
+
     ArrayList<Competencia> buscarCompetencia(Integer id_Vaga) {
         try {
             Connection conexao = servicoConectar.conectar();
@@ -52,61 +86,53 @@ class ServicoVagaCompetencia {
             }
             return competencias
         } catch (Exception exception) {
-            exception.printStackTrace();
             System.err.println("Erro ao buscar competencia")
             System.exit(-42)
         }
     }
 
-    void deletar(Integer id_competencia, String cnpj_empresa) {
-        String DELETAR = "DELETE FROM linlketinder.empresa_competencia\n " +
-                "WHERE cnpj_empresa =? AND id_competencia =?"
+    boolean deletar(Integer id_competencia, Integer id_vaga) {
+        String DELETAR = "DELETE FROM linlketinder.vaga_competencia " +
+                "WHERE id_vaga= ? AND id_competencia = ?"
         try {
             Connection conn = servicoConectar.conectar();
-            PreparedStatement vaga = conn.prepareStatement(
-                    buscarCompetencia(),
-                    ResultSet.TYPE_SCROLL_INSENSITIVE,
-                    ResultSet.CONCUR_READ_ONLY
-            )
+            PreparedStatement del = conn.prepareStatement(DELETAR)
+            del.setInt(1, id_vaga)
+            del.setInt(2, id_competencia)
 
-            vaga.setString(1, cnpj_empresa);
-            ResultSet res = vaga.executeQuery();
-            res.last();
-            int qtd = res.getRow();
-            res.beforeFirst();
-
-            if (qtd > 0) {
-                PreparedStatement del = conn.prepareStatement(DELETAR)
-                del.setString(1, cnpj_empresa)
-                del.setInt(2, id_competencia)
-                del.executeUpdate()
-                del.close()
-                servicoConectar.desconectar(conn)
-            }
+            del.executeUpdate()
+            del.close()
+            servicoConectar.desconectar(conn)
+            return true
         } catch (Exception exception) {
-            exception.printStackTrace();
-            System.err.println("Erro em deletar");
+            System.err.println("Erro em deletar Competencia em vaga");
             System.exit(-42);
         }
+        return false
     }
 
-    boolean inserir(Integer id_competencia, String cnpj_empresa) {
-        String INSERIR = "INSERT INTO linlketinder.empresa_competencia(id_competencia, cnpj_empresa)" +
-                " VALUES (?, ?)"
+    boolean inserir(Integer id_competencia, Integer id_vaga) {
+        String INSERIR = "INSERT INTO linlketinder.vaga_competencia(id_competencia, id_vaga) " +
+                "VALUES (?, ?)"
         try {
             Connection conn = servicoConectar.conectar()
             PreparedStatement salvar = conn.prepareStatement(INSERIR);
             salvar.setInt(1, id_competencia)
-            salvar.setString(2, cnpj_empresa)
+            salvar.setInt(2, id_vaga)
 
             salvar.executeUpdate();
             salvar.close();
             servicoConectar.desconectar(conn);
             return true
         } catch (Exception exception) {
-            exception.printStackTrace();
-            System.err.println("Erro em inserir");
-            System.exit(-42);
+            System.err.println("Erro em inserir")
+            if (exception.message.contains("vaga_competencia_pkey")){
+                System.err.println("Voce já inserir essa competencia")
+            }
+            if (exception.message.contains("vaga_competencia_id_competencia_fkey")){
+                System.err.println("essa competencia não existe")
+            }
+
         }
         return false
     }

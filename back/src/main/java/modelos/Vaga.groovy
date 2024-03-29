@@ -20,17 +20,4 @@ class Vaga {
         this.titulo = titulo
         this.local = local
     }
-
-    Vaga(Integer id,
-         String descricao,
-         String titulo,
-         String local,
-         String cnpj
-    ) {
-        this.id = id
-        this.descricao = descricao
-        this.titulo = titulo
-        this.local = local
-        cnpj_empresa = cnpj
-    }
 }

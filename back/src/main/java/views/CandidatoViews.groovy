@@ -17,22 +17,22 @@ class CandidatoViews {
     private ServicoCandidato servicoCandidato
     private PessoaFisica candidato
     private Integer opcao
-    private Menu menu
     private ServicoVaga servicoVaga
     private CompetenciaViews competenciaViews
     private ServicoCandidatoVaga servicoCandidatoVaga
     private ServicoCandidatoCompetencia servicoCandidatoCompetencia
+    private ServicoLogin servicoLogin
 
-    CandidatoViews(Menu menu){
+    CandidatoViews(){
         scanner = new Scanner(System.in)
         input = new InputValidation()
         candidato = new PessoaFisica()
         servicoCandidato = new ServicoCandidato()
-        this.menu = menu
         servicoVaga =  new ServicoVaga()
         competenciaViews = new CompetenciaViews()
         servicoCandidatoVaga = new ServicoCandidatoVaga()
         servicoCandidatoCompetencia = new ServicoCandidatoCompetencia()
+        servicoLogin = new ServicoLogin()
     }
 
     void entradaCandidato() {
@@ -48,6 +48,7 @@ class CandidatoViews {
                 if (candidato != null) {
                     ServicoLogin.setCandidato(candidato)
                     menuPrincipalCandidato()
+                    break
                 } else {
                     println("Email ou senha incorretos")
                 }
@@ -59,13 +60,16 @@ class CandidatoViews {
                     def addCompetencias = competenciaViews.inserirCompetenciaCandidato(candidato.cpf)
                     if (addCompetencias){
                         println("Candidato " + candidato.getNome() + " foi inserido com sucesso")
+                        servicoLogin.setCandidato(
+                                servicoCandidato.entradaCandidato(candidato.getEmail(), candidato.getSenha())
+                        )
                         menuPrincipalCandidato()
+                        break
                     }
                 } else {
                     println("Erro ao inserir candidato")
                 }
             } else {
-                menu.menuInicial()
                 break
             }
         }
@@ -78,11 +82,16 @@ class CandidatoViews {
             if (opcao == 1) {
                 listaVagas()
             } else if (opcao == 2){
-               listarVagasAplicadas()
+                listarVagasAplicadas()
             } else if(opcao == 3) {
-                editarPerfil()
+                boolean delete = editarPerfil()
+                if (delete) {
+                    servicoLogin.logout()
+                    break
+                }
             } else {
                 println("Saindo do programa...")
+                servicoLogin.logout()
                 break
             }
         }
@@ -112,7 +121,7 @@ class CandidatoViews {
     void listarVagasAplicadas() {
        def listaAplicada = servicoCandidatoVaga.listarPorCpf(ServicoLogin.candidato.getCpf())
         for (Vaga verVagas : listaAplicada) {
-            println("Id " + verVagas.getId() + ":" + verVagas.getTitulo())
+            println("Id " + verVagas.getId() + " : " + verVagas.getTitulo())
             println("Descricao: " + verVagas.getDescricao())
             println("Local: " + verVagas.getLocal())
             println("Compentecias: " + verVagas.getCompetencias())
@@ -120,24 +129,17 @@ class CandidatoViews {
         }
     }
 
-    void editarPerfil() {
+    boolean editarPerfil() {
         while (true) {
             opcao = input.validaEntradaDeInteiro(
                     "1- Ver perfil\n2- Editar perfil\n3- Excluir Perfil\n4- Voltar para o menu principal",
                     1, 4)
             if (opcao == 1){
-                ArrayList candidados = servicoCandidato.buscarLista()
-                for (PessoaFisica candidato: candidados) {
-                    println("CPF: "+ candidato.getCpf() + "\nNome: " + candidato.getNome())
-                    println("Email: " + candidato.getEmail() + "\nTelefone: " + candidato.getTelefone())
-                    println("Cep: " + candidato.getCep() + "\nIdade: " + candidato.getIdade())
-                    println("Descricao: " + candidato.getDescricao())
-                    println("Competecias: " + candidato.getCompetencias())
-                    println("--------------------------------------------")
-                }
+                PessoaFisica candidato = servicoLogin.getCandidato()
+                println(candidato)
             } else if(opcao == 2) {
                 candidato.cpf = ServicoLogin.candidato.cpf
-                opcao = input.validaEntradaDeInteiro("1- Editar descricao | 2- Editar Competencia | 3- Voltar",
+                opcao = input.validaEntradaDeInteiro("1- Editar detalhes | 2- Editar Competencia | 3- Voltar",
                 1, 3)
                 if (opcao == 1) {
                     editarDescricao()
@@ -149,14 +151,14 @@ class CandidatoViews {
                         "Certeza que deseja exluir perfil:\n 1- Sim | 2- Não", 1, 2)
                 if (opcao == 1){
                     servicoCandidato.deletar(ServicoLogin.getCandidato().cpf)
-                    println("Apagando com sucesso")
-                    menu.menuInicial()
-                    break
+                    println("Apagado com sucesso")
+                    return true
                 }
             } else {
                 break
             }
         }
+        return false
     }
 
     void editarDescricao(){
@@ -170,7 +172,7 @@ class CandidatoViews {
 
     void editarCompetencia(){
         while (true){
-            opcao = input.validaEntradaDeInteiro("1- Add nova Competencia| 2- Apagar Competencia| 3- Voltar",
+            opcao = input.validaEntradaDeInteiro("1- Add nova Competencia | 2- Apagar Competencia | 3- Voltar",
                     1, 3)
             if (opcao == 1){
                 def addCompetencias = competenciaViews.inserirCompetenciaCandidato(candidato.cpf)
@@ -180,7 +182,7 @@ class CandidatoViews {
                     println("Erro")
                 }
             } else if (opcao == 2){
-                competenciaViews.deletar()
+                competenciaViews.deletarCompetenciaCandidato()
             } else if (opcao == 3) {
                 break
             }

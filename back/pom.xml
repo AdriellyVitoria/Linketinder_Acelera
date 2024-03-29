@@ -21,8 +21,7 @@
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <version>42.2.24</version> <!-- Versão atualizada do driver JDBC do PostgreSQL -->
+      <version>42.7.3</version>
     </dependency>
-
   </dependencies>
 </project>

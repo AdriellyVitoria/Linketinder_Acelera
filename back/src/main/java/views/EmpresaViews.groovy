@@ -11,19 +11,19 @@ class EmpresaViews {
     private Scanner scanner
     private InputValidation input
     private ServicoEmpresa servicoEmpresa
+    private ServicoLogin servicoLogin
     private PessoaJuridica empresa
     private opcao
     private VagaViews vaga
     private ServicoCandidato candidato
-    private Menu menu
 
-    EmpresaViews(Menu menu) {
+    EmpresaViews() {
         scanner = new Scanner(System.in)
         input = new InputValidation()
         servicoEmpresa = new ServicoEmpresa()
+        servicoLogin = new ServicoLogin()
         empresa = new PessoaJuridica()
         vaga = new VagaViews(this)
-        this.menu = menu
         candidato = new ServicoCandidato()
     }
 
@@ -34,27 +34,32 @@ class EmpresaViews {
             if (opcao == 1) {
                 println("Email: ")
                 String email_empresa = scanner.nextLine();
+
                 println("Senha: ")
                 String senha_empresa = scanner.nextLine();
+
                 PessoaJuridica empresa = servicoEmpresa.entradaEmpresa(email_empresa, senha_empresa)
+
                 if (empresa != null) {
                     ServicoLogin.setEmpresa(empresa)
                     menuPrincipalEmpresa()
+                    break
                 } else {
                     println("Email ou senha incorretos")
                 }
             } else if(opcao == 2) {
+
                 println("Informe o cnpj")
                 empresa.setCnpj(scanner.nextLine())
+
                 def inserir = servicoEmpresa.inserir(imformacoesEmpresa())
                 if (inserir){
                     println("Empresa " + empresa.getNome() + " foi inserido com sucesso")
+                    ServicoLogin.setEmpresa(empresa)
                     menuPrincipalEmpresa()
-                } else {
-                    println("Error tente novamente")
+                    break
                 }
             } else {
-                menu.menuInicial()
                 break
             }
         }
@@ -67,44 +72,53 @@ class EmpresaViews {
                     1, 3)
             if (opcao == 1){
                 vaga.menuVagas()
-            } else if (opcao == 3){
-                editarEmpresa()
+            } else if (opcao == 2){
+                boolean delete = editarEmpresa()
+                if (delete) {
+                    servicoLogin.logout()
+                    break
+                }
             } else {
                 println("Volte Sempre...")
+                servicoLogin.logout()
                 break
             }
         }
     }
 
-    void editarEmpresa(){
+    boolean editarEmpresa(){
         while (true){
             opcao = input.validaEntradaDeInteiro(
-                    "1- Editar perfil\n2- Excluir Perfil\n3- Voltar para o menu principal",
-                    1, 3)
+                    "1- Ver perfil\n2- Editar perfil\n3- Excluir Perfil\n4- Voltar para o menu principal",
+                    1, 4)
             if (opcao == 1){
+                PessoaJuridica empresa = servicoLogin.getEmpresa()
+                println(empresa)
+            } else if (opcao == 2){
                 empresa.setCnpj(
                         ServicoLogin.getEmpresa().cnpj
                 )
                 PessoaJuridica empresa = imformacoesEmpresa()
-                String verificacaoNull = servicoEmpresa.atualizar(empresa);
-                if (verificacaoNull){
+                String verificacaoAtualizacao = servicoEmpresa.atualizar(empresa);
+                if (verificacaoAtualizacao){
                     println("A empresa foi atualizando com sucesso")
                 } else {
                     println("tente novamente")
                 }
-            } else if(opcao == 2){
+            } else if(opcao == 3){
                 opcao = input.validaEntradaDeInteiro(
                         "Certeza que deseja exluir empresa:\n 1- Sim | 2- Não", 1, 2)
                 if (opcao == 1){
                     def cnpj = ServicoLogin.getEmpresa().cnpj
                     servicoEmpresa.deletar(cnpj)
-                    println("Apagando com sucesso")
+                    println("Apagado com sucesso")
+                    return true
                 }
             } else {
-                menuPrincipalEmpresa()
                 break
             }
         }
+        return false
     }
 
     PessoaJuridica imformacoesEmpresa() {

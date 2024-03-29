@@ -25,18 +25,13 @@ class CompetenciaViews {
         scanner = new Scanner(System.in)
         servicoCompetencia = new ServicoCompetencia()
         vagaCompetencia = new  ServicoVagaCompetencia()
-
-    }
-
-    void listarCompetenciaEmAtualizar() {
-        inserirCompetenciaCandidato(ServicoLogin.candidato.getCpf())
     }
 
     void listarCompetencia() {
-        println("Add suas competencias(Digite 1 id por vez):")
+        println("Add suas competencias (Digite 1 id por vez):")
         def listar = servico.listarTodas()
         for (Competencia com : listar) {
-            println("Id " + com.getId() + ":" + com.getDescricao())
+            println("Id " + com.getId() + " : " + com.getDescricao())
         }
     }
 
@@ -47,31 +42,29 @@ class CompetenciaViews {
             Integer id_competencia = Integer.parseInt(scanner.nextLine())
             candidatoCompetencia.inserir(id_competencia, cpf)
             opcao = input.validaEntradaDeInteiro("1- Adicionar mais Competencia| " +
-                    "2- Outra Competencia | 3- Concluido",
+                    "2- Criar Competencia | 3- Concluido",
                     1, 3)
             if (opcao == 2) {
                 inserirNovaCompetencia()
             } else if (opcao == 3){
                 return true
-                break
             }
         }
     }
 
-    boolean inserirCompetenciaEmpresa(String cnpj) {
+    boolean inserirCompetenciaVaga(Integer id_vaga) {
         while (true){
             listarCompetencia()
             println("Digite 1 id por vez para add a competencia")
             Integer id_competencia = Integer.parseInt(scanner.nextLine())
-            vagaCompetencia.inserir(id_competencia, cnpj)
-            opcao = input.validaEntradaDeInteiro("1- Adicionar mais Competencia| " +
-                    "2- Outra Competencia | 3- Concluido",
+            vagaCompetencia.inserir(id_competencia, id_vaga)
+            opcao = input.validaEntradaDeInteiro("1- Adicionar mais Competencia | " +
+                    "2- Criar Competencia | 3- Concluido",
                     1, 3)
             if (opcao == 2) {
                 inserirNovaCompetencia()
             } else if (opcao == 3){
                 return true
-                break
             }
         }
     }
@@ -82,7 +75,7 @@ class CompetenciaViews {
         servicoCompetencia.inserir(competenciaNova)
     }
 
-    void deletar(){
+    void deletarCompetenciaCandidato(){
         def listar = candidatoCompetencia.listarCompetencia(
                 ServicoLogin.candidato.getCpf()
         )
@@ -94,8 +87,19 @@ class CompetenciaViews {
         boolean apagarCompetencia = candidatoCompetencia.deletar(idApagar, ServicoLogin.candidato.getCpf())
         if (apagarCompetencia){
             println("Apagando com sucesso")
-        } else {
+        }
+    }
 
+    void deletarCompetenicaVaga(Integer id_vaga){
+        def listar = vagaCompetencia.listarCompetencia(id_vaga)
+        for (Competencia com : listar) {
+            println("Id " + com.getId() + ":" + com.getDescricao())
+        }
+        println("Digite o id competencia que deseja apagar:")
+        Integer idApagar = Integer.parseInt(scanner.nextLine())
+        boolean apagarCompetencia = vagaCompetencia.deletar(idApagar, id_vaga)
+        if (apagarCompetencia){
+            println("Apagando com sucesso")
         }
     }
 }

@@ -6,60 +6,33 @@ class PessoaFisica extends Pessoa {
     ArrayList<Competencia> competencias
 
     PessoaFisica() {}
-    
-    // constr para imprimir
-    PessoaFisica(String cpf, String nome, String email,
-                 String telefone, String cep, Integer idade, String descricao){
-        this.cpf = cpf
-        this.nome = nome
-        this.email = email
-        this.telefone = telefone
-        this.cep = cep
-        this.idade = idade
-        this.descricao = descricao
-    }
 
-    PessoaFisica(String cpf, String nome, String email,
-                 String telefone, String cep, String descricao){
-        this.cpf = cpf
-        this.nome = nome
-        this.email = email
-        this.telefone = telefone
-        this.cep = cep
-        this.descricao = descricao
-    }
-
-    // para mostra a empresa não vai preciaa
-    PessoaFisica(Integer id, String descricao){
-        this.id = id
-        this.descricao = descricao
-    }
-    
-    // constr para criação
     PessoaFisica(
-         Integer id,
-         String nome,
-         String email,
-         String senha,
-         String telefone,
-         String estado,
-         String cep,
-         String descricao,
-         String cpf,
-         int idade) {
-        super(id ,nome, email, senha, telefone, estado, cep, descricao)
+            String cpf,
+            String nome,
+            String email,
+            String telefone,
+            String cep,
+            String descricao,
+            Integer idade,
+            String estado
+    ){
+        super(nome, email, telefone, estado, cep, descricao)
         this.cpf = cpf
         this.idade = idade
     }
 
     @Override
     String toString() {
-        return " Nome: ${nome}," +
-                " Email: ${email}," +
-                " CPF: ${cpf}," +
-                " Idade: ${idade}," +
-                " Estado: ${estado}," +
-                " CEP: ${cep}," +
-                " Descrição: ${descricao},"
+        return " CPF: ${cpf}\n" +
+                " Nome: ${nome}\n" +
+                " Email: ${email}\n" +
+                " CPF: ${cpf}\n" +
+                " Idade: ${idade}\n" +
+                " Estado: ${estado}\n" +
+                " CEP: ${cep}\n" +
+                " Telefone: ${telefone}\n" +
+                " Descrição: ${descricao}\n" +
+                " Competências: ${competencias}"
     }
 }

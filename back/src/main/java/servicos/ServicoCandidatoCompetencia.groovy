@@ -49,7 +49,6 @@ class ServicoCandidatoCompetencia {
             }
             return competencias
         } catch (Exception exception) {
-            exception.printStackTrace();
             System.err.println("Erro ao buscar competencia")
             System.exit(-42)
         }
