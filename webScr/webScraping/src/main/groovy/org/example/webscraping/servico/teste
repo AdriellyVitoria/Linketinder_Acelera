@@ -1,0 +1,98 @@
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Exemplo {
+
+    private static String fazerRequisicao(String url) throws IOException {
+        URL paginaUrl = new URL(url);
+        HttpURLConnection conexão = (HttpURLConnection) paginaUrl.openConnection();
+        conexão.setRequestMethod("GET");
+
+        BufferedReader leitor = new BufferedReader(new InputStreamReader(conexão.getInputStream()));
+        StringBuilder resposta = new StringBuilder();
+        String linha;
+        while ((linha = leitor.readLine()) != null) {
+            resposta.append(linha);
+        }
+        leitor.close();
+
+        return resposta.toString();
+    }
+
+    static String PaginaTISS() throws IOException {
+        String page = fazerRequisicao("https://www.gov.br/ans/pt-br");
+        Document document = Jsoup.parse(page);
+        Element content = document.getElementById("ce89116a-3e62-47ac-9325-ebec8ea95473");
+        String url = content.getElementsByTag("a").attr("href");
+
+        String page2 = fazerRequisicao(url);
+        Document document2 = Jsoup.parse(page2);
+        Element content2 = document2.getElementsByClass("govbr-card-content").first();
+        return content2.getElementsByTag("a").attr("href");
+    }
+
+    static void buscarTabela() throws IOException {
+        String url = PaginaTISS();
+        String page = fazerRequisicao(url);
+        Document document = Jsoup.parse(page);
+        Element content = document.getElementsByClass("internal-link").first();
+        url = content.attr("href");
+
+        String page2 = fazerRequisicao(url);
+        Document document2 = Jsoup.parse(page2);
+        Element table = document2.getElementsByTag("tbody").first().getElementsByTag("tr").last();
+        url = table.child(table.childrenSize() - 1).child(0).attr("href");
+
+        baixarArquivo(url, "Documento_do_TISS.zip");
+    }
+
+    static void buscarTabelaErros() throws IOException {
+        String url = PaginaTISS();
+        String page = fazerRequisicao(url);
+        Document document = Jsoup.parse(page);
+        Element content = document.select("#parent-fieldname-text > .callout").get(2);
+        url = content.select("a").attr("href");
+
+        String page2 = fazerRequisicao(url);
+        Document document2 = Jsoup.parse(page2);
+        Element content2 = document2.select("#parent-fieldname-text").first();
+        url = content2.select("a").attr("href");
+
+        baixarArquivo(url, "tabela_de_erros_ANS.xlsx");
+    }
+
+    static void baixarArquivo(String url, String nomeArquivo) throws IOException {
+        URL arquivoUrl = new URL(url);
+        HttpURLConnection conexão = (HttpURLConnection) arquivoUrl.openConnection();
+        conexão.setRequestMethod("GET");
+
+        BufferedInputStream inputStream = new BufferedInputStream(conexão.getInputStream());
+        FileOutputStream outputStream = new FileOutputStream(nomeArquivo);
+
+        byte[] buffer = new byte[1024];
+        int bytesRead;
+        while ((bytesRead = inputStream.read(buffer)) != -1) {
+            outputStream.write(buffer, 0, bytesRead);
+        }
+
+        inputStream.close();
+        outputStream.close();
+        conexão.disconnect();
+    }
+
+    public static void main(String[] args) {
+        try {
+            buscarTabela();
+            buscarTabelaErros();
+        } catch (IOException e) {
+            System.out.println("Erro ao executar a operação: " + e.getMessage());
+        }
+    }
+}
