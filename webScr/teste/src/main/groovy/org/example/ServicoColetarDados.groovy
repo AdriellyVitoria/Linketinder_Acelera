@@ -3,6 +3,8 @@ package org.example
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
+import org.jsoup.select.Elements
+
 
 class ServicoColetarDados {
     private Document buscarPagina(String url) {
@@ -16,7 +18,7 @@ class ServicoColetarDados {
 
         Document paginaEspacoPrestador = Jsoup.connect(linkPaginaPrestador).get()
         Element botaoTiss = paginaEspacoPrestador.getElementsByClass("govbr-card-content").first()
-        String linkPaginaTiss = botaoTiss.getElementsByTag("a").attr("href")
+        return botaoTiss.getElementsByTag("a").attr("href")
     }
 
     void obterTabela(){
@@ -27,6 +29,35 @@ class ServicoColetarDados {
         Document paginaPadraoTiss = buscarPagina(linkPaginaPadraoTiss)
         Element Pegartabela = paginaPadraoTiss.getElementsByTag("tbody").first().getElementsByTag("tr").last()
         String url = Pegartabela.lastElementChild().firstElementChild().attr("href")
-        println(url)
+    }
+
+    void obterHistorico(){
+        Document paginaTiss = buscarPagina(buscarPaginaTiss())
+        Element linhaHtml = paginaTiss.getElementsByClass("internal-link").get(1)
+        String url = linhaHtml.select("a").attr("href")
+
+        Document paginaPadraoTiss = buscarPagina(url)
+        Element corpoTabela = paginaPadraoTiss.getElementsByTag("tbody").get(0)
+        Elements conteudoTabela = corpoTabela.getElementsByTag("tr")
+
+        ArrayList<ArrayList<String>> historico = []
+
+        historico.add(["Competência", "Publicação", "Início de Vigência"])
+        conteudoTabela.each {
+            tr ->
+                Elements listaTd = tr.getElementsByTag("td")
+                String competencia = listaTd.get(0).text()
+
+                ArrayList<String> pegarAno = competencia.split("/")
+
+                Integer ano = Integer.parseInt(pegarAno[1])
+
+                if (ano >= 2016) {
+                    String publicacao = listaTd.get(1).text()
+                    String inicioVigencia = listaTd.get(2).text()
+                    historico.add([competencia, publicacao, inicioVigencia])
+                }
+        }
+        println(historico)
     }
 }
