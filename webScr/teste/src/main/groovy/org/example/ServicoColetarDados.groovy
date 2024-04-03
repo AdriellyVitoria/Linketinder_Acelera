@@ -22,8 +22,8 @@ class ServicoColetarDados {
     }
 
     void obterTabela(){
-        Document paginaHtml = buscarPagina(buscarPaginaTiss())
-        Element linhaHtml = paginaHtml.getElementsByClass("internal-link").first()
+        Document paginaTiss = buscarPagina(buscarPaginaTiss())
+        Element linhaHtml = paginaTiss.getElementsByClass("internal-link").first()
         String linkPaginaPadraoTiss = linhaHtml.attr("href")
 
         Document paginaPadraoTiss = buscarPagina(linkPaginaPadraoTiss)
@@ -58,6 +58,17 @@ class ServicoColetarDados {
                     historico.add([competencia, publicacao, inicioVigencia])
                 }
         }
-        println(historico)
+    }
+
+    void obterTabelaErros(){
+        Document paginaTiss= buscarPagina(buscarPaginaTiss())
+        Element linhaHtml = paginaTiss.getElementsByClass("internal-link").get(2)
+        String urlTabela = linhaHtml.getElementsByTag("a").attr("href")
+
+        Document paginaTabelaRelacionadas = buscarPagina(urlTabela)
+        Element linhaTabelaErro = paginaTabelaRelacionadas.getElementsByClass("internal-link").first()
+        String linkTabelaErro = linhaTabelaErro.getElementsByTag("a").attr("href")
+        println(linkTabelaErro)
+
     }
 }

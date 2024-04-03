@@ -8,5 +8,5 @@ import javax.lang.model.util.Elements
 
 static void main(String[] args) {
    ServicoColetarDados servico = new ServicoColetarDados()
-    servico.obterHistorico()
+    servico.obterTabelaErros()
 }
