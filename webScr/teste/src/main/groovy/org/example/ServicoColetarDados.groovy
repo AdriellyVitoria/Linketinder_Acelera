@@ -7,11 +7,19 @@ import org.jsoup.select.Elements
 
 
 class ServicoColetarDados {
+
+    private ServicoArquivos arquivos
+
+    ServicoColetarDados(){
+        arquivos = new ServicoArquivos()
+    }
+
+
     private Document buscarPagina(String url) {
         return Jsoup.connect(url).get()
     }
 
-    String buscarPaginaTiss(){
+     private String buscarPaginaTiss(){
         Document paginaInicial = Jsoup.connect("https://www.gov.br/ans/pt-br").get()
         Element linhaHtml = paginaInicial.getElementById("ce89116a-3e62-47ac-9325-ebec8ea95473")
         String linkPaginaPrestador = linhaHtml.getElementsByTag("a").attr("href")
@@ -29,6 +37,8 @@ class ServicoColetarDados {
         Document paginaPadraoTiss = buscarPagina(linkPaginaPadraoTiss)
         Element Pegartabela = paginaPadraoTiss.getElementsByTag("tbody").first().getElementsByTag("tr").last()
         String url = Pegartabela.lastElementChild().firstElementChild().attr("href")
+
+       arquivos.baixarAquivo(url, "Documento_do_TISS.zip")
     }
 
     void obterHistorico(){
@@ -58,6 +68,8 @@ class ServicoColetarDados {
                     historico.add([competencia, publicacao, inicioVigencia])
                 }
         }
+
+        arquivos.criarArquivo(historico, "./Downloads/historico_versoes_TISS.txt")
     }
 
     void obterTabelaErros(){
@@ -68,7 +80,7 @@ class ServicoColetarDados {
         Document paginaTabelaRelacionadas = buscarPagina(urlTabela)
         Element linhaTabelaErro = paginaTabelaRelacionadas.getElementsByClass("internal-link").first()
         String linkTabelaErro = linhaTabelaErro.getElementsByTag("a").attr("href")
-        println(linkTabelaErro)
 
+        arquivos.baixarAquivo(linkTabelaErro, "tabela_de_erros_ANS.xlsx")
     }
 }

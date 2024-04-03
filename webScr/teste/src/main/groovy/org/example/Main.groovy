@@ -7,6 +7,8 @@ import org.jsoup.nodes.Element
 import javax.lang.model.util.Elements
 
 static void main(String[] args) {
-   ServicoColetarDados servico = new ServicoColetarDados()
+    ServicoColetarDados servico = new ServicoColetarDados()
+    servico.obterHistorico()
     servico.obterTabelaErros()
+    servico.obterTabela()
 }
