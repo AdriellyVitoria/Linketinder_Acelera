@@ -2,10 +2,12 @@ import { Empresa } from "../interfaces/empresa.js"
 import { listaCompetencias } from "../listasBases/competencias.js"
 import { EmpresaService } from "../service/empresa-service.js"
 import { GeradorID } from "../service/gerador-id.js"
+import { RegexEmpresa} from "./regexEmpresa.js"
 
 export class CadastroEmpresa {
     private readonly geradorId: GeradorID
     private readonly empresaService: EmpresaService
+    private readonly regexEmpresa: RegexEmpresa
 
     constructor (
         private readonly cabecalho: HTMLElement,
@@ -13,6 +15,7 @@ export class CadastroEmpresa {
     ) {
         this.geradorId = new GeradorID()
         this.empresaService = new EmpresaService
+        this.regexEmpresa = new RegexEmpresa()
     }
 
     public carregarTelaCadastro(): void {
@@ -58,7 +61,8 @@ export class CadastroEmpresa {
             alert('Todos os campos devem ser preenchidos')
             return
         }
-        if(this.regexFormulario()) {
+        const formularioPreecindo = this.regexEmpresa.regexFormulario()
+        if(formularioPreecindo) {
             this.empresaService.criarEmpresa(novaEmpresa)
             alert('Cadastro efetuado com sucesso')
             location.reload()
@@ -160,35 +164,4 @@ export class CadastroEmpresa {
                 <button class="botao__cadastrar__empresa">Cadastrar</button>
             </div>`
     }
-
-    private regexFormulario(): boolean {
-        const telefone = (document.querySelector(".input__telefone input") as HTMLInputElement).value;
-        const cnpj = (document.querySelector(".input__cpf input") as HTMLInputElement).value;
-        const cep = (document.querySelector(".input__cep input") as HTMLInputElement).value;
-        const email = (document.querySelector(".input__email input") as HTMLInputElement).value;
-    
-        const telefoneRegex = /^\(\d{2}\) \d{4,5}-\d{4}$/
-        const cnpjRegex = /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/
-        const cepRegex = /^\d{5}-\d{3}$/
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    
-        if (!telefoneRegex.test(telefone)) {
-            alert("Número de Telefone no formato errado (99) 99999-9999")
-            return false;
-        }
-        if (!cnpjRegex.test(cnpj)) {
-            alert("CNPJ no formato errado 123.456.789-01")
-            return false;
-        }
-        if (!cepRegex.test(cep)) {
-            alert("CEP no formato errado 12345-678")
-            return false;
-        }
-        if (!emailRegex.test(email)) {
-            alert("email no formato errado @gmail.com")
-            return false;
-        }
-        return true;
-    }
-
 }

@@ -7,5 +7,5 @@
     },
     "include": [
         "./src/**/*"
-    ]
+, "dist/js/controller/regexCandidato.js", "dist/js/controller/regexEmpresa.js"    ]
 }
