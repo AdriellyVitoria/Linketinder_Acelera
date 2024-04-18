@@ -1,4 +1,0 @@
-package Modelos
-
-class PessoaFisica {
-}
