@@ -14,7 +14,6 @@ class ServicoColetarDados {
         arquivos = new ServicoArquivos()
     }
 
-
     private Document buscarPagina(String url) {
         return Jsoup.connect(url).get()
     }
